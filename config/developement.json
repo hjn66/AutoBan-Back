@@ -1,0 +1,9 @@
+{
+  "database": "mongodb://julia:Julia123@localhost:27017/juliaFarsidb",
+  "port": "3000",
+  "db_connectionLimit":10,
+  "db_Host":"46.105.145.154",
+  "db_user":"autoban",
+  "db_password":"AutoBan@97",
+  "db_database":"AutoBanDB"
+}
