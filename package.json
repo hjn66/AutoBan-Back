@@ -1,0 +1,35 @@
+{
+  "name": "autoban",
+  "version": "1.0.0",
+  "description": "AutoBan Application Backend",
+  "main": "app.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-async-errors": "^3.1.1",
+    "i18n": "^0.8.3",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.4",
+    "orm": "^5.0.2",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^4.41.2",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hjn66/AutoBan-Back.git"
+  },
+  "author": "Hojjat Jashnniloofar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hjn66/AutoBan-Back/issues"
+  },
+  "homepage": "https://github.com/hjn66/AutoBan-Back#readme"
+}

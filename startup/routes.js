@@ -2,9 +2,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
 const path = require("path");
+const passport = require("passport");
 require("express-async-errors");
 
-const cars = require("../routes/cars");
+const accounts = require("../routes/accounts");
 
 module.exports = async function(app) {
   // CORS Middleware
@@ -17,5 +18,11 @@ module.exports = async function(app) {
   // Body Parser Middleware
   app.use(bodyParser.json());
 
-  app.use("/cars", cars);
+  // Passport Middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  require("../middlewares/passport")(passport);
+
+  app.use("/accounts", accounts);
 };
