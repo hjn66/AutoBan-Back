@@ -10,6 +10,7 @@ module.exports = (sequelize, Sequelize) => {
     loginType: { type: Sequelize.ENUM("EMAIL", "MOBILE"), allowNull: false },
     password: { type: Sequelize.STRING },
     email: { type: Sequelize.STRING, allowNull: true, unique: true, validate: { isEmail: true } },
-    mobileNumber: { type: Sequelize.STRING, allowNull: true, unique: true, validate: { len: [10, 13], is: /^[+0-9]+$/i } }
+    mobileNumber: { type: Sequelize.STRING, allowNull: true, unique: true, validate: { len: [10, 13], is: /^[+0-9]+$/i } },
+    enabled: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true }
   });
 };

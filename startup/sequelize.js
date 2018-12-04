@@ -27,7 +27,7 @@ const Account = AccountModel(sequelize, Sequelize);
 // Blog.belongsTo(User);
 // User.belongsTo(Account);
 
-sequelize.sync().then(() => {
+sequelize.sync({ force: false }).then(() => {
   console.log(`Database & tables created!`);
 });
 
