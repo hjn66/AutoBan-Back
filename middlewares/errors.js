@@ -11,7 +11,6 @@ module.exports = function(err, req, res, next) {
   if (err instanceof ReferenceError || err instanceof SyntaxError || err instanceof TypeError) {
     res.json({ success: false, msg: __("Server error occurred") });
   } else {
-    console.log(err);
     res.json({ success: false, msg: __(err.message) });
   }
 };

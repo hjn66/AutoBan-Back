@@ -1,7 +1,7 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const config = require("config");
-const Account = require("../models/account");
+const AccountDAO = require("../DAO/accountsDAO");
 
 module.exports = function(passport) {
   let opts = {};
@@ -9,7 +9,10 @@ module.exports = function(passport) {
   opts.secretOrKey = config.get("JWTsecret");
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
-      Account.getAccountById(jwt_payload._id, (err, account) => {
+      if (jwt_payload.type == "SMS") {
+        return done(null, jwt_payload.token);
+      }
+      AccountDAO.getAccountById(jwt_payload.accountId, (err, account) => {
         if (err) {
           return done(err, false);
         }
