@@ -1,13 +1,15 @@
 {
-	"Server error occurred": "خطایی در سرور رخ داده است",
-	"Email registerd before": "کاربری با این ایمیل قبلا ثبت نام کرده است",
-	"mobileNumber registerd before": "کاربری با این شماره موبایل قبلا ثبت نام کرده است",
-	"mobileNumber required": "شماره موبایل الزامی است",
-	"Account not found": "حساب کاربری مورد نظر یافت نشد",
-	"Invalid token": "توکن وارد شده معتبر نیست",
-	"Expired token": "توکن منقضی شده است",
-	"Email required": "ایمیل الزامی است",
-	"UserName required": "نام کاربری الزامی است",
-	"Expected \"payload\" to be a plain object.": "Expected \"payload\" to be a plain object.",
-	"Wrong Password": "Wrong Password"
+  "Server error occurred": "خطایی در سرور رخ داده است",
+  "Email registered before": "کاربری با این ایمیل قبلا ثبت نام کرده است",
+  "MobileNumber registered before": "کاربری با این شماره موبایل قبلا ثبت نام کرده است",
+  "MobileNumber required": "شماره موبایل الزامی است",
+  "Account not found": "حساب کاربری مورد نظر یافت نشد",
+  "Invalid token": "توکن وارد شده معتبر نیست",
+  "Expired token": "توکن منقضی شده است",
+  "Email required": "ایمیل الزامی است",
+  "UserName required": "نام کاربری الزامی است",
+  "Wrong Password": "رمزعبور اشتباه است",
+  "firstName and lastName required": "نام و نام خانوادگی اجباری است",
+  "User not found": "کاربر مورد نظر یافت نشد",
+  "Validation error: Validation isEmail on email failed": "ایمیل وارد شده صحیح نیست"
 }

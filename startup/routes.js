@@ -6,6 +6,7 @@ const passport = require("passport");
 require("express-async-errors");
 
 const accounts = require("../routes/accounts");
+const users = require("../routes/users");
 
 module.exports = async function(app) {
   // CORS Middleware
@@ -25,4 +26,5 @@ module.exports = async function(app) {
   require("../middlewares/passport")(passport);
 
   app.use("/accounts", accounts);
+  app.use("/users", users);
 };

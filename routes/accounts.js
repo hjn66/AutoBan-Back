@@ -17,26 +17,13 @@ router.post("/get-sms-token", i18n, async (req, res, next) => {
 // get token and mobileNumber in body and check token is valid and return jwt token for register or login
 router.post("/check-sms-token", i18n, async (req, res, next) => {
   smsToken = await SMSTokenDAO.checkToken(req.body);
-  const token = jwt.sign({ type: "SMS", token: smsToken }, config.get("JWTsecret"), {
+  const token = jwt.sign({ type: "SMS", mobileNumber: smsToken.mobileNumber }, config.get("JWTsecret"), {
     expiresIn: config.get("jwt_sms_token_exp_sec")
   });
   return res.json({
     success: true,
-    token: "JWT " + token,
-    smsToken: smsToken
+    token: "JWT " + token
   });
-});
-
-// register with password and token returned by check-sms-token
-router.post("/register-mobile", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  account = await AccountDAO.addAccountByMobile(req.user.mobileNumber, req.body.password);
-  res.json({ success: true, account: account });
-});
-
-// register with email and password
-router.post("/register-email", i18n, async (req, res, next) => {
-  account = await AccountDAO.addAccountByEmail(req.body.email, req.body.password);
-  res.json({ success: true, account: account });
 });
 
 // Authenticate withe username(mobileNumber or email) and password
@@ -47,10 +34,10 @@ router.post("/authenticate-password", i18n, async (req, res, next) => {
   }
   isMatch = await AccountDAO.comparePassword(req.body.password, account.password);
   if (isMatch) {
-    const token = jwt.sign({ type: "AUTH", accountId: account.id }, config.get("JWTsecret"), {
+    account["password"] = "***";
+    const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"), {
       expiresIn: config.get("jwt_auth_exp_sec") // 90 days
     });
-    account["password"] = "***";
     return res.json({
       success: true,
       token: "JWT " + token,
@@ -67,19 +54,15 @@ router.get("/authenticate-token", [passport.authenticate("jwt", { session: false
   if (!account.enabled) {
     throw new Error("Your Account dissabled by admin, please contact to admin");
   }
-  const token = jwt.sign({ type: "AUTH", accountId: account.id }, config.get("JWTsecret"), {
+  account["password"] = "***";
+  const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"), {
     expiresIn: config.get("jwt_auth_exp_sec") // 90 days
   });
-  account["password"] = "***";
   return res.json({
     success: true,
     token: "JWT " + token,
     account: account
   });
-});
-
-router.get("/profile", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  return res.json({ user: req.user });
 });
 
 module.exports = router;

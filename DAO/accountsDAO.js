@@ -12,37 +12,24 @@ module.exports.getAccountById = function(id, callback) {
   });
 };
 
-module.exports.addAccountByEmail = async function(email, password) {
-  if (!email) {
-    throw new Error("Email required");
-  }
-  account = await Account.findOne({ where: { email: email } });
-  if (account) {
-    throw new Error("Email registerd before");
-  }
-  salt = bcrypt.genSaltSync(10);
-  password = bcrypt.hashSync(password, salt);
-  return await Account.create({ email: email, password: password, loginType: "EMAIL" });
-};
-
-module.exports.addAccountByMobile = async function(mobileNumber, password) {
+module.exports.addAccount = async function(mobileNumber, password, accountType) {
   if (!mobileNumber) {
     throw new Error("MobileNumber required");
   }
   account = await Account.findOne({ where: { mobileNumber: mobileNumber } });
   if (account) {
-    throw new Error("mobileNumber registerd before");
+    throw new Error("MobileNumber registered before");
   }
   salt = bcrypt.genSaltSync(10);
   password = bcrypt.hashSync(password, salt);
-  return await Account.create({ mobileNumber: mobileNumber, password: password, loginType: "MOBILE" });
+  return await Account.create({ mobileNumber: mobileNumber, password: password, accountType: accountType });
 };
 
 module.exports.getAccount = async function(username) {
   if (!username) {
     throw new Error("UserName required");
   }
-  account = await Account.findOne({ where: { [Op.or]: [{ mobileNumber: username }, { email: username }] } });
+  account = await Account.findOne({ where: { mobileNumber: username } });
   if (!account) {
     throw new Error("Account not found");
   }
