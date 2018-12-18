@@ -3,8 +3,10 @@ const AccountModel = require("../models/account");
 const AccountTypeModel = require("../models/accountType");
 const UserModel = require("../models/user");
 const SMSTokenModel = require("../models/smsToken");
-const carModelModel = require("../models/carModel");
+const CarModelModel = require("../models/carModel");
 const CarBrandModel = require("../models/carBrand");
+const UserCarModel = require("../models/car");
+const ColorModel = require("../models/color");
 const config = require("config");
 
 const sequelize = new Sequelize(config.get("db_database"), config.get("db_user"), config.get("db_password"), {
@@ -23,8 +25,10 @@ const Account = AccountModel(sequelize, Sequelize);
 const AccountType = AccountTypeModel(sequelize, Sequelize);
 const User = UserModel(sequelize, Sequelize);
 const SMSToken = SMSTokenModel(sequelize, Sequelize);
-const CarModel = carModelModel(sequelize, Sequelize);
+const CarModel = CarModelModel(sequelize, Sequelize);
 const CarBrand = CarBrandModel(sequelize, Sequelize);
+const Car = UserCarModel(sequelize, Sequelize);
+const Color = ColorModel(sequelize, Sequelize);
 // const User = UserModel(sequelize, Sequelize);
 // BlogTag will be our way of tracking relationship between Blog and Tag models
 // each Blog can have multiple tags and each Tag can have multiple blogs
@@ -38,8 +42,11 @@ const CarBrand = CarBrandModel(sequelize, Sequelize);
 Account.belongsTo(AccountType, { foreignKey: { name: "accountType", allowNull: false } });
 User.belongsTo(Account, { foreignKey: { name: "accountId", allowNull: false } });
 CarBrand.hasMany(CarModel, { as: "models" });
+User.belongsToMany(CarModel, { through: Car, foreignKey: { name: "userId", allowNull: false } });
+CarModel.belongsToMany(User, { through: Car, foreignKey: { name: "modelId", allowNull: false } });
+Car.belongsTo(Color, { foreignKey: { allowNull: false } });
 
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   console.log(`Database & tables created!`);
   // AccountType.create({ type: "User" });
   // require("./carModelInit")(CarModel, CarBrand);
