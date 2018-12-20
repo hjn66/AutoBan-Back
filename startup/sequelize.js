@@ -29,15 +29,6 @@ const CarModel = CarModelModel(sequelize, Sequelize);
 const CarBrand = CarBrandModel(sequelize, Sequelize);
 const Car = UserCarModel(sequelize, Sequelize);
 const Color = ColorModel(sequelize, Sequelize);
-// const User = UserModel(sequelize, Sequelize);
-// BlogTag will be our way of tracking relationship between Blog and Tag models
-// each Blog can have multiple tags and each Tag can have multiple blogs
-// const BlogTag = sequelize.define("blog_tag", {});
-// const Blog = BlogModel(sequelize, Sequelize);
-// const Tag = TagModel(sequelize, Sequelize);
-
-// Blog.belongsToMany(Tag, { through: BlogTag, unique: false });
-// Tag.belongsToMany(Blog, { through: BlogTag, unique: false });
 
 Account.belongsTo(AccountType, { foreignKey: { name: "accountType", allowNull: false } });
 User.belongsTo(Account, { foreignKey: { name: "accountId", allowNull: false } });
@@ -46,18 +37,21 @@ User.belongsToMany(CarModel, { through: Car, foreignKey: { name: "userId", allow
 CarModel.belongsToMany(User, { through: Car, foreignKey: { name: "modelId", allowNull: false } });
 Car.belongsTo(Color, { foreignKey: { allowNull: false } });
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
   console.log(`Database & tables created!`);
   // AccountType.create({ type: "User" });
+  // Color.create({ englishName: "green", persianName: "سبز", code: "00FF00" });
+  // Color.create({ englishName: "red", persianName: "قرمز", code: "FF0000" });
+  // Color.create({ englishName: "blue", persianName: "آبی", code: "0000FF" });
   // require("./carModelInit")(CarModel, CarBrand);
 });
-
-// AccountType.create({ type: "User" }).then(accountType => {
-//   console.log(accountType); // John Doe (SENIOR ENGINEER)
-// });
 
 module.exports = {
   Account,
   User,
-  SMSToken
+  SMSToken,
+  Color,
+  CarModel,
+  CarBrand,
+  Car
 };

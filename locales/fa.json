@@ -11,5 +11,12 @@
   "Wrong Password": "رمزعبور اشتباه است",
   "firstName and lastName required": "نام و نام خانوادگی اجباری است",
   "User not found": "کاربر مورد نظر یافت نشد",
-  "Validation error: Validation isEmail on email failed": "ایمیل وارد شده صحیح نیست"
+  "User information updated successfuly": "اطلاعات کاربر با موفقیت به روزرسانی شد",
+  "Validation error: Validation isEmail on email failed": "ایمیل وارد شده صحیح نیست",
+  "Car not found": "ماشین مورد نظر یافت نشد",
+  "Odometer updated successfuly": "اطلاعات کیلومتر ماشین با موفقیت ثبت شد",
+  "You can change your car information only": "شما تنها می‌توانید اطلاعات ماشین خود را تغییر دهید",
+  "Car information updated successfuly": "اطلاعات ماشین با موفقیت به روزرسانی شد",
+  "You can remove your car only": "شما تنها می‌توانید ماشین خود را حذف کنید",
+  "Car deleted successfuly": "ماشین با موفقیت حذف شد"
 }

@@ -6,8 +6,9 @@ module.exports = (sequelize, Sequelize) => {
       autoIncrement: true
     },
     name: { type: Sequelize.STRING, allowNull: false },
-    tag: { type: Sequelize.STRING, allowNull: true, validate: { len: [8, 10], is: /^[\u0600-\u06FF]+$/i } },
-    image: { type: Sequelize.STRING, allowNull: true, validate: { is: /^[a-zA-Z0-9\.\\\/]+$/i } },
+    plate: { type: Sequelize.STRING, allowNull: true, validate: { len: [8, 10] /*, is: /^[\u0600-\u06FF]+$/i*/ } },
+    image: { type: Sequelize.STRING, allowNull: false, validate: { is: /^[a-zA-Z0-9\.\\\/]+$/i } },
+    bulityear: { type: Sequelize.INTEGER, allowNull: false },
     odometer: { type: Sequelize.INTEGER }
   });
 };

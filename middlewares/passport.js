@@ -12,7 +12,7 @@ module.exports = function(passport) {
       if (jwt_payload.type == "SMS") {
         return done(null, jwt_payload.mobileNumber);
       }
-      AccountDAO.getAccountById(jwt_payload.accountId, (err, account) => {
+      AccountDAO.getAccountById(jwt_payload.account.id, (err, account) => {
         if (err) {
           return done(err, false);
         }

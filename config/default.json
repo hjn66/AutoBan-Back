@@ -3,12 +3,14 @@
   "sms_token_expiration_min": 25,
   "sms_token_length": 6,
   "jwt_sms_token_exp_sec": 6000,
-  "jwt_auth_exp_sec": 7776000,
   "port": "3000",
   "db_connectionLimit": 10,
   "db_host": "127.0.0.1",
   "db_user": "autoban",
   "db_password": "AutoBan@97",
   "db_database": "AutoBanDB",
-  "db_port": 3306
+  "db_port": 3306,
+  "car_logo_dir": "public/assets/images/carLogos/",
+  "car_images_dir": "uploads/carImages",
+  "user_images_dir": "uploads/userImages"
 }

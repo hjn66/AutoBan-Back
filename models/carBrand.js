@@ -6,6 +6,7 @@ module.exports = (sequelize, Sequelize) => {
       autoIncrement: true
     },
     englishName: { type: Sequelize.STRING, allowNull: true },
-    persianName: { type: Sequelize.STRING, allowNull: true }
+    persianName: { type: Sequelize.STRING, allowNull: true },
+    logo: { type: Sequelize.STRING, allowNull: false }
   });
 };

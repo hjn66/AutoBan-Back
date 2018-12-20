@@ -6,7 +6,7 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const uploadDir = path.join(__dirname, "../uploads");
+const rootDir = path.join(__dirname, "../");
 const multer = require("multer");
 const randToken = require("rand-token");
 
@@ -17,7 +17,7 @@ const SMSTokenDAO = require("../DAO/smsTokenDAO");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads");
+    cb(null, "./" + config.get("user_images_dir"));
   },
   filename: function(req, file, cb) {
     raw = randToken.generate(16);
@@ -42,14 +42,12 @@ router.post(
       throw new Error("firstName and lastName required");
     }
     if (req.file) {
-      profilePic = req.file.filename;
+      profilePic = config.get("car_images_dir") + "/" + req.file.filename;
     }
     account = await AccountDAO.addAccount(mobileNumber, password, "User");
     user = await UserDAO.addUser(firstName, lastName, email, profilePic, account.id);
     account["password"] = "***";
-    const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"), {
-      expiresIn: config.get("jwt_auth_exp_sec") // 90 days
-    });
+    const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"));
     return res.json({ success: true, token: "JWT " + token, user: user });
   }
 );
@@ -65,11 +63,11 @@ router.post(
     user.lastName = req.body.lastName;
     user.email = req.body.email;
     if (req.file) {
-      fs.removeSync(uploadDir + "/" + user.profileImage);
-      user.profileImage = req.file.filename;
+      fs.removeSync(rootDir + "/" + user.profileImage);
+      user.profileImage = config.get("car_images_dir") + "/" + req.file.filename;
     }
     user = await UserDAO.updateUser(user);
-    return res.json({ success: true, user: user });
+    return res.json({ success: true, message: __("User information updated successfuly") });
   }
 );
 

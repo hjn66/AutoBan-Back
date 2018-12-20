@@ -35,9 +35,7 @@ router.post("/authenticate-password", i18n, async (req, res, next) => {
   isMatch = await AccountDAO.comparePassword(req.body.password, account.password);
   if (isMatch) {
     account["password"] = "***";
-    const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"), {
-      expiresIn: config.get("jwt_auth_exp_sec") // 90 days
-    });
+    const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"));
     return res.json({
       success: true,
       token: "JWT " + token,
@@ -55,9 +53,7 @@ router.get("/authenticate-token", [passport.authenticate("jwt", { session: false
     throw new Error("Your Account dissabled by admin, please contact to admin");
   }
   account["password"] = "***";
-  const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"), {
-    expiresIn: config.get("jwt_auth_exp_sec") // 90 days
-  });
+  const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"));
   return res.json({
     success: true,
     token: "JWT " + token,
