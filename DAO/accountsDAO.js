@@ -6,9 +6,9 @@ const Op = Sequelize.Op;
 module.exports.getAccountById = function(id, callback) {
   Account.findByPk(id).then(account => {
     if (!account) {
-      callback("Account Not Found", account);
+      return callback("Account Not Found", null);
     }
-    callback(null, account);
+    return callback(null, account);
   });
 };
 

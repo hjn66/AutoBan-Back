@@ -7,6 +7,8 @@ const CarModelModel = require("../models/carModel");
 const CarBrandModel = require("../models/carBrand");
 const UserCarModel = require("../models/car");
 const ColorModel = require("../models/color");
+const CostModel = require("../models/cost");
+const FuelModel = require("../models/fuel");
 const config = require("config");
 
 const sequelize = new Sequelize(config.get("db_database"), config.get("db_user"), config.get("db_password"), {
@@ -29,6 +31,8 @@ const CarModel = CarModelModel(sequelize, Sequelize);
 const CarBrand = CarBrandModel(sequelize, Sequelize);
 const Car = UserCarModel(sequelize, Sequelize);
 const Color = ColorModel(sequelize, Sequelize);
+const Cost = CostModel(sequelize, Sequelize);
+const Fuel = FuelModel(sequelize, Sequelize);
 
 Account.belongsTo(AccountType, { foreignKey: { name: "accountType", allowNull: false } });
 User.belongsTo(Account, { foreignKey: { name: "accountId", allowNull: false } });
@@ -36,6 +40,8 @@ CarBrand.hasMany(CarModel, { as: "models" });
 User.belongsToMany(CarModel, { through: Car, foreignKey: { name: "userId", allowNull: false } });
 CarModel.belongsToMany(User, { through: Car, foreignKey: { name: "modelId", allowNull: false } });
 Car.belongsTo(Color, { foreignKey: { allowNull: false } });
+Cost.belongsTo(Car, { foreignKey: { allowNull: false } });
+Fuel.belongsTo(Cost, { foreignKey: { allowNull: false } });
 
 sequelize.sync({ force: false }).then(() => {
   console.log(`Database & tables created!`);
@@ -53,5 +59,7 @@ module.exports = {
   Color,
   CarModel,
   CarBrand,
-  Car
+  Car,
+  Cost,
+  Fuel
 };

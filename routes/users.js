@@ -84,7 +84,7 @@ router.post("/change-mobile", [passport.authenticate("jwt", { session: false }),
 // return user profile information
 router.get("/profile", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   user = await UserDAO.getUserByAccountId(req.user.id);
-  return res.json({ user: user });
+  return res.json({ success: true, user: user });
 });
 
 module.exports = router;

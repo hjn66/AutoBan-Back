@@ -14,12 +14,12 @@ module.exports = function(passport) {
       }
       AccountDAO.getAccountById(jwt_payload.account.id, (err, account) => {
         if (err) {
-          return done(err, false);
+          return done(new Error(err), null);
         }
         if (account) {
           return done(null, account);
         } else {
-          return done(null, false);
+          return done(null, null);
         }
       });
     })

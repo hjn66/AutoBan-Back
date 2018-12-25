@@ -8,6 +8,7 @@ require("express-async-errors");
 const accounts = require("../routes/accounts");
 const users = require("../routes/users");
 const cars = require("../routes/cars");
+const costs = require("../routes/costs");
 
 module.exports = async function(app) {
   // CORS Middleware
@@ -29,4 +30,5 @@ module.exports = async function(app) {
   app.use("/accounts", accounts);
   app.use("/users", users);
   app.use("/cars", cars);
+  app.use("/costs", costs);
 };

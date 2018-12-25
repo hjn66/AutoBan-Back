@@ -35,6 +35,7 @@ module.exports.getUserByAccountId = async function(accountId) {
   user = await User.findOne({
     where: { accountId: accountId }
   });
+  console.log("accountId", accountId);
   if (!user) {
     throw new Error("User not found");
   }
