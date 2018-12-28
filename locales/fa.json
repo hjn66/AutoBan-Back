@@ -26,5 +26,9 @@
 	"notNull Violation: cost.date cannot be null,\nnotNull Violation: cost.value cannot be null": "notNull Violation: cost.date cannot be null,\nnotNull Violation: cost.value cannot be null",
 	"Fuel not found": "Fuel not found",
 	"Fuel deleted successfuly": "Fuel deleted successfuly",
-	"Cannot delete or update a parent row: a foreign key constraint fails (`autobandb`.`fuel`, CONSTRAINT `fuel_ibfk_1` FOREIGN KEY (`costId`) REFERENCES `costs` (`id`) ON UPDATE CASCADE)": "Cannot delete or update a parent row: a foreign key constraint fails (`autobandb`.`fuel`, CONSTRAINT `fuel_ibfk_1` FOREIGN KEY (`costId`) REFERENCES `costs` (`id`) ON UPDATE CASCADE)"
+	"Cannot delete or update a parent row: a foreign key constraint fails (`autobandb`.`fuel`, CONSTRAINT `fuel_ibfk_1` FOREIGN KEY (`costId`) REFERENCES `costs` (`id`) ON UPDATE CASCADE)": "Cannot delete or update a parent row: a foreign key constraint fails (`autobandb`.`fuel`, CONSTRAINT `fuel_ibfk_1` FOREIGN KEY (`costId`) REFERENCES `costs` (`id`) ON UPDATE CASCADE)",
+	"Fine information added successfuly": "Fine information added successfuly",
+	"car is not associated to fine!": "car is not associated to fine!",
+	"Fine deleted successfuly": "Fine deleted successfuly",
+	"notNull Violation: fuel.volume cannot be null": "notNull Violation: fuel.volume cannot be null"
 }

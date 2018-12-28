@@ -97,6 +97,12 @@ router.post("/update-odometer", [passport.authenticate("jwt", { session: false }
   return res.json({ success: true, message: __("Odometer updated successfuly") });
 });
 
+router.get("/list", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  user = await UserDAO.getUserByAccountId(req.user.id);
+  cars = await CarDAO.listCars(user.id);
+  return res.json({ success: true, cars: cars });
+});
+
 router.get("/list-car-brands", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   carBrands = await CarDAO.listCarBrands();
   return res.json({ success: true, carBrands: carBrands });

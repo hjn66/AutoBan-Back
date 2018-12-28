@@ -53,6 +53,10 @@ module.exports.removeCar = async function(car) {
   return await car.destroy();
 };
 
+module.exports.listCars = async function(userId) {
+  return await Car.findAll({ where: { userId: userId } });
+};
+
 module.exports.listCarBrands = async function() {
   return await CarBrand.findAll();
 };
