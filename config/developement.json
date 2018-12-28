@@ -5,5 +5,9 @@
   "db_host": "46.105.145.154",
   "db_user": "autoban",
   "db_password": "AutoBan@97",
-  "db_database": "AutoBanDB"
+  "db_database": "AutoBanDB",
+  "sms_user": "300550",
+  "sms_password": "VrH@9588",
+  "sms_wsdl_url": "http://www.epayamak.net/WebSrv/EPWebservice.asmx?wsdl",
+  "sms_number": "300097500096"
 }

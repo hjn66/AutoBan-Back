@@ -8,7 +8,9 @@ const CarDAO = require("../DAO/carsDAO");
 const CostDAO = require("../DAO/costDAO");
 const FuelDAO = require("../DAO/fuelDAO");
 const FineDAO = require("../DAO/fineDAO");
+const PeriodicCostDAO = require("../DAO/PeriodicCostDAO");
 
+//TODO list for all cost types, update for all cost types
 router.post("/add-fuel", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const carId = req.body.carId;
   const date = req.body.date;
@@ -80,6 +82,69 @@ router.post("/delete-fine", [passport.authenticate("jwt", { session: false }), i
   await FineDAO.removeFine(fine);
   await CostDAO.removeCost(cost);
   return res.json({ success: true, message: __("Fine deleted successfuly") });
+});
+
+router.post("/add-periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const carId = req.body.carId;
+  const date = req.body.date;
+  const value = req.body.value;
+  const comment = req.body.comment;
+  const type = req.body.type;
+  const period = req.body.period;
+
+  user = await UserDAO.getUserByAccountId(req.user.id);
+  car = await CarDAO.getCarById(carId);
+  const userId = user.id;
+  if (car.userId != userId) {
+    throw new Error("You can add cost to your car only");
+  }
+  cost = await CostDAO.addCost(type, date, value, comment, carId);
+  await PeriodicCostDAO.addPeriodicCost(type, period, cost.id);
+  return res.json({ success: true, message: __("PeriodicCost information added successfuly") });
+});
+
+router.post("/delete-periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const periodicCostId = req.body.periodicCostId;
+  user = await UserDAO.getUserByAccountId(req.user.id);
+  periodicCost = await PeriodicCostDAO.getFineById(periodicCostId);
+  cost = await CostDAO.getCostById(periodicCost.costId);
+  car = await CarDAO.getCarById(cost.carId);
+  const userId = user.id;
+  if (car.userId != userId) {
+    throw new Error("You can remove your car's cost only");
+  }
+  await PeriodicCostDAO.removePeriodicCost(periodicCost);
+  await CostDAO.removeCost(cost);
+  return res.json({ success: true, message: __("PeriodicCost deleted successfuly") });
+});
+
+router.post("/add-other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const carId = req.body.carId;
+  const date = req.body.date;
+  const value = req.body.value;
+  const comment = req.body.comment;
+
+  user = await UserDAO.getUserByAccountId(req.user.id);
+  car = await CarDAO.getCarById(carId);
+  const userId = user.id;
+  if (car.userId != userId) {
+    throw new Error("You can add cost to your car only");
+  }
+  cost = await CostDAO.addCost("OTHER", date, value, comment, carId);
+  return res.json({ success: true, message: __("Cost information added successfuly") });
+});
+
+router.post("/delete-other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const costId = req.body.costId;
+  user = await UserDAO.getUserByAccountId(req.user.id);
+  cost = await CostDAO.getCostById(costId);
+  car = await CarDAO.getCarById(cost.carId);
+  const userId = user.id;
+  if (car.userId != userId) {
+    throw new Error("You can remove your car's cost only");
+  }
+  await CostDAO.removeCost(cost);
+  return res.json({ success: true, message: __("Cost deleted successfuly") });
 });
 
 router.post("/list", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {

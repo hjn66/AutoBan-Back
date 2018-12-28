@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const config = require("config");
 const errors = require("./middlewares/errors");
+const sms = require("./middlewares/sms");
 
 var app = express();
 require("./startup/logging")();

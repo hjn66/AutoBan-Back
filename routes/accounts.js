@@ -5,12 +5,16 @@ const router = express.Router();
 const config = require("config");
 
 const i18n = require("../middlewares/i18n");
+const sms = require("../middlewares/sms");
 const AccountDAO = require("../DAO/accountsDAO");
 const SMSTokenDAO = require("../DAO/smsTokenDAO");
 
 // get mobileNumber in body and return token
 router.post("/get-sms-token", i18n, async (req, res, next) => {
-  token = await SMSTokenDAO.getToken(req.body.mobileNumber);
+  const mobileNumber = req.body.mobileNumber;
+  token = await SMSTokenDAO.getToken(mobileNumber);
+  // await sms.sendSMS(mobileNumber, __("Your verification code to AutoBanApp is : %i", token.token));
+  // res.json({ success: true, message: __("Verification code sent") });
   res.json({ success: true, token: token });
 });
 

@@ -11,6 +11,7 @@ const CostModel = require("../models/cost");
 const FuelModel = require("../models/fuel");
 const FineModel = require("../models/fine");
 const FineCategoryModel = require("../models/fineCategory");
+const PeriodicCostModel = require("../models/periodicCost");
 const config = require("config");
 
 const sequelize = new Sequelize(config.get("db_database"), config.get("db_user"), config.get("db_password"), {
@@ -37,6 +38,7 @@ const Cost = CostModel(sequelize, Sequelize);
 const Fuel = FuelModel(sequelize, Sequelize);
 const FineCategory = FineCategoryModel(sequelize, Sequelize);
 const Fine = FineModel(sequelize, Sequelize);
+const PeriodicCost = PeriodicCostModel(sequelize, Sequelize);
 
 Account.belongsTo(AccountType, { foreignKey: { name: "accountType", allowNull: false } });
 User.belongsTo(Account, { foreignKey: { name: "accountId", allowNull: false } });
@@ -48,6 +50,7 @@ Cost.belongsTo(Car, { foreignKey: { allowNull: false } });
 Fuel.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(FineCategory, { foreignKey: { allowNull: false } });
+PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false } });
 
 sequelize.sync({ force: false }).then(() => {
   console.log(`Database & tables created!`);
@@ -70,5 +73,6 @@ module.exports = {
   Cost,
   Fuel,
   Fine,
-  FineCategory
+  FineCategory,
+  PeriodicCost
 };
