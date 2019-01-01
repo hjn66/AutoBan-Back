@@ -1,5 +1,6 @@
 const Account = require("../startup/sequelize").Account;
 const bcrypt = require("bcryptjs");
+const Utils = require("../middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
@@ -25,11 +26,12 @@ module.exports.addAccount = async function(mobileNumber, password, accountType) 
   return await Account.create({ mobileNumber: mobileNumber, password: password, accountType: accountType });
 };
 
-module.exports.getAccount = async function(username) {
-  if (!username) {
+module.exports.getAccount = async function(mobileNumber) {
+  if (!mobileNumber) {
     throw new Error("UserName required");
   }
-  account = await Account.findOne({ where: { mobileNumber: username } });
+  mobileNumber = await Utils.internationalMobile(mobileNumber);
+  account = await Account.findOne({ where: { mobileNumber: mobileNumber } });
   if (!account) {
     throw new Error("Account not found");
   }
