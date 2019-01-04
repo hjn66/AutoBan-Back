@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const AccountModel = require("../models/account");
-const AccountTypeModel = require("../models/accountType");
 const UserModel = require("../models/user");
 const SMSTokenModel = require("../models/smsToken");
 const CarModelModel = require("../models/carModel");
@@ -12,6 +11,9 @@ const FuelModel = require("../models/fuel");
 const FineModel = require("../models/fine");
 const FineCategoryModel = require("../models/fineCategory");
 const PeriodicCostModel = require("../models/periodicCost");
+const PartModel = require("../models/part");
+const PartCategoryModel = require("../models/partCategory");
+
 const config = require("config");
 
 const sequelize = new Sequelize(config.get("db_database"), config.get("db_user"), config.get("db_password"), {
@@ -27,7 +29,6 @@ const sequelize = new Sequelize(config.get("db_database"), config.get("db_user")
 });
 
 const Account = AccountModel(sequelize, Sequelize);
-const AccountType = AccountTypeModel(sequelize, Sequelize);
 const User = UserModel(sequelize, Sequelize);
 const SMSToken = SMSTokenModel(sequelize, Sequelize);
 const CarModel = CarModelModel(sequelize, Sequelize);
@@ -39,8 +40,9 @@ const Fuel = FuelModel(sequelize, Sequelize);
 const FineCategory = FineCategoryModel(sequelize, Sequelize);
 const Fine = FineModel(sequelize, Sequelize);
 const PeriodicCost = PeriodicCostModel(sequelize, Sequelize);
+const Part = PartModel(sequelize, Sequelize);
+const PartCategory = PartCategoryModel(sequelize, Sequelize);
 
-Account.belongsTo(AccountType, { foreignKey: { name: "accountType", allowNull: false } });
 User.belongsTo(Account, { foreignKey: { name: "accountId", allowNull: false } });
 CarBrand.hasMany(CarModel, { as: "models" });
 User.belongsToMany(CarModel, { through: Car, foreignKey: { name: "userId", allowNull: false } });
@@ -51,11 +53,11 @@ Fuel.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(FineCategory, { foreignKey: { allowNull: false } });
 PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false } });
+Part.belongsTo(PartCategory, { foreignKey: { name: "categoryId", allowNull: false } });
 
 sequelize.sync({ force: false }).then(() => {
   console.log(`Database & tables created!`);
   // require("./fineCategoryInit")(FineCategory);
-  // AccountType.create({ type: "User" });
   // Color.create({ englishName: "green", persianName: "سبز", code: "00FF00" });
   // Color.create({ englishName: "red", persianName: "قرمز", code: "FF0000" });
   // Color.create({ englishName: "blue", persianName: "آبی", code: "0000FF" });
@@ -74,5 +76,7 @@ module.exports = {
   Fuel,
   Fine,
   FineCategory,
-  PeriodicCost
+  PeriodicCost,
+  Part,
+  PartCategory
 };

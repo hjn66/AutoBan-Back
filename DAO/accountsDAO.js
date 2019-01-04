@@ -23,7 +23,7 @@ module.exports.addAccount = async function(mobileNumber, password, accountType) 
   }
   salt = bcrypt.genSaltSync(10);
   password = bcrypt.hashSync(password, salt);
-  return await Account.create({ mobileNumber: mobileNumber, password: password, accountType: accountType });
+  return await Account.create({ mobileNumber: mobileNumber, password: password, type: accountType });
 };
 
 module.exports.getAccount = async function(mobileNumber) {
