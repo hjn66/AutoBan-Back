@@ -1,14 +1,28 @@
+@font-face {
+  font-family: "BYekan";
+  src: url("../font/BYekan.eot") format("eot"), url("../font/BYekan.woff") format("woff"),
+    url("../font/BYekan.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+body,
+input {
+  font-family: "BYekan", Arial, Helvetica, sans-serif;
+}
 body {
-  font-family: tahoma, Arial, Helvetica, sans-serif;
   font-size: 1vw;
+  direction: rtl;
   float: right;
   width: 100%;
 }
 .container {
   padding: 16px;
-  /* max-width: 400px; */
   margin: 8% auto;
   width: 40%;
+}
+.modal .container {
+  /* padding: 16px; */
+  margin: 0 auto;
 }
 .list {
   margin: auto;
@@ -16,48 +30,47 @@ body {
   width: 90%;
   text-align: right;
   border: 1px solid #ccc;
+  float: right;
 }
 input[type="checkbox"] {
   float: right;
   margin: 5px 0 0 0;
   width: auto;
 }
-.option {
-  padding: 5px;
-}
 label {
   padding-right: 10px;
 }
-@media screen and (-webkit-device-pixel-ratio: 3) {
-  .container {
-    width: 90%;
-    margin: 20% auto;
-  }
-  body,
-  input,
-  button {
-    font-size: 4vw;
-  }
-  input[type="checkbox"] {
-    /* -webkit-transform: scale(3, 3); */
-    transform: scale(3, 3);
-    margin: 30px 0 0 0;
-  }
-  label {
-    padding-right: 30px;
-  }
-  .option {
-    padding-right: 30px;
-  }
+.modal div.field {
+  width: 100%;
+  float: right;
+  padding: 5px 0;
+}
+.modal button {
+  width: 48%;
+}
+.modal label {
+  width: 30%;
+  display: block;
+  padding: 0;
+  box-sizing: border-box;
+  float: right;
+  margin: 13px 0;
+}
+.modal input[type="text"] {
+  width: 70%;
+  box-sizing: border-box;
+  float: right;
+  display: block;
 }
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 12px 20px;
+  padding: 5px 5px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  font-size: 1vw;
 }
 
 button {
@@ -68,6 +81,8 @@ button {
   border: none;
   cursor: pointer;
   width: 100%;
+  direction: rtl;
+  font-family: "BYekan";
 }
 
 button:hover {
@@ -75,14 +90,13 @@ button:hover {
 }
 
 .cancelbtn {
-  width: auto;
-  padding: 10px 18px;
   background-color: #f44336;
 }
 
 .imgcontainer {
   text-align: center;
-  margin: 24px 0 12px 0;
+  margin: 10px 0 12px 0;
+  position: relative;
 }
 
 img.avatar {
@@ -103,5 +117,131 @@ span.psw {
   }
   .cancelbtn {
     width: 100%;
+  }
+}
+
+ul {
+  list-style: none;
+  float: right;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.properties li {
+  width: 100%;
+  float: right;
+  padding: 5px;
+  box-sizing: border-box;
+  border-top: 1px solid #ddd;
+}
+
+.properties li .key {
+  width: 30%;
+  float: right;
+  display: block;
+}
+
+.properties li .value {
+  width: 70%;
+  float: right;
+  display: block;
+}
+
+button.accordion {
+  margin: 0;
+  padding: 5px;
+  background-color: #eeeeee;
+  color: #000;
+  margin: 3px 0;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5px auto; /* 15% from the top and centered */
+  border: 1px solid #888;
+  width: 90%; /* Could be more or less, depending on screen size */
+  position: relative;
+}
+
+/* The Close Button */
+.close {
+  /* Position it in the top right corner outside of the modal */
+  position: absolute;
+  right: 10px;
+  top: 0;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+/* Close button on hover */
+.close:hover,
+.close:focus {
+  color: red;
+  cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s;
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform: scale(0);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes animatezoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media screen and (-webkit-device-pixel-ratio: 3) {
+  .container {
+    width: 90%;
+    margin: 20% auto;
+  }
+  body,
+  input,
+  button,
+  input[type="text"] {
+    font-size: 4vw;
+  }
+  .close {
+    font-size: 6vw;
+  }
+  input[type="checkbox"] {
+    /* -webkit-transform: scale(3, 3); */
+    transform: scale(3, 3);
+    margin: 30px 0 0 0;
+  }
+  label {
+    padding-right: 30px;
   }
 }

@@ -9,6 +9,7 @@ const accounts = require("../routes/accounts");
 const users = require("../routes/users");
 const cars = require("../routes/cars");
 const costs = require("../routes/costs");
+const repairs = require("../routes/repairs");
 
 module.exports = async function(app) {
   // CORS Middleware
@@ -31,4 +32,5 @@ module.exports = async function(app) {
   app.use("/users", users);
   app.use("/cars", cars);
   app.use("/costs", costs);
+  app.use("/repairs", repairs);
 };

@@ -4,5 +4,56 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body onload="getParts()">
-  <div class="container"><div class="list" id="parts"></div></div>
+    <div class="container">
+        <button onclick="document.getElementById('addPartModal').style.display='block'" style="width:90%;">اقزودن قطعه جدید</button>
+    <div class="list" id="parts"></div>
+  </div>
+
+  <div id="addPartModal" class="modal">
+    <form class="modal-content animate">
+      <div class="container">
+        <input type="hidden" id="categoryId"/>
+        <div class="field">
+          <label for="name"><b>نام قطعه</b></label> <input type="text" placeholder="نام قطعه" name="name" required />
+        </div>
+        <div class="field">
+          <label for="type"><b>نوع قطعه</b></label> <input type="text" placeholder="نوع قطعه" name="type" />
+        </div>
+        <div class="field">
+          <label for="country"><b>کشور سازنده</b></label> <input type="text" placeholder="کشور سازنده" name="country" />
+        </div>
+        <div class="field">
+          <label for="manufacturer"><b>شرکت سازنده</b></label>
+          <input type="text" placeholder="مثال: لنت پارس" name="manufacturer" />
+        </div>
+        <div class="field">
+          <label for="lifetimeKM"><b>طول عمر (کیلومتر)</b></label>
+          <input type="text" placeholder="مثال: 6000" name="lifetimeKM" />
+        </div>
+        <div class="field">
+          <label for="lifetimeMonths"><b>طول عمر (ماه)</b></label>
+          <input type="text" placeholder="مثال: 24 ماه" name="lifetimeMonths" />
+        </div>
+        <div class="field">
+            <label for="SuitableFor"><b>مناسب برای</b></label>
+            <input type="text" placeholder="مثال: سمند، پراید" name="SuitableFor" />
+          </div>
+        <button type="button" onclick="addPartToDB()">اضافه</button>
+        <button type="button" onclick="document.getElementById('addPartModal').style.display='none'" class="cancelbtn">
+          انصراف
+        </button>
+      </div>
+  </div>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("addPartModal");
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
 </body>
