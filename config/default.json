@@ -1,5 +1,6 @@
 {
   "JWTsecret": "zF7VThsHuV4Akxwo1536756453106",
+  "db_sync_force": false,
   "sms_token_expiration_min": 25,
   "sms_token_length": 6,
   "jwt_sms_token_exp_sec": 6000,

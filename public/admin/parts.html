@@ -1,11 +1,14 @@
 <head>
+    <title>لیست قطعات - اتوبان</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="action.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body onload="getParts()">
-    <div class="container">
-        <button onclick="document.getElementById('addPartModal').style.display='block'" style="width:90%;">اقزودن قطعه جدید</button>
+  <div class="container">
+    <h1 >لیست قطعات</h1>
+      <button onclick="document.getElementById('addPartModal').style.display='block'" style="width:45%;">اقزودن قطعه جدید</button>
+      <button onclick="openCategoriesPage()" style="width:54%;">بازگشت به لیست دسته بندی‌ها</button>
     <div class="list" id="parts"></div>
   </div>
 

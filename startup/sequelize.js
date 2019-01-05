@@ -1,24 +1,24 @@
-const Sequelize = require("sequelize");
-const AccountModel = require("../models/account");
-const UserModel = require("../models/user");
-const SMSTokenModel = require("../models/smsToken");
-const CarModelModel = require("../models/carModel");
-const CarBrandModel = require("../models/carBrand");
-const UserCarModel = require("../models/car");
-const ColorModel = require("../models/color");
-const CostModel = require("../models/cost");
-const FuelModel = require("../models/fuel");
-const FineModel = require("../models/fine");
-const FineCategoryModel = require("../models/fineCategory");
-const PeriodicCostModel = require("../models/periodicCost");
-const PartModel = require("../models/part");
-const PartCategoryModel = require("../models/partCategory");
+const Sequelize = require('sequelize');
+const AccountModel = require('../models/account');
+const UserModel = require('../models/user');
+const SMSTokenModel = require('../models/smsToken');
+const CarModelModel = require('../models/carModel');
+const CarBrandModel = require('../models/carBrand');
+const UserCarModel = require('../models/car');
+const ColorModel = require('../models/color');
+const CostModel = require('../models/cost');
+const FuelModel = require('../models/fuel');
+const FineModel = require('../models/fine');
+const FineCategoryModel = require('../models/fineCategory');
+const PeriodicCostModel = require('../models/periodicCost');
+const PartModel = require('../models/part');
+const PartCategoryModel = require('../models/partCategory');
 
-const config = require("config");
+const config = require('config');
 
-const sequelize = new Sequelize(config.get("db_database"), config.get("db_user"), config.get("db_password"), {
-  dialect: "mysql",
-  host: config.get("db_host"),
+const sequelize = new Sequelize(config.get('db_database'), config.get('db_user'), config.get('db_password'), {
+  dialect: 'mysql',
+  host: config.get('db_host'),
   pool: {
     max: 10,
     min: 0,
@@ -43,25 +43,30 @@ const PeriodicCost = PeriodicCostModel(sequelize, Sequelize);
 const Part = PartModel(sequelize, Sequelize);
 const PartCategory = PartCategoryModel(sequelize, Sequelize);
 
-User.belongsTo(Account, { foreignKey: { name: "accountId", allowNull: false } });
-CarBrand.hasMany(CarModel, { as: "models" });
-User.belongsToMany(CarModel, { through: Car, foreignKey: { name: "userId", allowNull: false } });
-CarModel.belongsToMany(User, { through: Car, foreignKey: { name: "modelId", allowNull: false } });
+User.belongsTo(Account, { foreignKey: { name: 'accountId', allowNull: false } });
+CarBrand.hasMany(CarModel, { as: 'models' });
+User.belongsToMany(CarModel, { through: Car, foreignKey: { name: 'userId', allowNull: false } });
+CarModel.belongsToMany(User, { through: Car, foreignKey: { name: 'modelId', allowNull: false } });
 Car.belongsTo(Color, { foreignKey: { allowNull: false } });
 Cost.belongsTo(Car, { foreignKey: { allowNull: false } });
 Fuel.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(FineCategory, { foreignKey: { allowNull: false } });
 PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false } });
-Part.belongsTo(PartCategory, { foreignKey: { name: "categoryId", allowNull: false } });
+Part.belongsTo(PartCategory, { foreignKey: { name: 'categoryId', allowNull: false } });
 
-sequelize.sync({ force: false }).then(() => {
+let syncForce = config.get('db_sync_force');
+
+sequelize.sync({ force: syncForce }).then(() => {
   console.log(`Database & tables created!`);
-  // require("./fineCategoryInit")(FineCategory);
-  // Color.create({ englishName: "green", persianName: "سبز", code: "00FF00" });
-  // Color.create({ englishName: "red", persianName: "قرمز", code: "FF0000" });
-  // Color.create({ englishName: "blue", persianName: "آبی", code: "0000FF" });
-  // require("./carModelInit")(CarModel, CarBrand);
+  if (syncForce) {
+    console.log('Databse Sync Forced');
+    require('./fineCategoryInit')(FineCategory);
+    Color.create({ englishName: 'green', persianName: 'سبز', code: '00FF00' });
+    Color.create({ englishName: 'red', persianName: 'قرمز', code: 'FF0000' });
+    Color.create({ englishName: 'blue', persianName: 'آبی', code: '0000FF' });
+    require('./carModelInit')(CarModel, CarBrand);
+  }
 });
 
 module.exports = {

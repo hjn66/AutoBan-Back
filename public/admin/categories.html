@@ -1,8 +1,40 @@
 <head>
+  <title>لیست دسته‌بندی قطعات - اتوبان</title>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="action.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body onload="getCategories()">
-  <div class="container"><div class="list" id="categories"></div></div>
+  <div class="container">
+    <h1>لیست دسته‌بندی قطعات</h1>
+    <button onclick="document.getElementById('addCategoryModal').style.display='block'" style="width:50%;">اقزودن دسته‌بندی جدید</button>
+
+    <div class="list" id="categories"></div>
+  </div>
+  <div id="addCategoryModal" class="modal">
+    <form class="modal-content animate">
+      <div class="container">
+        <input type="hidden" id="categoryId"/>
+        <div class="field">
+          <label for="name"><b>نام دسته‌بندی</b></label> <input type="text" placeholder="نام دسته‌بندی" name="name" required />
+        </div>
+        <button type="button" onclick="addCategoryToDB()">اضافه</button>
+        <button type="button" onclick="document.getElementById('addCategoryModal').style.display='none'" class="cancelbtn">
+          انصراف
+        </button>
+      </div>
+  </div>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("addCategoryModal");
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
 </body>
