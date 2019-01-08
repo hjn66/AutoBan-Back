@@ -239,7 +239,8 @@ button.accordion {
   body,
   input,
   button,
-  input[type='text'] {
+  input[type='text'],
+  input[type='password'] {
     font-size: 4vw;
   }
   .close {
