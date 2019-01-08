@@ -18,6 +18,7 @@ const GarageModel = require('../models/garage');
 const ReceiptModel = require('../models/receipt');
 const ReceiptPartModel = require('../models/receiptPart');
 const CarServiceModel = require('../models/carService');
+const ReceiptServiceModel = require('../models/receiptService');
 
 const config = require('config');
 
@@ -55,8 +56,9 @@ const PartCategory = PartCategoryModel(sequelize, Sequelize);
 const Repair = RepairModel(sequelize, Sequelize);
 const Garage = GarageModel(sequelize, Sequelize);
 const Receipt = ReceiptModel(sequelize, Sequelize);
-const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
 const CarService = CarServiceModel(sequelize, Sequelize);
+const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
+const ReceiptService = ReceiptServiceModel(sequelize, Sequelize);
 
 User.belongsTo(Account, {
   foreignKey: { name: 'accountId', allowNull: false }
@@ -96,6 +98,12 @@ ReceiptPart.belongsTo(Receipt, {
 ReceiptPart.belongsTo(Part, {
   foreignKey: { name: 'partId', allowNull: false }
 });
+ReceiptService.belongsTo(Receipt, {
+  foreignKey: { name: 'receiptId', allowNull: false }
+});
+ReceiptService.belongsTo(CarService, {
+  foreignKey: { name: 'serviceId', allowNull: false }
+});
 
 let syncForce = config.get('db_sync_force');
 
@@ -130,5 +138,6 @@ module.exports = {
   Garage,
   Receipt,
   ReceiptPart,
-  CarService
+  CarService,
+  ReceiptService
 };
