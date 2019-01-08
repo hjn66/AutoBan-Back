@@ -23,6 +23,7 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: true,
       defaultValue: null,
       validate: { min: -180, max: 180 }
-    }
+    },
+    image: { type: Sequelize.STRING, allowNull: true }
   });
 };
