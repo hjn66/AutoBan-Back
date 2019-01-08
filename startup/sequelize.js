@@ -13,20 +13,26 @@ const FineCategoryModel = require('../models/fineCategory');
 const PeriodicCostModel = require('../models/periodicCost');
 const PartModel = require('../models/part');
 const PartCategoryModel = require('../models/partCategory');
+const RepairModel = require('../models/repair');
 
 const config = require('config');
 
-const sequelize = new Sequelize(config.get('db_database'), config.get('db_user'), config.get('db_password'), {
-  dialect: 'mysql',
-  host: config.get('db_host'),
-  pool: {
-    max: 10,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
-  operatorsAliases: false
-});
+const sequelize = new Sequelize(
+  config.get('db_database'),
+  config.get('db_user'),
+  config.get('db_password'),
+  {
+    dialect: 'mysql',
+    host: config.get('db_host'),
+    pool: {
+      max: 10,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    operatorsAliases: false
+  }
+);
 
 const Account = AccountModel(sequelize, Sequelize);
 const User = UserModel(sequelize, Sequelize);
@@ -42,18 +48,35 @@ const Fine = FineModel(sequelize, Sequelize);
 const PeriodicCost = PeriodicCostModel(sequelize, Sequelize);
 const Part = PartModel(sequelize, Sequelize);
 const PartCategory = PartCategoryModel(sequelize, Sequelize);
+const Repair = RepairModel(sequelize, Sequelize);
 
-User.belongsTo(Account, { foreignKey: { name: 'accountId', allowNull: false } });
+User.belongsTo(Account, {
+  foreignKey: { name: 'accountId', allowNull: false }
+});
 CarBrand.hasMany(CarModel, { as: 'models' });
-User.belongsToMany(CarModel, { through: Car, foreignKey: { name: 'userId', allowNull: false } });
-CarModel.belongsToMany(User, { through: Car, foreignKey: { name: 'modelId', allowNull: false } });
+User.belongsToMany(CarModel, {
+  through: Car,
+  foreignKey: { name: 'userId', allowNull: false }
+});
+CarModel.belongsToMany(User, {
+  through: Car,
+  foreignKey: { name: 'modelId', allowNull: false }
+});
 Car.belongsTo(Color, { foreignKey: { allowNull: false } });
 Cost.belongsTo(Car, { foreignKey: { allowNull: false } });
 Fuel.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(Cost, { foreignKey: { allowNull: false } });
 Fine.belongsTo(FineCategory, { foreignKey: { allowNull: false } });
 PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false } });
-Part.belongsTo(PartCategory, { foreignKey: { name: 'categoryId', allowNull: false } });
+Part.belongsTo(PartCategory, {
+  foreignKey: { name: 'categoryId', allowNull: false }
+});
+Repair.belongsTo(Account, {
+  foreignKey: { name: 'creatorId', allowNull: false }
+});
+Repair.belongsTo(Car, {
+  foreignKey: { name: 'carId', allowNull: false }
+});
 
 let syncForce = config.get('db_sync_force');
 
