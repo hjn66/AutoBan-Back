@@ -17,6 +17,7 @@ const RepairModel = require('../models/repair');
 const GarageModel = require('../models/garage');
 const ReceiptModel = require('../models/receipt');
 const ReceiptPartModel = require('../models/receiptPart');
+const CarServiceModel = require('../models/carService');
 
 const config = require('config');
 
@@ -55,6 +56,7 @@ const Repair = RepairModel(sequelize, Sequelize);
 const Garage = GarageModel(sequelize, Sequelize);
 const Receipt = ReceiptModel(sequelize, Sequelize);
 const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
+const CarService = CarServiceModel(sequelize, Sequelize);
 
 User.belongsTo(Account, {
   foreignKey: { name: 'accountId', allowNull: false }
@@ -127,5 +129,6 @@ module.exports = {
   Repair,
   Garage,
   Receipt,
-  ReceiptPart
+  ReceiptPart,
+  CarService
 };
