@@ -44,7 +44,7 @@ router.post(
     if (req.file) {
       profilePic = config.get("car_images_dir") + "/" + req.file.filename;
     }
-    account = await AccountDAO.addAccount(mobileNumber, password, "User");
+    account = await AccountDAO.addAccount(mobileNumber, password, config.get("user_type"));
     user = await UserDAO.addUser(firstName, lastName, email, profilePic, account.id);
     account["password"] = "***";
     const token = jwt.sign({ type: "AUTH", account: account }, config.get("JWTsecret"));
