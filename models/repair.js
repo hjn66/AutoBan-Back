@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define('repair', {
+  return sequelize.define("repair", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
     date: {
       type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: Sequelize.NOW
+      defaultValue: sequelize.fn("NOW")
     },
     totalCost: { type: Sequelize.INTEGER, allowNull: false, defaultValue: 0 },
     garageName: {
