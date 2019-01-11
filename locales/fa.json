@@ -29,5 +29,7 @@
   "Verification code sent": "کد ورود به برنامه ارسال شد",
   "PeriodicCost information added successfuly": "اطلاعات پرداخت دوره‌ای با موفقیت اضافه شد",
   "Part category added successfuly": "دسته بندی قطعه با موفقیت اضافه شد",
-  "Part added successfuly": "قطعه با موفقیت اضافه شد"
+  "Part added successfuly": "قطعه با موفقیت اضافه شد",
+  "Repair added successfuly": "اطلاعات تعمیر اتومبیل با موفقیت اضافه شد",
+  "You can add repair to car if car is yours or you are repairman": "شما تنها زمانی می‌توانید تعمیرات را ثبت کنید که یا صاحب ماشین باشید یا تعمیرکار باشید"
 }
