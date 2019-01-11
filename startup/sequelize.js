@@ -1,43 +1,38 @@
-const Sequelize = require('sequelize');
-const AccountModel = require('../models/account');
-const UserModel = require('../models/user');
-const SMSTokenModel = require('../models/smsToken');
-const CarModelModel = require('../models/carModel');
-const CarBrandModel = require('../models/carBrand');
-const UserCarModel = require('../models/car');
-const ColorModel = require('../models/color');
-const CostModel = require('../models/cost');
-const FuelModel = require('../models/fuel');
-const FineModel = require('../models/fine');
-const FineCategoryModel = require('../models/fineCategory');
-const PeriodicCostModel = require('../models/periodicCost');
-const PartModel = require('../models/part');
-const PartCategoryModel = require('../models/partCategory');
-const RepairModel = require('../models/repair');
-const GarageModel = require('../models/garage');
-const ReceiptModel = require('../models/receipt');
-const ReceiptPartModel = require('../models/receiptPart');
-const CarServiceModel = require('../models/carService');
-const ReceiptServiceModel = require('../models/receiptService');
+const Sequelize = require("sequelize");
+const AccountModel = require("../models/account");
+const UserModel = require("../models/user");
+const SMSTokenModel = require("../models/smsToken");
+const CarModelModel = require("../models/carModel");
+const CarBrandModel = require("../models/carBrand");
+const UserCarModel = require("../models/car");
+const ColorModel = require("../models/color");
+const CostModel = require("../models/cost");
+const FuelModel = require("../models/fuel");
+const FineModel = require("../models/fine");
+const FineCategoryModel = require("../models/fineCategory");
+const PeriodicCostModel = require("../models/periodicCost");
+const PartModel = require("../models/part");
+const PartCategoryModel = require("../models/partCategory");
+const RepairModel = require("../models/repair");
+const GarageModel = require("../models/garage");
+const ReceiptModel = require("../models/receipt");
+const ReceiptPartModel = require("../models/receiptPart");
+const CarServiceModel = require("../models/carService");
+const ReceiptServiceModel = require("../models/receiptService");
 
-const config = require('config');
+const config = require("config");
 
-const sequelize = new Sequelize(
-  config.get('db_database'),
-  config.get('db_user'),
-  config.get('db_password'),
-  {
-    dialect: 'mysql',
-    host: config.get('db_host'),
-    pool: {
-      max: 10,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    operatorsAliases: false
-  }
-);
+const sequelize = new Sequelize(config.get("db_database"), config.get("db_user"), config.get("db_password"), {
+  dialect: "mysql",
+  host: config.get("db_host"),
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+  operatorsAliases: false
+});
 
 const Account = AccountModel(sequelize, Sequelize);
 const User = UserModel(sequelize, Sequelize);
@@ -61,61 +56,65 @@ const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
 const ReceiptService = ReceiptServiceModel(sequelize, Sequelize);
 
 User.belongsTo(Account, {
-  foreignKey: { name: 'accountId', allowNull: false }
+  foreignKey: { name: "accountId", allowNull: false },
+  onDelete: "cascade"
 });
-CarBrand.hasMany(CarModel, { as: 'models' });
+CarBrand.hasMany(CarModel, { as: "models" });
 User.belongsToMany(CarModel, {
   through: Car,
-  foreignKey: { name: 'userId', allowNull: false }
+  foreignKey: { name: "userId", allowNull: false }
 });
 CarModel.belongsToMany(User, {
   through: Car,
-  foreignKey: { name: 'modelId', allowNull: false }
+  foreignKey: { name: "modelId", allowNull: false }
 });
 Car.belongsTo(Color, { foreignKey: { allowNull: false } });
 Cost.belongsTo(Car, { foreignKey: { allowNull: false } });
-Fuel.belongsTo(Cost, { foreignKey: { allowNull: false } });
-Fine.belongsTo(Cost, { foreignKey: { allowNull: false } });
+Fuel.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
+Fine.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
 Fine.belongsTo(FineCategory, { foreignKey: { allowNull: false } });
-PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false } });
+PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
 Part.belongsTo(PartCategory, {
-  foreignKey: { name: 'categoryId', allowNull: false }
+  foreignKey: { name: "categoryId", allowNull: false }
 });
 Repair.belongsTo(Account, {
-  foreignKey: { name: 'creatorId', allowNull: false }
+  foreignKey: { name: "creatorId", allowNull: false }
 });
 Repair.belongsTo(Car, {
-  foreignKey: { name: 'carId', allowNull: false }
+  foreignKey: { name: "carId", allowNull: false }
 });
-Repair.belongsTo(Garage, { foreignKey: { name: 'garageId' } });
-Garage.belongsTo(Account, { foreignKey: { name: 'ownerId' } });
+Repair.belongsTo(Garage, { foreignKey: { name: "garageId" } });
+Garage.belongsTo(Account, { foreignKey: { name: "ownerId" } });
 Receipt.belongsTo(Repair, {
-  foreignKey: { name: 'repairId', allowNull: false }
+  foreignKey: { name: "repairId", allowNull: false },
+  onDelete: "cascade"
 });
 ReceiptPart.belongsTo(Receipt, {
-  foreignKey: { name: 'receiptId', allowNull: false }
+  foreignKey: { name: "receiptId", allowNull: false },
+  onDelete: "cascade"
 });
 ReceiptPart.belongsTo(Part, {
-  foreignKey: { name: 'partId', allowNull: false }
+  foreignKey: { name: "partId", allowNull: false }
 });
 ReceiptService.belongsTo(Receipt, {
-  foreignKey: { name: 'receiptId', allowNull: false }
+  foreignKey: { name: "receiptId", allowNull: false },
+  onDelete: "cascade"
 });
 ReceiptService.belongsTo(CarService, {
-  foreignKey: { name: 'serviceId', allowNull: false }
+  foreignKey: { name: "serviceId", allowNull: false }
 });
 
-let syncForce = config.get('db_sync_force');
+let syncForce = config.get("db_sync_force");
 
 sequelize.sync({ force: syncForce }).then(() => {
   console.log(`Database & tables created!`);
   if (syncForce) {
-    console.log('Databse Sync Forced');
-    require('./fineCategoryInit')(FineCategory);
-    Color.create({ englishName: 'green', persianName: 'سبز', code: '00FF00' });
-    Color.create({ englishName: 'red', persianName: 'قرمز', code: 'FF0000' });
-    Color.create({ englishName: 'blue', persianName: 'آبی', code: '0000FF' });
-    require('./carModelInit')(CarModel, CarBrand);
+    console.log("Databse Sync Forced");
+    require("./fineCategoryInit")(FineCategory);
+    Color.create({ englishName: "green", persianName: "سبز", code: "00FF00" });
+    Color.create({ englishName: "red", persianName: "قرمز", code: "FF0000" });
+    Color.create({ englishName: "blue", persianName: "آبی", code: "0000FF" });
+    require("./carModelInit")(CarModel, CarBrand);
   }
 });
 
