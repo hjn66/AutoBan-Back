@@ -110,7 +110,6 @@ router.post(
 router.post("/delete-receipt", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const receiptId = req.body.receiptId;
   let receipt = await ReceiptDAO.getReceiptById(receiptId);
-  console.log(receipt);
 
   let repair = await RepairDAO.getRepairById(receipt.repairId);
   if (req.user.id != repair.creatorId) {
@@ -120,5 +119,27 @@ router.post("/delete-receipt", [passport.authenticate("jwt", { session: false })
   await ReceiptDAO.updateRepairCost(repair);
   return res.json({ success: true, message: __("Receipt deleted successfuly") });
 });
+
+router.post(
+  "/update-receipt-items",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const services = req.body.services;
+    const products = req.body.products;
+    const receiptId = req.body.receiptId;
+
+    let receipt = await ReceiptDAO.getReceiptById(receiptId);
+    let repair = await RepairDAO.getRepairById(receipt.repairId);
+    if (req.user.id != repair.creatorId) {
+      throw new Error("You can update receipt Items of repair that you added");
+    }
+
+    await ReceiptDAO.removeReceiptItems(receipt.id);
+    await ReceiptDAO.addReceiptItems(receipt.id, services, products);
+    await ReceiptDAO.updateReceiptCost(receipt);
+    await ReceiptDAO.updateRepairCost(repair);
+    return res.json({ success: true, message: __("Receipt Items updated successfuly"), receipt });
+  }
+);
 
 module.exports = router;
