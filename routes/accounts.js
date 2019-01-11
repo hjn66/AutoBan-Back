@@ -6,7 +6,7 @@ const config = require("config");
 
 const i18n = require("../middlewares/i18n");
 const sms = require("../middlewares/sms");
-const AccountDAO = require("../DAO/accountsDAO");
+const AccountDAO = require("../DAO/accountDAO");
 const SMSTokenDAO = require("../DAO/smsTokenDAO");
 
 // get mobileNumber in body and return token

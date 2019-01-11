@@ -10,9 +10,9 @@ const multer = require("multer");
 const randToken = require("rand-token");
 
 const i18n = require("../middlewares/i18n");
-const CarDAO = require("../DAO/carsDAO");
-const UserDAO = require("../DAO/usersDAO");
-const ColorDAO = require("../DAO/colorsDAO");
+const CarDAO = require("../DAO/carDAO");
+const UserDAO = require("../DAO/userDAO");
+const ColorDAO = require("../DAO/colorDAO");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {

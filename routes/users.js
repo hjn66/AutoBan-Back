@@ -11,8 +11,8 @@ const multer = require("multer");
 const randToken = require("rand-token");
 
 const i18n = require("../middlewares/i18n");
-const AccountDAO = require("../DAO/accountsDAO");
-const UserDAO = require("../DAO/usersDAO");
+const AccountDAO = require("../DAO/accountDAO");
+const UserDAO = require("../DAO/userDAO");
 const SMSTokenDAO = require("../DAO/smsTokenDAO");
 
 var storage = multer.diskStorage({
