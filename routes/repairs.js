@@ -93,8 +93,6 @@ router.post(
     const shopName = req.body.shopName;
     const repairId = req.body.repairId;
 
-    console.log(req.body);
-
     let repair = await RepairDAO.getRepairById(repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can add receipt to repair that you added");
