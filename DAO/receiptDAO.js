@@ -52,3 +52,8 @@ module.exports.updateReceiptCost = async function(receipt) {
   receipt.totalCost = result[0].dataValues.totalCosts;
   return await receipt.save();
 };
+
+module.exports.removeReceiptItems = async function(receiptId) {
+  await ReceiptPart.destroy({ where: { receiptId } });
+  await ReceiptService.destroy({ where: { receiptId } });
+};
