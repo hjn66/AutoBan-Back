@@ -14,6 +14,7 @@
   "car_logo_dir": "public/assets/images/carLogos/",
   "car_images_dir": "uploads/carImages",
   "user_images_dir": "uploads/userImages",
+  "receipt_images_dir": "uploads/receiptImages",
   "sms_user": "300550",
   "sms_password": "VrH@9588",
   "sms_wsdl_url": "http://www.epayamak.net/WebSrv/EPWebservice.asmx?wsdl",
