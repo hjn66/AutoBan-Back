@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define('repair', {
+  return sequelize.define("garage", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
