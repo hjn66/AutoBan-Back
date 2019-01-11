@@ -1,4 +1,7 @@
 const Receipt = require("../startup/sequelize").Receipt;
+const ReceiptPart = require("../startup/sequelize").ReceiptPart;
+const ReceiptService = require("../startup/sequelize").ReceiptService;
+
 const bcrypt = require("bcryptjs");
 const Utils = require("../middlewares/utils");
 const Sequelize = require("sequelize");
@@ -27,4 +30,25 @@ module.exports.updateRepairCost = async function(repair) {
   });
   repair.totalCost = result[0].dataValues.totalCosts;
   return await repair.save();
+};
+
+module.exports.addReceiptItems = async function(receiptId, services, products) {
+  for (const index in services) {
+    services[index].receiptId = receiptId;
+    await ReceiptService.create(services[index]);
+  }
+  for (const index in products) {
+    products[index].receiptId = receiptId;
+    await ReceiptPart.create(products[index]);
+  }
+};
+
+module.exports.updateReceiptCost = async function(receipt) {
+  result = await ReceiptPart.findAll({
+    where: { receiptId: receipt.id },
+    attributes: [[Sequelize.fn("SUM", Sequelize.literal("cost * count")), "totalCosts"]]
+  });
+
+  receipt.totalCost = result[0].dataValues.totalCosts;
+  return await receipt.save();
 };
