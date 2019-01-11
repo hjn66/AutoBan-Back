@@ -104,6 +104,7 @@ router.post(
       receipImage = path.join(config.get("receipt_images_dir"), req.file.filename);
     }
     let receipt = await ReceiptDAO.addReceipt(title, date, totalCost, shopName, receipImage, repairId);
+    await ReceiptDAO.updateRepairCost(repair);
     return res.json({ success: true, message: __("Receipt added successfuly"), receipt });
   }
 );

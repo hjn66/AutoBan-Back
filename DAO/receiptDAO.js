@@ -19,3 +19,12 @@ module.exports.addReceipt = async function(title, date, totalCost, shopName, ima
 module.exports.removeReceipt = async function(receipt) {
   return await receipt.destroy();
 };
+
+module.exports.updateRepairCost = async function(repair) {
+  result = await Receipt.findAll({
+    where: { repairId: repair.id },
+    attributes: [[Sequelize.fn("SUM", Sequelize.col("totalCost")), "totalCosts"]]
+  });
+  repair.totalCost = result[0].dataValues.totalCosts;
+  return await repair.save();
+};
