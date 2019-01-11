@@ -4,14 +4,16 @@ const config = require("config");
 const errors = require("./middlewares/errors");
 const sms = require("./middlewares/sms");
 
+global.rootPath = __dirname;
+process.env.NODE_CONFIG_DIR = path.join(__dirname, "./config");
+
 var app = express();
 require("./startup/logging")();
 require("./startup/routes")(app);
 require("./startup/i18n");
+require("./startup/mkdir")();
 
 const port = config.get("port");
-
-process.env.NODE_CONFIG_DIR = path.join(__dirname, "./config");
 
 app.use(errors);
 
