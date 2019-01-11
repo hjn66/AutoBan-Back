@@ -6,7 +6,6 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const rootDir = path.join(__dirname, "../");
 const multer = require("multer");
 const randToken = require("rand-token");
 
@@ -42,7 +41,7 @@ router.post(
       throw new Error("firstName and lastName required");
     }
     if (req.file) {
-      profilePic = config.get("car_images_dir") + "/" + req.file.filename;
+      profilePic = path.join(config.get("user_images_dir"), req.file.filename);
     }
     account = await AccountDAO.addAccount(mobileNumber, password, config.get("user_type"));
     user = await UserDAO.addUser(firstName, lastName, email, profilePic, account.id);
@@ -63,8 +62,8 @@ router.post(
     user.lastName = req.body.lastName;
     user.email = req.body.email;
     if (req.file) {
-      fs.removeSync(rootDir + "/" + user.profileImage);
-      user.profileImage = config.get("car_images_dir") + "/" + req.file.filename;
+      fs.removeSync(path.join(rootPath, user.profileImage));
+      user.profileImage = path.join(config.get("user_images_dir"), req.file.filename);
     }
     user = await UserDAO.updateUser(user);
     return res.json({ success: true, message: __("User information updated successfuly") });
