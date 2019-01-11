@@ -37,5 +37,7 @@
   "Repair deleted successfuly": "اطلاعات تعمیرات با موفقیت حذف شد",
   "Receipt not found": "رسید مورد نظر یافت نشد",
   "You can add receipt to repair that you added": "شما می‌توانید به تعمیراتی که توسط شما ایجاد شده است، رسید اضافه کنید",
-  "Receipt added successfuly": "رسید تعمیرات با موفقیت اضافه شد"
+  "Receipt added successfuly": "رسید تعمیرات با موفقیت اضافه شد",
+  "Receipt deleted successfuly": "رسید تعمیرات با موفقیت حذف شد",
+  "You can remove receipt from repair that you added": "شما می‌توانید از تعمیراتی که توسط شما ایجاد شده است، رسید حذف کنید"
 }

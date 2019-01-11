@@ -107,4 +107,18 @@ router.post(
   }
 );
 
+router.post("/delete-receipt", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const receiptId = req.body.receiptId;
+  let receipt = await ReceiptDAO.getReceiptById(receiptId);
+  console.log(receipt);
+
+  let repair = await RepairDAO.getRepairById(receipt.repairId);
+  if (req.user.id != repair.creatorId) {
+    throw new Error("You can remove receipt from repair that you added");
+  }
+  await ReceiptDAO.removeReceipt(receipt);
+  await ReceiptDAO.updateRepairCost(repair);
+  return res.json({ success: true, message: __("Receipt deleted successfuly") });
+});
+
 module.exports = router;
