@@ -58,4 +58,14 @@ router.post("/add-repair", [passport.authenticate("jwt", { session: false }), i1
   return res.json({ success: true, message: __("Repair added successfuly"), repair });
 });
 
+router.post("/delete-repair", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const repairId = req.body.repairId;
+  let repair = await RepairDAO.getRepairById(repairId);
+  if (req.user.id != repair.creatorId) {
+    throw new Error("You can remove only repair that you added");
+  }
+  await RepairDAO.removeRepair(repair);
+  return res.json({ success: true, message: __("Repair deleted successfuly") });
+});
+
 module.exports = router;

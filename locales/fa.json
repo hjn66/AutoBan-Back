@@ -31,5 +31,8 @@
   "Part category added successfuly": "دسته بندی قطعه با موفقیت اضافه شد",
   "Part added successfuly": "قطعه با موفقیت اضافه شد",
   "Repair added successfuly": "اطلاعات تعمیر اتومبیل با موفقیت اضافه شد",
-  "You can add repair to car if car is yours or you are repairman": "شما تنها زمانی می‌توانید تعمیرات را ثبت کنید که یا صاحب ماشین باشید یا تعمیرکار باشید"
+  "You can add repair to car if car is yours or you are repairman": "شما تنها زمانی می‌توانید تعمیرات را ثبت کنید که یا صاحب ماشین باشید یا تعمیرکار باشید",
+  "Repair not found": "اطلاعات تعمیرات مورد نظر یافت نشد",
+  "You can remove only repair that you added": "شما می‌توانید اطلاعات تعمیراتی را حذف کنید که توسط شما ایجاد شده باشد",
+  "Repair deleted successfuly": "اطلاعات تعمیرات با موفقیت حذف شد"
 }
