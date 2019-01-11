@@ -4,6 +4,14 @@ const Utils = require("../middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
+module.exports.getRepairById = async function(id) {
+  var repair = await Repair.findByPk(id);
+  if (!garage) {
+    throw new Error("Repair not found");
+  }
+  return repair;
+};
+
 module.exports.addRepair = async function(title, date, totalCost, garageName, garageId, creatorId, carId) {
   return await Repair.create({ title, date, totalCost, garageName, garageId, creatorId, carId });
 };
