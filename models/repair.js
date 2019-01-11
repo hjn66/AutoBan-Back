@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
     date: {
       type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.fn("NOW")
+      defaultValue: Sequelize.NOW
     },
     totalCost: { type: Sequelize.INTEGER, allowNull: false, defaultValue: 0 },
     garageName: {
