@@ -51,6 +51,27 @@ function getCategories() {
   });
 }
 
+function getServices() {
+  checkLogin();
+  $('#services').empty();
+  $.ajax({
+    url: '../repairs/list-services',
+    dataType: 'json',
+    contentType: 'application/json;charset=utf-8',
+    type: 'GET',
+    beforeSend: function(xhr) {
+      /* Authorization header */
+      xhr.setRequestHeader('Authorization', localStorage['jwt-token']);
+    },
+    success: function(response) {
+      $.each(response.partCategories, function(index, category) {
+        addCategory('categories', category.id, category.persianName);
+        // alert(o);
+      });
+    }
+  });
+}
+
 function getParts() {
   checkLogin();
   $('#parts').empty();

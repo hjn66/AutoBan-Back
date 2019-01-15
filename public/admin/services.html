@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <title>لیست دسته‌بندی قطعات - اتوبان</title>
+  <title>لیست دسته‌بندی سرویس‌ها - اتوبان</title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="action.js"></script>
@@ -15,7 +15,7 @@
 </head>
 
 <body onload="getCategories()">
-  <button class="floated rounded" onclick="document.getElementById('addCategoryModal').style.display='block'">+</button>
+  <button class="floated rounded" onclick="document.getElementById('addServiceModal').style.display='block'">+</button>
   <div class="topnav" id="myTopnav">
     <a href="javascript:void(0);" class="icon" onclick="topnav()">
       <i class="fa fa-bars"></i>
@@ -28,16 +28,16 @@
 
     <div class="list" id="categories"></div>
   </div>
-  <div id="addCategoryModal" class="modal">
+  <div id="addServiceModal" class="modal">
     <form class="modal-content animate">
       <div class="container">
-        <input type="hidden" id="categoryId" />
+        <input type="hidden" id="serviceId" />
         <div class="field">
           <label for="name"><b>نام دسته‌بندی</b></label> <input type="text" placeholder="نام دسته‌بندی" name="name"
             required />
         </div>
-        <button type="button" onclick="addCategoryToDB()">اضافه</button>
-        <button type="button" onclick="document.getElementById('addCategoryModal').style.display='none'" class="cancelbtn">
+        <button type="button" onclick="addServiceToDB()">اضافه</button>
+        <button type="button" onclick="document.getElementById('addServiceModal').style.display='none'" class="cancelbtn">
           انصراف
         </button>
       </div>
@@ -45,7 +45,7 @@
 
   <script>
     // Get the modal
-    var modal = document.getElementById("addCategoryModal");
+    var modal = document.getElementById("addServiceModal");
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {

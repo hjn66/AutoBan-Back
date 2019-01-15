@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,27 +13,28 @@
   <script src="action.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body onload="getParts()">
   <button class="floated rounded" onclick="document.getElementById('addPartModal').style.display='block'">+</button>
   <a href="javascript:void(0);" class="back-list icon" onclick="openCategoriesPage()">
-      <i class="fa fa-angle-left"></i>
-    </a>
+    <i class="fa fa-angle-left"></i>
+  </a>
   <div class="topnav" id="myTopnav">
     <a href="javascript:void(0);" class="icon" onclick="topnav()">
       <i class="fa fa-bars"></i>
     </a>
     <a href="/admin/categories.html">دسته‌بندی قطعات</a>
-    <a href="#contact">دسته‌بندی خدمات</a>
+    <a href="/admin/services.html">دسته‌بندی سرویس‌ها</a>
   </div>
   <div class="container">
-    <h1 >لیست قطعات</h1>
+    <h1>لیست قطعات</h1>
     <div class="list" id="parts"></div>
   </div>
 
   <div id="addPartModal" class="modal">
     <form class="modal-content animate">
       <div class="container">
-        <input type="hidden" id="categoryId"/>
+        <input type="hidden" id="categoryId" />
         <div class="field">
           <label for="name"><b>نام قطعه</b></label> <input type="text" placeholder="نام قطعه" name="name" required />
         </div>
@@ -55,9 +57,9 @@
           <input type="text" placeholder="مثال: 24 ماه" name="lifetimeMonths" />
         </div>
         <div class="field">
-            <label for="SuitableFor"><b>مناسب برای</b></label>
-            <input type="text" placeholder="مثال: سمند، پراید" name="SuitableFor" />
-          </div>
+          <label for="SuitableFor"><b>مناسب برای</b></label>
+          <input type="text" placeholder="مثال: سمند، پراید" name="SuitableFor" />
+        </div>
         <button type="button" onclick="addPartToDB()">اضافه</button>
         <button type="button" onclick="document.getElementById('addPartModal').style.display='none'" class="cancelbtn">
           انصراف
@@ -70,7 +72,7 @@
     var modal = document.getElementById("addPartModal");
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
+    window.onclick = function (event) {
       if (event.target == modal) {
         modal.style.display = "none";
       }
