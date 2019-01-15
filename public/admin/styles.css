@@ -1,18 +1,20 @@
 @font-face {
-  font-family: 'BYekan';
-  src: url('../font/BYekan.eot') format('eot'),
-    url('../font/BYekan.woff') format('woff'),
-    url('../font/BYekan.ttf') format('truetype');
+  font-family: "BYekan";
+  src: url("../font/BYekan.eot") format("eot"), url("../font/BYekan.woff") format("woff"),
+    url("../font/BYekan.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 body,
 input {
-  font-family: 'BYekan', Arial, Helvetica, sans-serif;
+  font-family: "BYekan", Arial, Helvetica, sans-serif;
   border-radius: 5px;
 }
+h1 {
+  font-size: 24px;
+}
 body {
-  font-size: 1vw;
+  font-size: 14px;
   direction: rtl;
   float: right;
   width: 100%;
@@ -40,14 +42,15 @@ body {
   padding: 5px 0;
 }
 
-#categories .option {
+#categories .option,
+#services .option {
   padding: 10px 0;
-  background-color: #f2f2f2;
+  background-color: #e0e0e0;
   margin: 7px 0;
   border-radius: 5px;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   float: right;
   margin: 5px 0 0 0;
   width: auto;
@@ -71,21 +74,21 @@ label {
   float: right;
   margin: 11px 0;
 }
-.modal input[type='text'] {
+.modal input[type="text"] {
   width: 65%;
   box-sizing: border-box;
   float: right;
   display: block;
 }
-input[type='text'],
-input[type='password'] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 5px 5px;
   margin: 5px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  font-size: 1vw;
+  font-size: 14px;
 }
 
 button {
@@ -97,7 +100,7 @@ button {
   cursor: pointer;
   width: 100%;
   direction: rtl;
-  font-family: 'BYekan';
+  font-family: "BYekan";
   border-radius: 4px;
 }
 
@@ -130,7 +133,7 @@ span.psw {
   bottom: 20px;
   width: 50px;
   height: 50px;
-  font-size: 5vw;
+  font-size: 20px;
 }
 .rounded {
   border-radius: 50%;
@@ -178,7 +181,7 @@ ul {
 button.accordion {
   margin: 0;
   padding: 5px;
-  background-color: #eeeeee;
+  background-color: #e0e0e0;
   color: #000;
   margin: 3px 0;
 }
@@ -254,7 +257,7 @@ button.accordion {
 
 .topnav {
   overflow: hidden;
-  background-color: #333;
+  background-color: #555555;
 }
 
 .topnav a {
@@ -262,9 +265,9 @@ button.accordion {
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 10px 16px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 14px;
 }
 
 .topnav a:hover {
@@ -289,20 +292,14 @@ button.accordion {
   body,
   input,
   button,
-  input[type='text'],
-  input[type='password'] {
-    font-size: 4vw;
+  input[type="text"],
+  input[type="password"] {
+    font-size: 16px;
   }
-  .close {
-    font-size: 6vw;
-  }
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     /* -webkit-transform: scale(3, 3); */
     transform: scale(3, 3);
     margin: 30px 0 0 0;
-  }
-  label {
-    padding-right: 30px;
   }
   .modal-content {
     width: 95%;
@@ -331,5 +328,9 @@ a.back-list {
   color: #f2f2f2;
   font-size: 29px;
   left: 5px;
-  margin: 10px;
+  margin: 3px 10px;
+}
+
+.topnav a.logout {
+  color: #ff6666;
 }
