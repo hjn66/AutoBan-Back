@@ -9,6 +9,7 @@
 body,
 input {
   font-family: 'BYekan', Arial, Helvetica, sans-serif;
+  border-radius: 5px;
 }
 body {
   font-size: 1vw;
@@ -57,21 +58,21 @@ label {
 .modal div.field {
   width: 100%;
   float: right;
-  padding: 5px 0;
+  padding: 3px 0;
 }
 .modal button {
   width: 48%;
 }
 .modal label {
-  width: 30%;
+  width: 35%;
   display: block;
   padding: 0;
   box-sizing: border-box;
   float: right;
-  margin: 13px 0;
+  margin: 11px 0;
 }
 .modal input[type='text'] {
-  width: 70%;
+  width: 65%;
   box-sizing: border-box;
   float: right;
   display: block;
@@ -80,7 +81,7 @@ input[type='text'],
 input[type='password'] {
   width: 100%;
   padding: 5px 5px;
-  margin: 8px 0;
+  margin: 5px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
