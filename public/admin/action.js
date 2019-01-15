@@ -1,5 +1,8 @@
 function submitLogin() {
-  var param = { username: $('input[name=uname]').val(), password: $('input[name=psw]').val() };
+  var param = {
+    username: $('input[name=uname]').val(),
+    password: $('input[name=psw]').val()
+  };
   $.ajax({
     url: '../accounts/authenticate-password',
     dataType: 'json',
@@ -78,7 +81,12 @@ function openPart(id) {
 function addCategory(contanerId, id, name) {
   var container = $('#' + contanerId);
   var option = $('<div />', { class: 'option' });
-  $('<label />', { onclick: 'openPart(' + id + ')', class: 'accordion', id: 'category' + id, text: name }).appendTo(option);
+  $('<label />', {
+    onclick: 'openPart(' + id + ')',
+    class: 'accordion',
+    id: 'category' + id,
+    text: name
+  }).appendTo(option);
   option.appendTo(container);
 }
 
@@ -155,40 +163,68 @@ function addPartToDB() {
 function addPart(contanerId, part) {
   var container = $('#' + contanerId);
   var option = $('<div />', { class: 'option' });
-  $('<button />', { class: 'accordion', onclick: 'togglePart(' + part.id + ')', text: part.persianName }).appendTo(option);
+  $('<button />', {
+    class: 'accordion',
+    onclick: 'togglePart(' + part.id + ')',
+    text: part.persianName
+  }).appendTo(option);
   let properties = $('<ul />', { class: 'properties', id: 'p' + part.id });
 
   let propery = $('<li />');
   $('<div />', { class: 'key', text: 'شرکت سازنده' }).appendTo(propery);
-  $('<div />', { class: 'value', text: replaceNull(part.manufacturer) }).appendTo(propery);
+  $('<div />', {
+    class: 'value',
+    text: replaceNull(part.manufacturer)
+  }).appendTo(propery);
   propery.appendTo(properties);
 
   propery = $('<li />');
   $('<div />', { class: 'key', text: 'کشور سازنده' }).appendTo(propery);
-  $('<div />', { class: 'value', text: replaceNull(part.country) }).appendTo(propery);
+  $('<div />', { class: 'value', text: replaceNull(part.country) }).appendTo(
+    propery
+  );
   propery.appendTo(properties);
 
   propery = $('<li />');
   $('<div />', { class: 'key', text: 'نوع' }).appendTo(propery);
-  $('<div />', { class: 'value', text: replaceNull(part.type) }).appendTo(propery);
+  $('<div />', { class: 'value', text: replaceNull(part.type) }).appendTo(
+    propery
+  );
   propery.appendTo(properties);
 
   propery = $('<li />');
   $('<div />', { class: 'key', text: 'عمر متوسط (کیلومتر)' }).appendTo(propery);
-  $('<div />', { class: 'value', text: replaceNull(part.lifetimeKM) }).appendTo(propery);
+  $('<div />', { class: 'value', text: replaceNull(part.lifetimeKM) }).appendTo(
+    propery
+  );
   propery.appendTo(properties);
 
   propery = $('<li />');
   $('<div />', { class: 'key', text: 'عمر متوسط (ماه)' }).appendTo(propery);
-  $('<div />', { class: 'value', text: replaceNull(part.lifetimeMonths) }).appendTo(propery);
+  $('<div />', {
+    class: 'value',
+    text: replaceNull(part.lifetimeMonths)
+  }).appendTo(propery);
   propery.appendTo(properties);
 
   propery = $('<li />');
   $('<div />', { class: 'key', text: 'مناسب برای' }).appendTo(propery);
-  $('<div />', { class: 'value', text: replaceNull(part.SuitableFor) }).appendTo(propery);
+  $('<div />', {
+    class: 'value',
+    text: replaceNull(part.SuitableFor)
+  }).appendTo(propery);
   propery.appendTo(properties);
   properties.hide();
   properties.appendTo(option);
   // $("<label />", { onclick: "openPart(" + id + ")", id: "category" + id, text: name }).appendTo(option);
   option.appendTo(container);
+}
+
+function topnav() {
+  var x = document.getElementById('myTopnav');
+  if (x.className === 'topnav') {
+    x.className += ' responsive';
+  } else {
+    x.className = 'topnav';
+  }
 }
