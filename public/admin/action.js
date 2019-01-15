@@ -80,9 +80,11 @@ function openPart(id) {
 }
 function addCategory(contanerId, id, name) {
   var container = $('#' + contanerId);
-  var option = $('<div />', { class: 'option' });
+  var option = $('<div />', {
+    class: 'option',
+    onclick: 'openPart(' + id + ')'
+  });
   $('<label />', {
-    onclick: 'openPart(' + id + ')',
     class: 'accordion',
     id: 'category' + id,
     text: name
