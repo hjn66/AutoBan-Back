@@ -77,6 +77,24 @@ router.post(
 );
 
 router.post(
+  '/add-services',
+  [passport.authenticate('jwt', { session: false }), i18n],
+  async (req, res, next) => {
+    const persianName = req.body.persianName;
+    const englishName = req.body.englishName;
+    let carService = await CarServiceDAO.addCarService(
+      persianName,
+      englishName
+    );
+    return res.json({
+      success: true,
+      message: __('car service added successfuly'),
+      carService
+    });
+  }
+);
+
+router.post(
   '/list-services',
   [passport.authenticate('jwt', { session: false }), i18n],
   async (req, res, next) => {
