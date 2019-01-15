@@ -1,15 +1,28 @@
-<head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="action.js"></script>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="container">
-    <div class="imgcontainer"><img src="../assets/images/logo.jpg" alt="Avatar" class="avatar" /></div>
-    <label for="uname"><b>Username</b></label> <input type="text" placeholder="Enter Username" name="uname" required />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-    <label for="psw"><b>Password</b></label> <input type="password" placeholder="Enter Password" name="psw" required />
+    <title>اتوبان</title>
 
-    <button id="login" onclick="submitLogin()" type="button">Login</button>
-  </div>
-</body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="action.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body onload="isLogin()">
+    <div class="container">
+      <div class="imgcontainer"><img src="../assets/images/logo.jpg" alt="Avatar" class="avatar" /></div>
+      <label for="uname"><b>شماره تلفن همراه</b></label>
+      <input type="text" placeholder="شماره تلفن همراه خود را وارد کنید" name="uname" required />
+
+      <label for="psw"><b>رمزعبور</b></label>
+      <input type="password" placeholder="رمزعبور را وارد کنید" name="psw" required />
+
+      <button id="login" onclick="submitLogin()" type="button">ورود به سامانه</button>
+    </div>
+  </body>
+</html>

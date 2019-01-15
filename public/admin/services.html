@@ -14,19 +14,20 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body onload="getCategories()">
+<body onload="getServices()">
   <button class="floated rounded" onclick="document.getElementById('addServiceModal').style.display='block'">+</button>
   <div class="topnav" id="myTopnav">
     <a href="javascript:void(0);" class="icon" onclick="topnav()">
       <i class="fa fa-bars"></i>
     </a>
     <a href="/admin/categories.html">دسته‌بندی قطعات</a>
-    <a href="/admin/services.html">دسته‌بندی سرویس‌ها</a>
+    <a href="/admin/services.html">سرویس‌ها</a>
+    <a href="#logout" onclick="logout()" class="logout">خروج از سیستم</a>
   </div>
   <div class="container">
-    <h1>لیست دسته‌بندی قطعات</h1>
+    <h1>لیست سرویس‌ها</h1>
 
-    <div class="list" id="categories"></div>
+    <div class="list" id="services"></div>
   </div>
   <div id="addServiceModal" class="modal">
     <form class="modal-content animate">
