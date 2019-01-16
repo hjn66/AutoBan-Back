@@ -13,6 +13,7 @@ const i18n = require("../middlewares/i18n");
 const CarDAO = require("../DAO/carDAO");
 const UserDAO = require("../DAO/userDAO");
 const ColorDAO = require("../DAO/colorDAO");
+const AccountDAO = require("../DAO/accountDAO");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -100,6 +101,16 @@ router.post("/update-odometer", [passport.authenticate("jwt", { session: false }
 router.get("/list", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   user = await UserDAO.getUserByAccountId(req.user.id);
   cars = await CarDAO.listCars(user.id);
+  return res.json({ success: true, cars: cars });
+});
+
+// Call By Admin
+// get mobileNumber & return users cars
+router.post("/list-cars", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const mobileNumber = req.body.mobileNumber;
+  let account = await AccountDAO.getAccount(mobileNumber);
+  let user = await UserDAO.getUserByAccountId(account.id);
+  let cars = await CarDAO.listCars(user.id);
   return res.json({ success: true, cars: cars });
 });
 
