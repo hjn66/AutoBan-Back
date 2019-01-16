@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>صفحه اصلی - اتوبان</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="action.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="topnav" id="myTopnav">
+      <a href="javascript:void(0);" class="icon" onclick="topnav()">
+        <i class="fa fa-bars"></i>
+      </a>
+      <a href="/admin/categories.html">دسته‌بندی قطعات</a>
+      <a href="/admin/services.html">دسته‌بندی سرویس‌ها</a>
+      <a href="#logout" onclick="logout()" class="logout">خروج از سیستم</a>
+    </div>
+    <div class="container">
+      <div class="menu" onclick="window.location='categories.html';">
+        <img src="../assets/icons/parts.svg" />
+        <div class="text">قطعات</div>
+      </div>
+      <div class="menu" onclick="window.location='services.html';">
+        <img src="../assets/icons/services.svg" />
+        <div class="text">سرویس‌ها</div>
+      </div>
+    </div>
+  </body>
+</html>
