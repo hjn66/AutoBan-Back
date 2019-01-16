@@ -16,13 +16,14 @@
 
 <body onload="getCategories()">
   <button class="floated rounded" onclick="document.getElementById('addCategoryModal').style.display='block'">+</button>
-  <a href="javascript:void(0);" class="back-list icon" onclick="openHomePage()">
+  <div class="topnav" id="myTopnav">
+    <a href="javascript:void(0);" class="back-list icon" onclick="openHomePage()">
       <i class="fa fa-angle-left"></i>
     </a>
-  <div class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon" onclick="topnav()">
-      <i class="fa fa-bars"></i>
+    <a href="/admin/home.html" class="home-page icon">
+      <i class="fa fa-home"></i>
     </a>
+    <a  href="/admin/home.html" class="home">صفحه اصلی</a>
     <a href="/admin/categories.html">دسته‌بندی قطعات</a>
     <a href="/admin/services.html">دسته‌بندی سرویس‌ها</a>
     <a href="#logout" onclick="logout()" class="logout">خروج از سیستم</a>
@@ -37,8 +38,7 @@
       <div class="container">
         <input type="hidden" id="categoryId" />
         <div class="field">
-          <label for="name"><b>نام دسته‌بندی</b></label> <input type="text" placeholder="نام دسته‌بندی" name="name"
-            required />
+          <label for="name"><b>نام دسته‌بندی</b></label> <input type="text" placeholder="نام دسته‌بندی" name="name" required />
         </div>
         <button type="button" onclick="addCategoryToDB()">اضافه</button>
         <button type="button" onclick="document.getElementById('addCategoryModal').style.display='none'" class="cancelbtn">

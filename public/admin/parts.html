@@ -16,17 +16,18 @@
 
 <body onload="getParts()">
   <button class="floated rounded" onclick="document.getElementById('addPartModal').style.display='block'">+</button>
-  <a href="javascript:void(0);" class="back-list icon" onclick="openCategoriesPage()">
-    <i class="fa fa-angle-left"></i>
-  </a>
   <div class="topnav" id="myTopnav">
-    <a href="javascript:void(0);" class="icon" onclick="topnav()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <a href="/admin/categories.html">دسته‌بندی قطعات</a>
-    <a href="/admin/services.html">دسته‌بندی سرویس‌ها</a>
-    <a href="#logout" onclick="logout()" class="logout">خروج از سیستم</a>
-  </div>
+      <a href="javascript:void(0);" class="back-list icon" onclick="openHomePage()">
+        <i class="fa fa-angle-left"></i>
+      </a>
+      <a href="/admin/home.html" class="home-page icon">
+        <i class="fa fa-home"></i>
+      </a>
+      <a  href="/admin/home.html" class="home">صفحه اصلی</a>
+      <a href="/admin/categories.html">دسته‌بندی قطعات</a>
+      <a href="/admin/services.html">دسته‌بندی سرویس‌ها</a>
+      <a href="#logout" onclick="logout()" class="logout">خروج از سیستم</a>
+    </div>
   <div class="container">
     <h1>لیست قطعات</h1>
     <div class="list" id="parts"></div>
