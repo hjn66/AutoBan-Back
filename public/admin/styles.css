@@ -22,7 +22,7 @@ body {
 }
 .container {
   padding: 16px;
-  margin: 8% auto;
+  margin: 20px auto;
   width: 50%;
   box-sizing: border-box;
 }
@@ -303,16 +303,38 @@ button.accordion {
   top: 5px;
 }
 
-@media only screen and (max-width: 800px) {
+.container .menu {
+  background-color: #f6f6f6;
+  position: relative;
+  width: 30%;
+  padding-top: 30%; /* 1:1 Aspect Ratio */
+  display: inline-block;
+  border-radius: 10px;
+  margin: 1%;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 900px) {
   .container {
     width: 80%;
     margin: auto;
+  }
+
+  .container .menu {
+    width: 30%;
+    padding-top: 30%; /* 1:1 Aspect Ratio */
+    margin: 1%;
   }
 }
 @media only screen and (max-width: 600px) {
   .container {
     width: 100%;
     margin: 0;
+  }
+  .container .menu {
+    width: 40%;
+    padding-top: 40%; /* 1:1 Aspect Ratio */
+    margin: 4%;
   }
   body,
   input,
@@ -357,24 +379,13 @@ button.accordion {
   }
 }
 
-.container .menu {
-  background-color: #f6f6f6;
-  position: relative;
-  width: 40%;
-  padding-top: 40%; /* 1:1 Aspect Ratio */
-  display: inline-block;
-  border-radius: 10px;
-  margin: 4%;
-  cursor: pointer;
-}
-
 .container .menu .text {
   position: absolute;
   left: 0;
   bottom: 15px;
   right: 0;
   text-align: center;
-  font-size: 18px;
+  font-size: 15px;
   color: #707070;
 }
 
