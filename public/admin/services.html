@@ -40,8 +40,9 @@
         <div class="field">
           <label for="name"><b>نام سرویس</b></label> <input type="text" placeholder="نام سرویس" name="name"
             required />
+            <input type="hidden" id="serviceId"/>
         </div>
-        <button type="button" onclick="addServiceToDB()">اضافه</button>
+        <button type="button" onclick="addServiceToDB()" id="add-edit">اضافه</button>
         <button type="button" onclick="document.getElementById('addServiceModal').style.display='none'" class="cancelbtn">
           انصراف
         </button>

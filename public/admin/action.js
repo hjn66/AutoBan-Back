@@ -127,10 +127,23 @@ function addService(serviceId, id, name) {
   var option = $("<div />", {
     class: "option"
   });
-  $("<label />", {
-    class: "accordion",
+  let service = $("<div />", {
+    class: "accordion"
+  });
+  $("<span />", {
+    class: "name",
     text: name
-  }).appendTo(option);
+  }).appendTo(service);
+  $("<button />", {
+    class: "edit",
+    text: "ویرایش",
+    onclick: `editService(${id},"${name}")`
+  }).appendTo(service);
+  $("<button />", {
+    class: "delete",
+    text: "حذف"
+  }).appendTo(service);
+  service.appendTo(option);
   option.appendTo(container);
 }
 
@@ -139,7 +152,13 @@ function replaceNull(data) {
     return "---";
   } else return data;
 }
-
+function editService(id, name) {
+  // document.getElementById('addServiceModal').style.display='block'
+  $("#addServiceModal").show();
+  $("#serviceId").val(id);
+  $("input[name=name]").val(name);
+  $("#add-edit").text("ویرایش");
+}
 function togglePart(id) {
   $("#p" + id).toggle();
 }
@@ -170,26 +189,47 @@ function addCategoryToDB() {
 
 function addServiceToDB() {
   var param = {
-    persianName: $("input[name=name]").val()
+    persianName: $("input[name=name]").val(),
+    serviceId: $("#serviceId").val()
   };
-  console.log(param);
-
-  $.ajax({
-    url: "../repairs/add-services",
-    dataType: "json",
-    contentType: "application/json;charset=utf-8",
-    type: "POST",
-    data: JSON.stringify(param),
-    beforeSend: function(xhr) {
-      /* Authorization header */
-      xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
-    },
-    success: function(response) {
-      $("input[name=name]").val("");
-      $("#addServiceModal").hide();
-      getServices();
-    }
-  });
+  let serviceId = $("#serviceId").val();
+  if (serviceId) {
+    $.ajax({
+      url: "../repairs/service",
+      dataType: "json",
+      contentType: "application/json;charset=utf-8",
+      type: "PUT",
+      data: JSON.stringify(param),
+      beforeSend: function(xhr) {
+        /* Authorization header */
+        xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
+      },
+      success: function(response) {
+        $("input[name=name]").val("");
+        $("#serviceId").val("");
+        $("#addServiceModal").hide();
+        $("#add-edit").text("اضافه");
+        getServices();
+      }
+    });
+  } else {
+    $.ajax({
+      url: "../repairs/add-service",
+      dataType: "json",
+      contentType: "application/json;charset=utf-8",
+      type: "POST",
+      data: JSON.stringify(param),
+      beforeSend: function(xhr) {
+        /* Authorization header */
+        xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
+      },
+      success: function(response) {
+        $("input[name=name]").val("");
+        $("#addServiceModal").hide();
+        getServices();
+      }
+    });
+  }
 }
 
 function addPartToDB() {
