@@ -60,14 +60,8 @@ User.belongsTo(Account, {
   onDelete: "cascade"
 });
 CarBrand.hasMany(CarModel, { as: "models" });
-User.belongsToMany(CarModel, {
-  through: Car,
-  foreignKey: { name: "userId", allowNull: false }
-});
-CarModel.belongsToMany(User, {
-  through: Car,
-  foreignKey: { name: "modelId", allowNull: false }
-});
+Car.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
+Car.belongsTo(CarModel, { foreignKey: { name: "modelId", allowNull: false } });
 Car.belongsTo(Color, { foreignKey: { allowNull: false } });
 Cost.belongsTo(Car, { foreignKey: { allowNull: false } });
 Fuel.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
