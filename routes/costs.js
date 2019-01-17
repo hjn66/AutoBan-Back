@@ -36,7 +36,7 @@ router.post("/add-fuel", [passport.authenticate("jwt", { session: false }), i18n
   return res.json({ success: true, message: __("Fuel information added successfuly") });
 });
 
-router.post("/delete-fuel", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.delete("/fuel", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const fuelId = req.body.fuelId;
   user = await UserDAO.getUserByAccountId(req.user.id);
   fuel = await FuelDAO.getFuelById(fuelId);
@@ -69,7 +69,7 @@ router.post("/add-fine", [passport.authenticate("jwt", { session: false }), i18n
   return res.json({ success: true, message: __("Fine information added successfuly") });
 });
 
-router.post("/delete-fine", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.delete("/fine", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const fineId = req.body.fineId;
   user = await UserDAO.getUserByAccountId(req.user.id);
   fine = await FineDAO.getFineById(fineId);
@@ -103,7 +103,7 @@ router.post("/add-periodic", [passport.authenticate("jwt", { session: false }), 
   return res.json({ success: true, message: __("PeriodicCost information added successfuly") });
 });
 
-router.post("/delete-periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.delete("/periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const periodicCostId = req.body.periodicCostId;
   user = await UserDAO.getUserByAccountId(req.user.id);
   periodicCost = await PeriodicCostDAO.getFineById(periodicCostId);
@@ -134,7 +134,7 @@ router.post("/add-other", [passport.authenticate("jwt", { session: false }), i18
   return res.json({ success: true, message: __("Cost information added successfuly") });
 });
 
-router.post("/delete-other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.delete("/other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const costId = req.body.costId;
   user = await UserDAO.getUserByAccountId(req.user.id);
   cost = await CostDAO.getCostById(costId);
