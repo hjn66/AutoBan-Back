@@ -53,8 +53,8 @@ router.post(
 
 // update user profile information and if profilePic uploaded then update it
 // input (req.body): *firstName, *lastName, email, profilePic(file)
-router.post(
-  "/update",
+router.put(
+  "/user",
   [passport.authenticate("jwt", { session: false }), i18n, upload.single("profilePic")],
   async (req, res, next) => {
     user = await UserDAO.getUserByAccountId(req.user.id);
@@ -72,7 +72,7 @@ router.post(
 
 // check token number and change user mobile number
 // input: mobileNumber, token
-router.post("/change-mobile", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.put("/mobile", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   smsToken = await SMSTokenDAO.checkToken(req.body);
   user = await UserDAO.getUserByAccountId(req.user.id);
   user.mobileNumber = smsToken.mobileNumber;
