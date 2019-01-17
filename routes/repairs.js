@@ -61,13 +61,28 @@ router.post("/list-parts", [passport.authenticate("jwt", { session: false }), i1
   return res.json({ success: true, parts: parts });
 });
 
-router.post("/add-services", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.post("/add-service", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const persianName = req.body.persianName;
   const englishName = req.body.englishName;
   let carService = await CarServiceDAO.addCarService(persianName, englishName);
   return res.json({
     success: true,
     message: __("car service added successfuly"),
+    carService
+  });
+});
+
+router.put("/service", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const persianName = req.body.persianName;
+  const englishName = req.body.englishName;
+  const serviceId = req.body.serviceId;
+  let carService = await CarServiceDAO.getServiceById(serviceId);
+  carService.persianName = persianName;
+  carService.englishName = englishName;
+  carService = await CarServiceDAO.updateCarService(carService);
+  return res.json({
+    success: true,
+    message: __("car service updated successfuly"),
     carService
   });
 });
