@@ -322,36 +322,39 @@ function listCars() {
 function addCar(contanerId, car) {
   var container = $("#" + contanerId);
   var carDiv = $("<div />", {
-    class: "car"
+    class: "car",
+    style: `border: 1px solid #${car.color.code};`
   });
   $("<div />", {
     class: "model",
-    text: `${car.car_brand.persianName} مدل ${car.car_model.persianName}`
+    text: `${car.car_brand.persianName} ${car.car_model.persianName}`
   }).appendTo(carDiv);
   $("<div />", {
     class: "field",
-    text: "رنگ:"
+    text: `${car.color.persianName}`
   }).appendTo(carDiv);
   $("<div />", {
-    class: "color",
-    style: `background:#${car.color.code}; color:#${car.color.code}`
+    class: "field",
+    text: `${car.bulityear}`
   }).appendTo(carDiv);
-  let plate = $("<div />", {
-    class: "plate"
-  });
-  $("<div />", {
-    class: "left-side"
-  }).appendTo(plate);
-  let plateSections = car.plate.split("-");
-  $("<div />", {
-    class: "number",
-    text: `${plateSections[0]} ${plateSections[1]} ${plateSections[2]}`
-  }).appendTo(plate);
-  $("<div />", {
-    class: "city",
-    text: `${plateSections[3]}`
-  }).appendTo(plate);
-  plate.appendTo(carDiv);
+  if (car.plate) {
+    let plate = $("<div />", {
+      class: "plate"
+    });
+    $("<div />", {
+      class: "left-side"
+    }).appendTo(plate);
+    let plateSections = car.plate.split("-");
+    $("<div />", {
+      class: "number",
+      text: `${plateSections[0]} ${plateSections[1]} ${plateSections[2]}`
+    }).appendTo(plate);
+    $("<div />", {
+      class: "city",
+      text: `${plateSections[3]}`
+    }).appendTo(plate);
+    plate.appendTo(carDiv);
+  }
   carDiv.appendTo(container);
   console.log(car);
 }
