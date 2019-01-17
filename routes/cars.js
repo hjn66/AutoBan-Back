@@ -48,7 +48,7 @@ router.post(
   }
 );
 
-router.post(
+router.put(
   "/update",
   [passport.authenticate("jwt", { session: false }), i18n, upload.single("carImage")],
   async (req, res, next) => {
@@ -74,7 +74,7 @@ router.post(
   }
 );
 
-router.post("/delete", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.delete("/delete", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const carId = req.body.carId;
   user = await UserDAO.getUserByAccountId(req.user.id);
   car = await CarDAO.getCarById(carId);
@@ -86,7 +86,7 @@ router.post("/delete", [passport.authenticate("jwt", { session: false }), i18n],
   return res.json({ success: true, message: __("Car deleted successfuly") });
 });
 
-router.post("/update-odometer", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+router.put("/odometer", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const carId = req.body.carId;
   const odometer = req.body.odometer;
   user = await UserDAO.getUserByAccountId(req.user.id);
