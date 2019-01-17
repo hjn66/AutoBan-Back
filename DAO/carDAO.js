@@ -1,6 +1,7 @@
 const config = require("config");
 const Car = require("../startup/sequelize").Car;
 const CarModel = require("../startup/sequelize").CarModel;
+const Color = require("../startup/sequelize").Color;
 const CarBrand = require("../startup/sequelize").CarBrand;
 
 const Sequelize = require("sequelize");
@@ -54,7 +55,12 @@ module.exports.removeCar = async function(car) {
 };
 
 module.exports.listCars = async function(userId) {
-  return await Car.findAll({ where: { userId: userId } });
+  let cars = await Car.findAll({ where: { userId: userId }, include: [CarModel, Color] });
+  for (const index in cars) {
+    let brand = await CarBrand.findByPk(cars[index].car_model.carBrandId);
+    cars[index].dataValues.car_brand = brand;
+  }
+  return cars;
 };
 
 module.exports.listCarBrands = async function() {
