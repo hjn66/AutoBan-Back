@@ -43,7 +43,8 @@ body {
 }
 
 #categories .option,
-#services .option {
+#services .option,
+.car {
   padding: 10px 0;
   background-color: #e0e0e0;
   margin: 7px 0;
@@ -314,6 +315,60 @@ button.accordion {
   cursor: pointer;
 }
 
+.plate {
+  border: 1px solid #000;
+  float: right;
+  border-radius: 2px;
+}
+.plate .left-side {
+  background: #003399;
+  padding: 22px 12px 0 0;
+  float: left;
+}
+.plate .number {
+  margin: 0 3px;
+  float: left;
+  letter-spacing: 1px;
+}
+
+.plate .city {
+  padding: 0 3px;
+  border-left: 1px solid #000;
+  float: left;
+}
+
+.plate .city::before {
+  content: "ایران";
+  position: absolute;
+  font-size: 5px;
+  padding: 0 4px;
+}
+.car {
+  width: 100%;
+  float: right;
+  font-size: 14px;
+}
+
+.car .model {
+  margin: 0 10px 15px;
+  float: right;
+  font-size: 18px;
+  width: 100%;
+}
+.car .field {
+  float: right;
+  margin: 0 10px 0 0;
+}
+
+.car .color {
+  padding: 1px 15px;
+  margin: 0 0 0 10px;
+  float: right;
+}
+
+.car .color::before {
+  content: ".";
+}
 @media only screen and (max-width: 900px) {
   .container {
     width: 80%;
