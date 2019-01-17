@@ -52,7 +52,7 @@ router.post("/authenticate-password", i18n, async (req, res, next) => {
 
 // Authenticate by token returend by /check-sms-token
 router.get("/authenticate-token", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  account = await AccountDAO.getAccount(req.user.mobileNumber);
+  account = await AccountDAO.getAccount(req.user);
   if (!account.enabled) {
     throw new Error("Your Account dissabled by admin, please contact to admin");
   }
