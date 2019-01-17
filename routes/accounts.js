@@ -30,7 +30,7 @@ router.post("/check-sms-token", i18n, async (req, res, next) => {
   });
 });
 
-// Authenticate withe username(mobileNumber or email) and password
+// Authenticate with username(mobileNumber or email) and password
 router.post("/authenticate-password", i18n, async (req, res, next) => {
   account = await AccountDAO.getAccount(req.body.username);
   if (!account.enabled) {
