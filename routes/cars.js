@@ -24,7 +24,7 @@ var storage = multer.diskStorage({
     cb(null, raw.toString("hex") + Date.now() + path.extname(file.originalname));
   }
 });
-var upload = multer({ storage: storage });
+var upload = multer({ storage });
 
 router.post(
   "/register",
@@ -44,7 +44,7 @@ router.post(
       image = config.get("car_images_dir") + "/" + req.file.filename;
     }
     car = await CarDAO.addCar(name, plate, image, odometer, bulityear, userId, modelId, colorId);
-    return res.json({ success: true, car: car });
+    return res.json({ success: true, car });
   }
 );
 
@@ -101,7 +101,7 @@ router.post("/update-odometer", [passport.authenticate("jwt", { session: false }
 router.get("/list", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   user = await UserDAO.getUserByAccountId(req.user.id);
   cars = await CarDAO.listCars(user.id);
-  return res.json({ success: true, cars: cars });
+  return res.json({ success: true, cars });
 });
 
 // Call By Admin
@@ -111,23 +111,23 @@ router.post("/list-cars", [passport.authenticate("jwt", { session: false }), i18
   let account = await AccountDAO.getAccount(mobileNumber);
   let user = await UserDAO.getUserByAccountId(account.id);
   let cars = await CarDAO.listCars(user.id);
-  return res.json({ success: true, cars: cars });
+  return res.json({ success: true, cars });
 });
 
 router.get("/list-car-brands", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   carBrands = await CarDAO.listCarBrands();
-  return res.json({ success: true, carBrands: carBrands });
+  return res.json({ success: true, carBrands });
 });
 
 router.post("/list-car-models", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const brandId = req.body.brandId;
   carModels = await CarDAO.listCarModels(brandId);
-  return res.json({ success: true, carModels: carModels });
+  return res.json({ success: true, carModels });
 });
 
 router.get("/list-colors", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   colors = await ColorDAO.listColors();
-  return res.json({ success: true, colors: colors });
+  return res.json({ success: true, colors });
 });
 
 module.exports = router;
