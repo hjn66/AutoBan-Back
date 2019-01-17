@@ -23,6 +23,10 @@ module.exports.updateCarService = async function(CarService) {
   return await CarService.save();
 };
 
+module.exports.removeCarService = async function(CarService) {
+  return await CarService.destroy();
+};
+
 module.exports.listCarService = async function() {
   return await CarService.findAll();
 };
