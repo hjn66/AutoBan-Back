@@ -22,18 +22,17 @@ router.post("/fuel", [passport.authenticate("jwt", { session: false }), i18n], a
   const isFull = req.body.isFull;
   const stationName = req.body.stationName;
 
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can add cost to your car only");
   }
-  cost = await CostDAO.addCost("FUEL", date, value, comment, carId);
-  fuel = await FuelDAO.addFuel(volume, type, odometer, isFull, stationName, cost.id);
+  let cost = await CostDAO.addCost("FUEL", date, value, comment, carId);
+  let fuel = await FuelDAO.addFuel(volume, type, odometer, isFull, stationName, cost.id);
+  fuel.dataValues.cost = cost;
   if (odometer && odometer > car.odometer) {
     await CarDAO.updateOdometer(car, odometer);
   }
-  return res.json({ success: true, message: __("Fuel information added successfuly") });
+  return res.json({ success: true, message: __("Fuel information added successfuly"), fuel });
 });
 
 router.put("/fuel", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
@@ -47,12 +46,10 @@ router.put("/fuel", [passport.authenticate("jwt", { session: false }), i18n], as
   const isFull = req.body.isFull || false;
   const stationName = req.body.stationName;
 
-  let user = await UserDAO.getUserByIdSync(req.user.id);
   let fuel = await FuelDAO.getFuelById(fuelId);
   let cost = fuel.cost;
   let car = await CarDAO.getCarById(cost.carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  if (car.userId != req.user.id) {
     throw new Error("You can update cost of your car only");
   }
   cost.date = date;
@@ -74,15 +71,12 @@ router.put("/fuel", [passport.authenticate("jwt", { session: false }), i18n], as
 
 router.delete("/fuel", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const fuelId = req.body.fuelId;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  fuel = await FuelDAO.getFuelById(fuelId);
-  cost = await CostDAO.getCostById(fuel.costId);
-  car = await CarDAO.getCarById(cost.carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let fuel = await FuelDAO.getFuelById(fuelId);
+  let cost = fuel.cost;
+  let car = await CarDAO.getCarById(cost.carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can remove your car's cost only");
   }
-  await FuelDAO.removeFuel(fuel);
   await CostDAO.removeCost(cost);
   return res.json({ success: true, message: __("Fuel deleted successfuly") });
 });
@@ -94,28 +88,50 @@ router.post("/fine", [passport.authenticate("jwt", { session: false }), i18n], a
   const comment = req.body.comment;
   const fineCode = req.body.fineCode;
 
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can add cost to your car only");
   }
-  cost = await CostDAO.addCost("FINE", date, value, comment, carId);
-  fine = await FineDAO.addFine(fineCode, cost.id);
-  return res.json({ success: true, message: __("Fine information added successfuly") });
+  let cost = await CostDAO.addCost("FINE", date, value, comment, carId);
+  let fine = await FineDAO.addFine(fineCode, cost.id);
+  fine.dataValues.cost = cost;
+  return res.json({ success: true, message: __("Fine information added successfuly"), fine });
+});
+
+router.put("/fine", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const fineId = req.body.fineId;
+  const date = req.body.date;
+  const value = req.body.value;
+  const comment = req.body.comment;
+  const fineCode = req.body.fineCode;
+
+  let fine = await FineDAO.getFineById(fineId);
+  let cost = fine.cost;
+  let car = await CarDAO.getCarById(cost.carId);
+  if (car.userId != req.user.id) {
+    throw new Error("You can update cost of your car only");
+  }
+  cost.date = date;
+  cost.value = value;
+  cost.comment = comment;
+  cost = await CostDAO.updateCost(cost);
+  fine.fineCode = fineCode;
+  fine = await FineDAO.updateFine(fine);
+  fine.cost = cost;
+  if (odometer && odometer > car.odometer) {
+    await CarDAO.updateOdometer(car, odometer);
+  }
+  return res.json({ success: true, message: __("Fine information updated successfuly"), fine });
 });
 
 router.delete("/fine", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const fineId = req.body.fineId;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  fine = await FineDAO.getFineById(fineId);
-  cost = await CostDAO.getCostById(fine.costId);
-  car = await CarDAO.getCarById(cost.carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let fine = await FineDAO.getFineById(fineId);
+  let cost = fine.cost;
+  let car = await CarDAO.getCarById(cost.carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can remove your car's cost only");
   }
-  await FineDAO.removeFine(fine);
   await CostDAO.removeCost(cost);
   return res.json({ success: true, message: __("Fine deleted successfuly") });
 });
@@ -128,28 +144,24 @@ router.post("/periodic", [passport.authenticate("jwt", { session: false }), i18n
   const type = req.body.type;
   const period = req.body.period;
 
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can add cost to your car only");
   }
-  cost = await CostDAO.addCost(type, date, value, comment, carId);
-  await PeriodicCostDAO.addPeriodicCost(type, period, cost.id);
-  return res.json({ success: true, message: __("PeriodicCost information added successfuly") });
+  let cost = await CostDAO.addCost(type, date, value, comment, carId);
+  let periodicCost = await PeriodicCostDAO.addPeriodicCost(type, period, cost.id);
+  periodicCost.dataValues.cost = cost;
+  return res.json({ success: true, message: __("PeriodicCost information added successfuly"), periodicCost });
 });
 
 router.delete("/periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const periodicCostId = req.body.periodicCostId;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  periodicCost = await PeriodicCostDAO.getFineById(periodicCostId);
-  cost = await CostDAO.getCostById(periodicCost.costId);
-  car = await CarDAO.getCarById(cost.carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let periodicCost = await PeriodicCostDAO.getFineById(periodicCostId);
+  let cost = periodicCost.cost;
+  let car = await CarDAO.getCarById(cost.carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can remove your car's cost only");
   }
-  await PeriodicCostDAO.removePeriodicCost(periodicCost);
   await CostDAO.removeCost(cost);
   return res.json({ success: true, message: __("PeriodicCost deleted successfuly") });
 });
@@ -160,23 +172,19 @@ router.post("/other", [passport.authenticate("jwt", { session: false }), i18n], 
   const value = req.body.value;
   const comment = req.body.comment;
 
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can add cost to your car only");
   }
-  cost = await CostDAO.addCost("OTHER", date, value, comment, carId);
-  return res.json({ success: true, message: __("Cost information added successfuly") });
+  let cost = await CostDAO.addCost("OTHER", date, value, comment, carId);
+  return res.json({ success: true, message: __("Cost information added successfuly"), cost });
 });
 
 router.delete("/other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const costId = req.body.costId;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  cost = await CostDAO.getCostById(costId);
-  car = await CarDAO.getCarById(cost.carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let cost = await CostDAO.getCostById(costId);
+  let car = await CarDAO.getCarById(cost.carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can remove your car's cost only");
   }
   await CostDAO.removeCost(cost);
@@ -187,28 +195,24 @@ router.post("/list", [passport.authenticate("jwt", { session: false }), i18n], a
   const carId = req.body.carId;
   const from = req.body.from;
   const to = req.body.to;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can list your car's cost only");
   }
-  costs = await CostDAO.listCostByCar(carId, from, to);
-  return res.json({ success: true, costs: costs });
+  let costs = await CostDAO.listCostByCar(carId, from, to);
+  return res.json({ success: true, costs });
 });
 
 router.post("/list-categorized", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const carId = req.body.carId;
   from = req.body.from;
   to = req.body.to;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  const userId = user.id;
-  if (car.userId != userId) {
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
     throw new Error("You can list your car's cost only");
   }
-  costs = await CostDAO.listCategorizedCostByCar(carId, from, to);
-  return res.json({ success: true, costs: costs });
+  let costs = await CostDAO.listCategorizedCostByCar(carId, from, to);
+  return res.json({ success: true, costs });
 });
 
 module.exports = router;
