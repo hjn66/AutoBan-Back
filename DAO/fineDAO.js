@@ -36,3 +36,15 @@ module.exports.updateFine = async function(fine) {
 module.exports.removeFine = async function(fine) {
   return await fine.destroy();
 };
+
+module.exports.listFineByCar = async function(carId, from, to) {
+  let query = {
+    [Op.gte]: from || "1900-01-01",
+    [Op.lte]: to || "2200-01-01"
+  };
+
+  return await Fine.findAll({
+    include: [{ model: Cost, where: { carId, date: query } }, FineCategory],
+    order: [[Cost, "date", "DESC"]]
+  });
+};
