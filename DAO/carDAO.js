@@ -15,7 +15,7 @@ module.exports.getCarById = async function(id) {
   return car;
 };
 
-module.exports.addCar = async function(name, plate, image, odometer, bulityear, userId, modelId, colorId) {
+module.exports.addCar = async function(name, plate, image, odometer, builtyear, userId, modelId, colorId) {
   if (image == "") {
     carModel = await CarModel.findByPk(modelId);
     if (!carModel) {
@@ -29,7 +29,7 @@ module.exports.addCar = async function(name, plate, image, odometer, bulityear, 
     plate: plate,
     image: image,
     odometer: odometer,
-    bulityear: bulityear,
+    builtyear: builtyear,
     userId: userId,
     modelId: modelId,
     colorId: colorId

@@ -1,13 +1,13 @@
-var soap = require("soap");
+const soap = require("soap");
 const config = require("config");
 
 module.exports.sendSMS = async function(mobileNumber, message) {
-  var username = config.get("sms_user");
-  var password = config.get("sms_password");
-  var url = config.get("sms_wsdl_url");
-  var senderNumber = config.get("sms_number");
+  let username = config.get("sms_user");
+  let password = config.get("sms_password");
+  let url = config.get("sms_wsdl_url");
+  let senderNumber = config.get("sms_number");
   client = await soap.createClientAsync(url);
-  var args = {
+  let args = {
     username: username,
     password: password,
     _SenderNumber: senderNumber,

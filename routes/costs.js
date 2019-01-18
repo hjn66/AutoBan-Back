@@ -22,7 +22,7 @@ router.post("/add-fuel", [passport.authenticate("jwt", { session: false }), i18n
   const isFull = req.body.isFull;
   const stationName = req.body.stationName;
 
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   const userId = user.id;
   if (car.userId != userId) {
@@ -38,7 +38,7 @@ router.post("/add-fuel", [passport.authenticate("jwt", { session: false }), i18n
 
 router.delete("/fuel", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const fuelId = req.body.fuelId;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   fuel = await FuelDAO.getFuelById(fuelId);
   cost = await CostDAO.getCostById(fuel.costId);
   car = await CarDAO.getCarById(cost.carId);
@@ -58,7 +58,7 @@ router.post("/add-fine", [passport.authenticate("jwt", { session: false }), i18n
   const comment = req.body.comment;
   const fineCode = req.body.fineCode;
 
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   const userId = user.id;
   if (car.userId != userId) {
@@ -71,7 +71,7 @@ router.post("/add-fine", [passport.authenticate("jwt", { session: false }), i18n
 
 router.delete("/fine", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const fineId = req.body.fineId;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   fine = await FineDAO.getFineById(fineId);
   cost = await CostDAO.getCostById(fine.costId);
   car = await CarDAO.getCarById(cost.carId);
@@ -92,7 +92,7 @@ router.post("/add-periodic", [passport.authenticate("jwt", { session: false }), 
   const type = req.body.type;
   const period = req.body.period;
 
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   const userId = user.id;
   if (car.userId != userId) {
@@ -105,7 +105,7 @@ router.post("/add-periodic", [passport.authenticate("jwt", { session: false }), 
 
 router.delete("/periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const periodicCostId = req.body.periodicCostId;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   periodicCost = await PeriodicCostDAO.getFineById(periodicCostId);
   cost = await CostDAO.getCostById(periodicCost.costId);
   car = await CarDAO.getCarById(cost.carId);
@@ -124,7 +124,7 @@ router.post("/add-other", [passport.authenticate("jwt", { session: false }), i18
   const value = req.body.value;
   const comment = req.body.comment;
 
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   const userId = user.id;
   if (car.userId != userId) {
@@ -136,7 +136,7 @@ router.post("/add-other", [passport.authenticate("jwt", { session: false }), i18
 
 router.delete("/other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const costId = req.body.costId;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   cost = await CostDAO.getCostById(costId);
   car = await CarDAO.getCarById(cost.carId);
   const userId = user.id;
@@ -151,7 +151,7 @@ router.post("/list", [passport.authenticate("jwt", { session: false }), i18n], a
   const carId = req.body.carId;
   const from = req.body.from;
   const to = req.body.to;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   const userId = user.id;
   if (car.userId != userId) {
@@ -165,7 +165,7 @@ router.post("/list-categorized", [passport.authenticate("jwt", { session: false 
   const carId = req.body.carId;
   from = req.body.from;
   to = req.body.to;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   const userId = user.id;
   if (car.userId != userId) {

@@ -134,7 +134,7 @@ router.post("/add-repair", [passport.authenticate("jwt", { session: false }), i1
   let garageName = req.body.garageName;
   const garageId = req.body.garageId;
   const carId = req.body.carId;
-  let user = await UserDAO.getUserByAccountId(req.user.id);
+  let user = await UserDAO.getUserByIdSync(req.user.id);
   let car = await CarDAO.getCarById(carId);
   if (car.userId != user.id && req.user.type != config.get("repairman_type")) {
     throw new Error("You can add repair to car if car is yours or you are repairman");

@@ -1,5 +1,4 @@
 const Sequelize = require("sequelize");
-const AccountModel = require("../models/account");
 const UserModel = require("../models/user");
 const SMSTokenModel = require("../models/smsToken");
 const CarModelModel = require("../models/carModel");
@@ -34,7 +33,6 @@ const sequelize = new Sequelize(config.get("db_database"), config.get("db_user")
   operatorsAliases: false
 });
 
-const Account = AccountModel(sequelize, Sequelize);
 const User = UserModel(sequelize, Sequelize);
 const SMSToken = SMSTokenModel(sequelize, Sequelize);
 const CarModel = CarModelModel(sequelize, Sequelize);
@@ -55,10 +53,6 @@ const CarService = CarServiceModel(sequelize, Sequelize);
 const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
 const ReceiptService = ReceiptServiceModel(sequelize, Sequelize);
 
-User.belongsTo(Account, {
-  foreignKey: { name: "accountId", allowNull: false },
-  onDelete: "cascade"
-});
 CarBrand.hasMany(CarModel, { as: "models" });
 Car.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
 Car.belongsTo(CarModel, { foreignKey: { name: "modelId", allowNull: false } });
@@ -72,14 +66,14 @@ Part.belongsTo(PartCategory, {
   foreignKey: { name: "categoryId", allowNull: false },
   onDelete: "cascade"
 });
-Repair.belongsTo(Account, {
+Repair.belongsTo(User, {
   foreignKey: { name: "creatorId", allowNull: false }
 });
 Repair.belongsTo(Car, {
   foreignKey: { name: "carId", allowNull: false }
 });
 Repair.belongsTo(Garage, { foreignKey: { name: "garageId" } });
-Garage.belongsTo(Account, { foreignKey: { name: "ownerId" } });
+Garage.belongsTo(User, { foreignKey: { name: "ownerId" } });
 Receipt.belongsTo(Repair, {
   foreignKey: { name: "repairId", allowNull: false },
   onDelete: "cascade"
@@ -114,7 +108,6 @@ sequelize.sync({ force: syncForce }).then(() => {
 });
 
 module.exports = {
-  Account,
   User,
   SMSToken,
   Color,

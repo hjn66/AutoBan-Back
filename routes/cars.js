@@ -13,7 +13,6 @@ const i18n = require("../middlewares/i18n");
 const CarDAO = require("../DAO/carDAO");
 const UserDAO = require("../DAO/userDAO");
 const ColorDAO = require("../DAO/colorDAO");
-const AccountDAO = require("../DAO/accountDAO");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -30,7 +29,7 @@ router.post(
   "/register",
   [passport.authenticate("jwt", { session: false }), i18n, upload.single("carImage")],
   async (req, res, next) => {
-    user = await UserDAO.getUserByAccountId(req.user.id);
+    user = await UserDAO.getUserByIdSync(req.user.id);
     const userId = user.id;
     const modelId = req.body.modelId;
     const colorId = req.body.colorId;
@@ -38,12 +37,12 @@ router.post(
     const name = req.body.name;
     const plate = req.body.plate;
     const odometer = req.body.odometer;
-    const bulityear = req.body.bulityear;
+    const builtyear = req.body.builtyear;
 
     if (req.file) {
       image = config.get("car_images_dir") + "/" + req.file.filename;
     }
-    car = await CarDAO.addCar(name, plate, image, odometer, bulityear, userId, modelId, colorId);
+    car = await CarDAO.addCar(name, plate, image, odometer, builtyear, userId, modelId, colorId);
     return res.json({ success: true, car });
   }
 );
@@ -53,7 +52,7 @@ router.put(
   [passport.authenticate("jwt", { session: false }), i18n, upload.single("carImage")],
   async (req, res, next) => {
     const carId = req.body.carId;
-    user = await UserDAO.getUserByAccountId(req.user.id);
+    user = await UserDAO.getUserByIdSync(req.user.id);
     car = await CarDAO.getCarById(carId);
     const userId = user.id;
     if (car.userId != userId) {
@@ -62,7 +61,7 @@ router.put(
     car.name = req.body.name;
     car.plate = req.body.plate;
     car.odometer = req.body.odometer;
-    car.bulityear = req.body.bulityear;
+    car.builtyear = req.body.builtyear;
     car.modelId = req.body.modelId;
     car.colorId = req.body.colorId;
     if (req.file) {
@@ -76,7 +75,7 @@ router.put(
 
 router.delete("/delete", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const carId = req.body.carId;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   const userId = user.id;
   if (car.userId != userId) {
@@ -89,7 +88,7 @@ router.delete("/delete", [passport.authenticate("jwt", { session: false }), i18n
 router.put("/odometer", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const carId = req.body.carId;
   const odometer = req.body.odometer;
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   car = await CarDAO.getCarById(carId);
   if (car.userId != user.id) {
     throw new Error("You can change your car information only");
@@ -99,7 +98,7 @@ router.put("/odometer", [passport.authenticate("jwt", { session: false }), i18n]
 });
 
 router.get("/list", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  user = await UserDAO.getUserByAccountId(req.user.id);
+  user = await UserDAO.getUserByIdSync(req.user.id);
   cars = await CarDAO.listCars(user.id);
   return res.json({ success: true, cars });
 });
@@ -108,8 +107,7 @@ router.get("/list", [passport.authenticate("jwt", { session: false }), i18n], as
 // get mobileNumber & return users cars
 router.post("/list-cars", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const mobileNumber = req.body.mobileNumber;
-  let account = await AccountDAO.getAccount(mobileNumber);
-  let user = await UserDAO.getUserByAccountId(account.id);
+  let user = await UserDAO.getUser(mobileNumber);
   let cars = await CarDAO.listCars(user.id);
   return res.json({ success: true, cars });
 });

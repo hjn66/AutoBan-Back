@@ -15,7 +15,7 @@ function submitLogin() {
     password: $("input[name=psw]").val()
   };
   $.ajax({
-    url: "../accounts/authenticate-password",
+    url: "../users/authenticate-password",
     dataType: "json",
     contentType: "application/json;charset=utf-8",
     type: "POST",
@@ -491,7 +491,7 @@ function addCar(contanerId, car) {
   }).appendTo(carDiv);
   $("<div />", {
     class: "field",
-    text: `${car.bulityear}`
+    text: `${car.builtyear}`
   }).appendTo(carDiv);
   if (car.plate) {
     let plate = $("<div />", {
