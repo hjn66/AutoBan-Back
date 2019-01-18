@@ -1,12 +1,13 @@
 const config = require("config");
 const Fine = require("../startup/sequelize").Fine;
 const FineCategory = require("../startup/sequelize").FineCategory;
+const Cost = require("../startup/sequelize").Cost;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 module.exports.getFineById = async function(id) {
-  var fine = await Fine.findOne({ where: { id: id }, include: [FineCategory] });
+  var fine = await Fine.findOne({ where: { id }, include: [FineCategory, Cost] });
   if (!fine) {
     throw new Error("Fine not found");
   }
@@ -14,7 +15,7 @@ module.exports.getFineById = async function(id) {
 };
 
 module.exports.getFineByCostId = async function(costId) {
-  var fine = await Fine.findOne({ where: { costId: costId }, include: [FineCategory] });
+  var fine = await Fine.findOne({ where: { costId }, include: [FineCategory, Cost] });
   if (!fine) {
     throw new Error("Fine not found");
   }
