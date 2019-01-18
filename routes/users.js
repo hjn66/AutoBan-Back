@@ -128,7 +128,7 @@ router.put(
       user.profileImage = path.join(config.get("user_images_dir"), req.file.filename);
     }
     user = await UserDAO.updateUser(user);
-    return res.json({ success: true, message: __("User information updated successfuly") });
+    return res.json({ success: true, message: __("User information updated successfuly"), user });
   }
 );
 
@@ -139,7 +139,7 @@ router.put("/mobile", [passport.authenticate("jwt", { session: false }), i18n], 
   user = await UserDAO.getUserByIdSync(req.user.id);
   user.mobileNumber = smsToken.mobileNumber;
   user = await UserDAO.updateUser(user);
-  return res.json({ success: true, user: user });
+  return res.json({ success: true, user });
 });
 
 // return user profile information
