@@ -39,3 +39,15 @@ module.exports.updateFuel = async function(fuel) {
 module.exports.removeFuel = async function(fuel) {
   return await fuel.destroy();
 };
+
+module.exports.listFuelByCar = async function(carId, from, to) {
+  let query = {
+    [Op.gte]: from || "1900-01-01",
+    [Op.lte]: to || "2200-01-01"
+  };
+
+  return await Fuel.findAll({
+    include: [{ model: Cost, where: { carId, date: query } }],
+    order: [[Cost, "date", "DESC"]]
+  });
+};
