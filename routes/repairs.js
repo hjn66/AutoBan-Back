@@ -37,6 +37,31 @@ router.post("/add-part-category", [passport.authenticate("jwt", { session: false
   });
 });
 
+router.delete("/part-category", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const categoryId = req.body.categoryId;
+  let partCategory = await PartDAO.getPartCategoryById(categoryId);
+  await PartDAO.removePartCategory(partCategory);
+  return res.json({
+    success: true,
+    message: __("Part category deleted successfuly")
+  });
+});
+
+router.put("/part-category", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const persianName = req.body.persianName;
+  const englishName = req.body.englishName;
+  const categoryId = req.body.categoryId;
+  let partCategory = await PartDAO.getPartCategoryById(categoryId);
+  partCategory.persianName = persianName;
+  partCategory.englishName = englishName;
+  partCategory = await PartDAO.updatePartCategory(partCategory);
+  return res.json({
+    success: true,
+    message: __("Part category updated successfuly"),
+    partCategory
+  });
+});
+
 router.get(
   "/list-part-categories",
   [passport.authenticate("jwt", { session: false }), i18n],
