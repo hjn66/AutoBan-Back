@@ -13,6 +13,14 @@ module.exports.listPartCategory = async function() {
   return await PartCategory.findAll();
 };
 
+module.exports.updatePartCategory = async function(partCategory) {
+  return await partCategory.save();
+};
+
+module.exports.removePartCategory = async function(partCategory) {
+  return await partCategory.destroy();
+};
+
 module.exports.addPart = async function(part) {
   return await Part.create(part);
 };
