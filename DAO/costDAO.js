@@ -36,7 +36,19 @@ module.exports.listCostByCar = async function(carId, from, to) {
     [Op.lte]: to || "2200-01-01"
   };
 
-  return await Cost.findAll({ where: { carId: carId, date: query }, order: [["date", "DESC"]] });
+  return await Cost.findAll({ where: { carId, date: query }, order: [["date", "DESC"]] });
+};
+
+module.exports.listOtherCostByCar = async function(carId, from, to) {
+  let query = {
+    [Op.gte]: from || "1900-01-01",
+    [Op.lte]: to || "2200-01-01"
+  };
+
+  return await Cost.findAll({
+    where: { carId, date: query, type: config.get("other_cost_type") },
+    order: [["date", "DESC"]]
+  });
 };
 
 module.exports.listCategorizedCostByCar = async function(carId) {
@@ -45,7 +57,7 @@ module.exports.listCategorizedCostByCar = async function(carId) {
     [Op.lte]: to || "2200-01-01"
   };
   return await Cost.findAll({
-    where: { carId: carId, date: query },
+    where: { carId, date: query },
     group: ["type"],
     attributes: ["type", [Sequelize.fn("SUM", Sequelize.col("value")), "totalCost"]]
   });

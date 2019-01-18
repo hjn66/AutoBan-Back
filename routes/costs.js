@@ -199,7 +199,7 @@ router.post("/other", [passport.authenticate("jwt", { session: false }), i18n], 
   if (car.userId != req.user.id) {
     throw new Error("You can add cost to your car only");
   }
-  let cost = await CostDAO.addCost("OTHER", date, value, comment, carId);
+  let cost = await CostDAO.addCost(config.get("other_cost_type"), date, value, comment, carId);
   return res.json({ success: true, message: __("Cost information added successfuly"), cost });
 });
 
@@ -278,6 +278,18 @@ router.post("/list-periodics", [passport.authenticate("jwt", { session: false })
   }
   let periodicCosts = await PeriodicCostDAO.listPeriodicCostByCar(carId, from, to);
   return res.json({ success: true, periodicCosts });
+});
+
+router.post("/list-others", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const carId = req.body.carId;
+  const from = req.body.from;
+  const to = req.body.to;
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
+    throw new Error("You can list your car's cost only");
+  }
+  let costs = await CostDAO.listOtherCostByCar(carId, from, to);
+  return res.json({ success: true, costs });
 });
 
 router.post("/list-categorized", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
