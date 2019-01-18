@@ -1,11 +1,12 @@
 const config = require("config");
 const PeriodicCost = require("../startup/sequelize").PeriodicCost;
+const Cost = require("../startup/sequelize").Cost;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 module.exports.getPeriodicCostById = async function(id) {
-  var periodicCost = await PeriodicCost.findOne({ where: { id: id } });
+  var periodicCost = await PeriodicCost.findByPk(id, { include: [Cost] });
   if (!periodicCost) {
     throw new Error("PeriodicCost not found");
   }
@@ -13,7 +14,7 @@ module.exports.getPeriodicCostById = async function(id) {
 };
 
 module.exports.getPeriodicCostByCostId = async function(costId) {
-  var periodicCost = await PeriodicCost.findOne({ where: { costId: costId } });
+  var periodicCost = await PeriodicCost.findOne({ where: { costId }, include: [Cost] });
   if (!periodicCost) {
     throw new Error("PeriodicCost not found");
   }
