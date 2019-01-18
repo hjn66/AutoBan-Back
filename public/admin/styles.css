@@ -323,27 +323,27 @@ button.accordion {
 }
 .plate .left-side {
   background: #003399;
-  padding: 22px 12px 0 0;
+  color: #003399;
+  padding: 2px 4px;
+  /* padding: 22px 12px 0 0; */
   float: left;
 }
+
+.plate .left-side::after {
+  content: ".";
+}
 .plate .number {
-  margin: 0 3px;
+  padding: 2px 4px;
   float: left;
   letter-spacing: 1px;
 }
 
 .plate .city {
-  padding: 0 3px;
+  padding: 2px 4px;
   border-left: 1px solid #000;
   float: left;
 }
 
-.plate .city::before {
-  content: "ایران";
-  position: absolute;
-  font-size: 5px;
-  padding: 0 4px;
-}
 .car {
   width: 100%;
   float: right;
