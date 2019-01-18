@@ -476,3 +476,22 @@ button.accordion {
   width: 40%;
   margin: 30%;
 }
+
+.ui-dialog {
+  font-family: "BYekan";
+}
+.ui-widget-content p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ui-dialog-titlebar {
+  padding: 2px !important;
+}
+.ui-widget-content button {
+  font-family: "BYekan";
+  padding: 0 20px;
+  width: auto;
+  margin: 25px auto 0px auto;
+  display: flex;
+}

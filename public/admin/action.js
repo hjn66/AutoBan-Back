@@ -141,7 +141,8 @@ function addService(serviceId, id, name) {
   }).appendTo(service);
   $("<button />", {
     class: "delete",
-    text: "حذف"
+    text: "حذف",
+    onclick: `deleteService(${id})`
   }).appendTo(service);
   service.appendTo(option);
   option.appendTo(container);
@@ -153,12 +154,23 @@ function replaceNull(data) {
   } else return data;
 }
 function editService(id, name) {
-  // document.getElementById('addServiceModal').style.display='block'
   $("#addServiceModal").show();
   $("#serviceId").val(id);
   $("input[name=name]").val(name);
   $("#add-edit").text("ویرایش");
 }
+
+function deleteService(id) {
+  $("#dialog").dialog("open");
+  $("#serviceId").val(id);
+}
+
+function closeServiceModal() {
+  $("#addServiceModal").hide();
+  $("#serviceId").val("");
+}
+
+function removeService(id) {}
 function togglePart(id) {
   $("#p" + id).toggle();
 }
@@ -230,6 +242,28 @@ function addServiceToDB() {
       }
     });
   }
+}
+
+function removeServiceFromDB() {
+  var param = {
+    serviceId: $("#serviceId").val()
+  };
+  $.ajax({
+    url: "../repairs/service",
+    dataType: "json",
+    contentType: "application/json;charset=utf-8",
+    type: "DELETE",
+    data: JSON.stringify(param),
+    beforeSend: function(xhr) {
+      /* Authorization header */
+      xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
+    },
+    success: function(response) {
+      $("#serviceId").val("");
+      $("#dialog").dialog("close");
+      getServices();
+    }
+  });
 }
 
 function addPartToDB() {
@@ -319,7 +353,6 @@ function addPart(contanerId, part) {
   propery.appendTo(properties);
   properties.hide();
   properties.appendTo(option);
-  // $("<label />", { onclick: "openPart(" + id + ")", id: "category" + id, text: name }).appendTo(option);
   option.appendTo(container);
 }
 
