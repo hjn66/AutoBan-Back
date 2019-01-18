@@ -50,7 +50,7 @@ router.put("/fuel", [passport.authenticate("jwt", { session: false }), i18n], as
   let cost = fuel.cost;
   let car = await CarDAO.getCarById(cost.carId);
   if (car.userId != req.user.id) {
-    throw new Error("You can update cost of your car only");
+    throw new Error("You can update your car's cost only");
   }
   cost.date = date;
   cost.value = value;
@@ -109,7 +109,7 @@ router.put("/fine", [passport.authenticate("jwt", { session: false }), i18n], as
   let cost = fine.cost;
   let car = await CarDAO.getCarById(cost.carId);
   if (car.userId != req.user.id) {
-    throw new Error("You can update cost of your car only");
+    throw new Error("You can update your car's cost only");
   }
   cost.date = date;
   cost.value = value;
@@ -118,9 +118,7 @@ router.put("/fine", [passport.authenticate("jwt", { session: false }), i18n], as
   fine.fineCode = fineCode;
   fine = await FineDAO.updateFine(fine);
   fine.cost = cost;
-  if (odometer && odometer > car.odometer) {
-    await CarDAO.updateOdometer(car, odometer);
-  }
+
   return res.json({ success: true, message: __("Fine information updated successfuly"), fine });
 });
 
@@ -154,9 +152,35 @@ router.post("/periodic", [passport.authenticate("jwt", { session: false }), i18n
   return res.json({ success: true, message: __("PeriodicCost information added successfuly"), periodicCost });
 });
 
+router.put("/periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const periodicCostId = req.body.periodicCostId;
+  const date = req.body.date;
+  const value = req.body.value;
+  const comment = req.body.comment;
+  const type = req.body.type;
+  const period = req.body.period;
+
+  let periodicCost = await PeriodicCostDAO.getPeriodicCostById(periodicCostId);
+  let cost = periodicCost.cost;
+  let car = await CarDAO.getCarById(cost.carId);
+  if (car.userId != req.user.id) {
+    throw new Error("You can update your car's cost only");
+  }
+  cost.date = date;
+  cost.value = value;
+  cost.comment = comment;
+  cost = await CostDAO.updateCost(cost);
+  periodicCost.type = type;
+  periodicCost.period = period;
+  periodicCost = await PeriodicCostDAO.updatePeriodicCost(periodicCost);
+  periodicCost.cost = cost;
+
+  return res.json({ success: true, message: __("PeriodicCost information updated successfuly"), periodicCost });
+});
+
 router.delete("/periodic", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const periodicCostId = req.body.periodicCostId;
-  let periodicCost = await PeriodicCostDAO.getFineById(periodicCostId);
+  let periodicCost = await PeriodicCostDAO.getPeriodicCostById(periodicCostId);
   let cost = periodicCost.cost;
   let car = await CarDAO.getCarById(cost.carId);
   if (car.userId != req.user.id) {
@@ -180,6 +204,24 @@ router.post("/other", [passport.authenticate("jwt", { session: false }), i18n], 
   return res.json({ success: true, message: __("Cost information added successfuly"), cost });
 });
 
+router.put("/other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const costId = req.body.costId;
+  const date = req.body.date;
+  const value = req.body.value;
+  const comment = req.body.comment;
+
+  let cost = await CostDAO.getCostById(costId);
+  let car = await CarDAO.getCarById(cost.carId);
+  if (car.userId != req.user.id) {
+    throw new Error("You can update your car's cost only");
+  }
+  cost.date = date;
+  cost.value = value;
+  cost.comment = comment;
+  cost = await CostDAO.updateCost(cost);
+  return res.json({ success: true, message: __("Cost information updated successfuly"), cost });
+});
+
 router.delete("/other", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const costId = req.body.costId;
   let cost = await CostDAO.getCostById(costId);
@@ -188,7 +230,7 @@ router.delete("/other", [passport.authenticate("jwt", { session: false }), i18n]
     throw new Error("You can remove your car's cost only");
   }
   await CostDAO.removeCost(cost);
-  return res.json({ success: true, message: __("Cost deleted successfuly") });
+  return res.json({ success: true, message: __("Cost information deleted successfuly") });
 });
 
 router.post("/list", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
