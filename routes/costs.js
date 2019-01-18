@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const config = require("config");
 const i18n = require("../middlewares/i18n");
-const UserDAO = require("../DAO/userDAO");
 const CarDAO = require("../DAO/carDAO");
 const CostDAO = require("../DAO/costDAO");
 const FuelDAO = require("../DAO/fuelDAO");
@@ -243,6 +242,18 @@ router.post("/list", [passport.authenticate("jwt", { session: false }), i18n], a
   }
   let costs = await CostDAO.listCostByCar(carId, from, to);
   return res.json({ success: true, costs });
+});
+
+router.post("/list-fuels", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const carId = req.body.carId;
+  const from = req.body.from;
+  const to = req.body.to;
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
+    throw new Error("You can list your car's cost only");
+  }
+  let fuels = await FuelDAO.listFuelByCar(carId, from, to);
+  return res.json({ success: true, fuels });
 });
 
 router.post("/list-categorized", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
