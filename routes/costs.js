@@ -256,6 +256,18 @@ router.post("/list-fuels", [passport.authenticate("jwt", { session: false }), i1
   return res.json({ success: true, fuels });
 });
 
+router.post("/list-fines", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const carId = req.body.carId;
+  const from = req.body.from;
+  const to = req.body.to;
+  let car = await CarDAO.getCarById(carId);
+  if (car.userId != req.user.id) {
+    throw new Error("You can list your car's cost only");
+  }
+  let fines = await FineDAO.listFineByCar(carId, from, to);
+  return res.json({ success: true, fines });
+});
+
 router.post("/list-categorized", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   const carId = req.body.carId;
   from = req.body.from;
