@@ -43,5 +43,6 @@
   "You can update receipt Items of repair that you added": "شما می‌توانید اقلام رسید تعمیراتی که توسط شما ایجاد شده است را تغییر دهید",
   "Receipt Items updated successfuly": "اقلام رسید با موفقیت به روزرسانی شد",
   "car service added successfuly": "دسته‌بندی سرویس با موفقیت اضافه شد",
-  "car service updated successfuly": "دسته‌بندی سرویس با موفقیت به روزرسانی شد"
+  "car service updated successfuly": "دسته‌بندی سرویس با موفقیت به روزرسانی شد",
+  "car service deleted successfuly": "دسته‌بندی سرویس با موفقیت حذف شد"
 }

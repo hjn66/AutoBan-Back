@@ -87,6 +87,16 @@ router.put("/service", [passport.authenticate("jwt", { session: false }), i18n],
   });
 });
 
+router.delete("/service", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
+  const serviceId = req.body.serviceId;
+  let carService = await CarServiceDAO.getServiceById(serviceId);
+  await CarServiceDAO.removeCarService(carService);
+  return res.json({
+    success: true,
+    message: __("car service deleted successfuly")
+  });
+});
+
 router.get("/list-services", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
   let carServices = await CarServiceDAO.listCarService();
   return res.json({ success: true, carServices });
