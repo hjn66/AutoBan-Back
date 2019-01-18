@@ -22,5 +22,6 @@
   "sms_wsdl_url": "http://www.epayamak.net/WebSrv/EPWebservice.asmx?wsdl",
   "sms_number": "300097500096",
   "user_type": "USER",
-  "repairman_type": "REPAIRMAN"
+  "repairman_type": "REPAIRMAN",
+  "other_cost_type": "OTHER"
 }
