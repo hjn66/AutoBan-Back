@@ -19,12 +19,12 @@ module.exports.addCarService = async function(persianName, englishName) {
   });
 };
 
-module.exports.updateCarService = async function(CarService) {
-  return await CarService.save();
+module.exports.updateCarService = async function(carService) {
+  return await carService.save();
 };
 
-module.exports.removeCarService = async function(CarService) {
-  return await CarService.destroy();
+module.exports.removeCarService = async function(carService) {
+  return await carService.destroy();
 };
 
 module.exports.listCarService = async function() {
