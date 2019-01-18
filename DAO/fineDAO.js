@@ -7,7 +7,7 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 module.exports.getFineById = async function(id) {
-  var fine = await Fine.findOne({ where: { id }, include: [FineCategory, Cost] });
+  var fine = await Fine.findByPk(id, { include: [FineCategory, Cost] });
   if (!fine) {
     throw new Error("Fine not found");
   }
