@@ -5,6 +5,14 @@ const Utils = require("../middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
+module.exports.getPartCategoryById = async function(id) {
+  category = await PartCategory.findByPk(id);
+  if (!category) {
+    throw new Error("Part category not found");
+  }
+  return category;
+};
+
 module.exports.addPartCategory = async function(persianName, englishName) {
   return await PartCategory.create({ persianName: persianName, englishName: englishName });
 };
