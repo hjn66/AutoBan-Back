@@ -69,7 +69,8 @@ Fine.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
 Fine.belongsTo(FineCategory, { foreignKey: { allowNull: false } });
 PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
 Part.belongsTo(PartCategory, {
-  foreignKey: { name: "categoryId", allowNull: false }
+  foreignKey: { name: "categoryId", allowNull: false },
+  onDelete: "cascade"
 });
 Repair.belongsTo(Account, {
   foreignKey: { name: "creatorId", allowNull: false }
