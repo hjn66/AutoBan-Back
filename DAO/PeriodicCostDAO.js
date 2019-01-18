@@ -36,3 +36,15 @@ module.exports.updatePeriodicCost = async function(periodicCost) {
 module.exports.removePeriodicCost = async function(periodicCost) {
   return await periodicCost.destroy();
 };
+
+module.exports.listPeriodicCostByCar = async function(carId, from, to) {
+  let query = {
+    [Op.gte]: from || "1900-01-01",
+    [Op.lte]: to || "2200-01-01"
+  };
+
+  return await PeriodicCost.findAll({
+    include: [{ model: Cost, where: { carId, date: query } }],
+    order: [[Cost, "date", "DESC"]]
+  });
+};
