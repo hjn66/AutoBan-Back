@@ -7,9 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <title>لیست لیست قطعات - اتوبان</title>
+  <title>لیست قطعات - اتوبان</title>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/start/jquery-ui.min.css" rel="stylesheet">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
   <script src="action.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -29,22 +31,26 @@
     <a href="#logout" onclick="logout()" class="logout">خروج از سیستم</a>
   </div>
   <div class="container">
-    <h1>لیست لیست قطعات</h1>
+    <h1>لیست قطعات</h1>
 
     <div class="list" id="categories"></div>
   </div>
   <div id="addCategoryModal" class="modal">
     <form class="modal-content animate">
       <div class="container">
-        <input type="hidden" id="categoryId" />
         <div class="field">
           <label for="name"><b>نام دسته‌بندی</b></label> <input type="text" placeholder="نام دسته‌بندی" name="name" required />
+          <input type="hidden" id="categoryId" />
         </div>
-        <button type="button" onclick="addCategoryToDB()">اضافه</button>
-        <button type="button" onclick="document.getElementById('addCategoryModal').style.display='none'" class="cancelbtn">
+        <button type="button" onclick="addCategoryToDB()" id="add-edit">اضافه</button>
+        <button type="button" onclick="closeCategoryModal()" class="cancelbtn">
           انصراف
         </button>
       </div>
+      <div id="dialog" title="حذف دسته‌بندی قطعه">
+          <p> آیا از حذف این دسته قطعات اطمینان دارید؟ با حذف این دسته‌بندی تمامی قطعات این دسته نیز حذف می‌شوند</p>
+          <button  onclick="removeCategoryFromDB()" type="button">بله</button>
+        </div>
   </div>
 
   <script>
@@ -55,8 +61,25 @@
     window.onclick = function (event) {
       if (event.target == modal) {
         modal.style.display = "none";
+        $("#categoryId").val("");
+        $("input[name=name]").val("");
       }
     };
+
+    $("#dialog").dialog({
+      autoOpen: false,
+      show: {
+        effect: "Bounce",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+    $('#dialog').on('dialogclose', function (event) {
+      $("#categoryId").val("");
+    });
   </script>
 </body>
 

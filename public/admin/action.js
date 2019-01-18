@@ -2,11 +2,13 @@ function logout() {
   localStorage.removeItem("jwt-token");
   window.location.replace("login.html");
 }
+
 function isLogin() {
   if (localStorage["jwt-token"]) {
     openHomePage();
   }
 }
+
 function submitLogin() {
   var param = {
     username: $("input[name=uname]").val(),
@@ -105,25 +107,41 @@ function getParts() {
     }
   });
 }
+
 function openPart(id) {
   window.location.replace("parts.html?categoryId=" + id);
 }
+
 function addCategory(contanerId, id, name) {
   var container = $("#" + contanerId);
   var option = $("<div />", {
-    class: "option",
-    onclick: "openPart(" + id + ")"
+    class: "option"
   });
-  $("<label />", {
-    class: "accordion",
-    id: "category" + id,
+  let category = $("<div />", {
+    class: "accordion"
+  });
+  $("<a />", {
+    class: "name",
+    //  onclick: "openPart(" + id + ")",
+    href: `parts.html?categoryId=${id}`,
     text: name
-  }).appendTo(option);
+  }).appendTo(category);
+  $("<button />", {
+    class: "edit",
+    text: "ویرایش",
+    onclick: `editCategory(${id},"${name}")`
+  }).appendTo(category);
+  $("<button />", {
+    class: "delete",
+    text: "حذف",
+    onclick: `deleteCategory(${id})`
+  }).appendTo(category);
+  category.appendTo(option);
   option.appendTo(container);
 }
 
-function addService(serviceId, id, name) {
-  var container = $("#" + serviceId);
+function addService(contanerId, id, name) {
+  var container = $("#" + contanerId);
   var option = $("<div />", {
     class: "option"
   });
@@ -153,6 +171,19 @@ function replaceNull(data) {
     return "---";
   } else return data;
 }
+
+function editCategory(id, name) {
+  $("#addCategoryModal").show();
+  $("#categoryId").val(id);
+  $("input[name=name]").val(name);
+  $("#add-edit").text("ویرایش");
+}
+
+function deleteCategory(id) {
+  $("#dialog").dialog("open");
+  $("#categoryId").val(id);
+}
+
 function editService(id, name) {
   $("#addServiceModal").show();
   $("#serviceId").val(id);
@@ -165,38 +196,67 @@ function deleteService(id) {
   $("#serviceId").val(id);
 }
 
+function closeCategoryModal() {
+  $("#addCategoryModal").hide();
+  $("#categoryId").val("");
+  $("input[name=name]").val("");
+}
+
 function closeServiceModal() {
   $("#addServiceModal").hide();
   $("#serviceId").val("");
+  $("input[name=name]").val("");
 }
 
 function removeService(id) {}
+
 function togglePart(id) {
   $("#p" + id).toggle();
 }
 
 function addCategoryToDB() {
+  let categoryId = $("#categoryId").val();
   var param = {
-    persianName: $("input[name=name]").val()
+    persianName: $("input[name=name]").val(),
+    categoryId
   };
-  console.log(param);
-
-  $.ajax({
-    url: "../repairs/add-part-category",
-    dataType: "json",
-    contentType: "application/json;charset=utf-8",
-    type: "POST",
-    data: JSON.stringify(param),
-    beforeSend: function(xhr) {
-      /* Authorization header */
-      xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
-    },
-    success: function(response) {
-      $("input[name=name]").val("");
-      $("#addCategoryModal").hide();
-      getCategories();
-    }
-  });
+  if (categoryId) {
+    $.ajax({
+      url: "../repairs/part-category",
+      dataType: "json",
+      contentType: "application/json;charset=utf-8",
+      type: "PUT",
+      data: JSON.stringify(param),
+      beforeSend: function(xhr) {
+        /* Authorization header */
+        xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
+      },
+      success: function(response) {
+        $("#categoryId").val("");
+        $("#add-edit").text("اضافه");
+        $("input[name=name]").val("");
+        $("#addCategoryModal").hide();
+        getCategories();
+      }
+    });
+  } else {
+    $.ajax({
+      url: "../repairs/add-part-category",
+      dataType: "json",
+      contentType: "application/json;charset=utf-8",
+      type: "POST",
+      data: JSON.stringify(param),
+      beforeSend: function(xhr) {
+        /* Authorization header */
+        xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
+      },
+      success: function(response) {
+        $("input[name=name]").val("");
+        $("#addCategoryModal").hide();
+        getCategories();
+      }
+    });
+  }
 }
 
 function addServiceToDB() {
@@ -262,6 +322,29 @@ function removeServiceFromDB() {
       $("#serviceId").val("");
       $("#dialog").dialog("close");
       getServices();
+    }
+  });
+}
+
+function removeCategoryFromDB() {
+  var param = {
+    categoryId: $("#categoryId").val()
+  };
+
+  $.ajax({
+    url: "../repairs/part-category",
+    dataType: "json",
+    contentType: "application/json;charset=utf-8",
+    type: "DELETE",
+    data: JSON.stringify(param),
+    beforeSend: function(xhr) {
+      /* Authorization header */
+      xhr.setRequestHeader("Authorization", localStorage["jwt-token"]);
+    },
+    success: function(response) {
+      $("#categoryId").val("");
+      $("#dialog").dialog("close");
+      getCategories();
     }
   });
 }
