@@ -10,9 +10,12 @@ const multer = require("multer");
 const randToken = require("rand-token");
 
 const i18n = require("../middlewares/i18n");
+const authorize = require("../middlewares/authorize");
 const CarDAO = require("../DAO/carDAO");
 const UserDAO = require("../DAO/userDAO");
 const ColorDAO = require("../DAO/colorDAO");
+const USER = config.get("user_type");
+const ADMIN = config.get("admin_type");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -20,14 +23,22 @@ var storage = multer.diskStorage({
   },
   filename: function(req, file, cb) {
     raw = randToken.generate(16);
-    cb(null, raw.toString("hex") + Date.now() + path.extname(file.originalname));
+    cb(
+      null,
+      raw.toString("hex") + Date.now() + path.extname(file.originalname)
+    );
   }
 });
 var upload = multer({ storage });
 
 router.post(
   "/register",
-  [passport.authenticate("jwt", { session: false }), i18n, upload.single("carImage")],
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    upload.single("carImage")
+  ],
   async (req, res, next) => {
     user = await UserDAO.getUserByIdSync(req.user.id);
     const userId = user.id;
@@ -42,14 +53,28 @@ router.post(
     if (req.file) {
       image = config.get("car_images_dir") + "/" + req.file.filename;
     }
-    car = await CarDAO.addCar(name, plate, image, odometer, builtyear, userId, modelId, colorId);
+    car = await CarDAO.addCar(
+      name,
+      plate,
+      image,
+      odometer,
+      builtyear,
+      userId,
+      modelId,
+      colorId
+    );
     return res.json({ success: true, car });
   }
 );
 
 router.put(
   "/update",
-  [passport.authenticate("jwt", { session: false }), i18n, upload.single("carImage")],
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    upload.single("carImage")
+  ],
   async (req, res, next) => {
     const carId = req.body.carId;
     user = await UserDAO.getUserByIdSync(req.user.id);
@@ -69,63 +94,97 @@ router.put(
       car.image = config.get("car_images_dir") + "/" + req.file.filename;
     }
     car = await CarDAO.updateCar(car);
-    return res.json({ success: true, message: __("Car information updated successfuly") });
+    return res.json({
+      success: true,
+      message: __("Car information updated successfuly")
+    });
   }
 );
 
-router.delete("/delete", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  const carId = req.body.carId;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  const userId = user.id;
-  if (car.userId != userId) {
-    throw new Error("You can remove your car only");
+router.delete(
+  "/delete",
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  async (req, res, next) => {
+    const carId = req.body.carId;
+    user = await UserDAO.getUserByIdSync(req.user.id);
+    car = await CarDAO.getCarById(carId);
+    const userId = user.id;
+    if (car.userId != userId) {
+      throw new Error("You can remove your car only");
+    }
+    car = await CarDAO.removeCar(car);
+    return res.json({ success: true, message: __("Car deleted successfuly") });
   }
-  car = await CarDAO.removeCar(car);
-  return res.json({ success: true, message: __("Car deleted successfuly") });
-});
+);
 
-router.put("/odometer", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  const carId = req.body.carId;
-  const odometer = req.body.odometer;
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  car = await CarDAO.getCarById(carId);
-  if (car.userId != user.id) {
-    throw new Error("You can change your car information only");
+router.put(
+  "/odometer",
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  async (req, res, next) => {
+    const carId = req.body.carId;
+    const odometer = req.body.odometer;
+    user = await UserDAO.getUserByIdSync(req.user.id);
+    car = await CarDAO.getCarById(carId);
+    if (car.userId != user.id) {
+      throw new Error("You can change your car information only");
+    }
+    car = await CarDAO.updateOdometer(car, odometer);
+    return res.json({
+      success: true,
+      message: __("Odometer updated successfuly")
+    });
   }
-  car = await CarDAO.updateOdometer(car, odometer);
-  return res.json({ success: true, message: __("Odometer updated successfuly") });
-});
+);
 
-router.get("/list", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  user = await UserDAO.getUserByIdSync(req.user.id);
-  cars = await CarDAO.listCars(user.id);
-  return res.json({ success: true, cars });
-});
+router.get(
+  "/list",
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  async (req, res, next) => {
+    user = await UserDAO.getUserByIdSync(req.user.id);
+    cars = await CarDAO.listCars(user.id);
+    return res.json({ success: true, cars });
+  }
+);
 
 // Call By Admin
 // get mobileNumber & return users cars
-router.post("/list-cars", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  const mobileNumber = req.body.mobileNumber;
-  let user = await UserDAO.getUser(mobileNumber);
-  let cars = await CarDAO.listCars(user.id);
-  return res.json({ success: true, cars });
-});
+router.post(
+  "/list-cars",
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([ADMIN])],
+  async (req, res, next) => {
+    const mobileNumber = req.body.mobileNumber;
+    let user = await UserDAO.getUser(mobileNumber);
+    let cars = await CarDAO.listCars(user.id);
+    return res.json({ success: true, cars });
+  }
+);
 
-router.get("/list-car-brands", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  carBrands = await CarDAO.listCarBrands();
-  return res.json({ success: true, carBrands });
-});
+router.get(
+  "/list-car-brands",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    carBrands = await CarDAO.listCarBrands();
+    return res.json({ success: true, carBrands });
+  }
+);
 
-router.post("/list-car-models", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  const brandId = req.body.brandId;
-  carModels = await CarDAO.listCarModels(brandId);
-  return res.json({ success: true, carModels });
-});
+router.post(
+  "/list-car-models",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const brandId = req.body.brandId;
+    carModels = await CarDAO.listCarModels(brandId);
+    return res.json({ success: true, carModels });
+  }
+);
 
-router.get("/list-colors", [passport.authenticate("jwt", { session: false }), i18n], async (req, res, next) => {
-  colors = await ColorDAO.listColors();
-  return res.json({ success: true, colors });
-});
+router.get(
+  "/list-colors",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    colors = await ColorDAO.listColors();
+    return res.json({ success: true, colors });
+  }
+);
 
 module.exports = router;
