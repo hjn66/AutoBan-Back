@@ -203,4 +203,32 @@ router.get(
   }
 );
 
+router.get(
+  "/car-model",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    if (req.query.id) {
+      let carModel = await CarModelDAO.getCarModelById(req.query.id);
+      return res.json({ success: true, carModel });
+    } else {
+      let carModel = await CarModelDAO.getCarModelByName(req.query.persianName);
+      return res.json({ success: true, carModel });
+    }
+  }
+);
+
+router.get(
+  "/car-brand",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    if (req.query.id) {
+      let carBrand = await CarBrandDAO.getCarBrandById(req.query.id);
+      return res.json({ success: true, carBrand });
+    } else {
+      let carBrand = await CarBrandDAO.getCarBrandByName(req.query.persianName);
+      return res.json({ success: true, carBrand });
+    }
+  }
+);
+
 module.exports = router;

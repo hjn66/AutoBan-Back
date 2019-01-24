@@ -48,5 +48,7 @@
   "Part category deleted successfuly": "دسته‌بندی قطعه با موفقیت حذف شد",
   "Fuel information updated successfuly": "اطلاعات سوختگیری با موفقیت به‌روزرسانی شد",
   "Cost information added successfuly": "اطلاعات هزینه با موفیت اضافه شد",
-  "Color not found": "رنگ مورد نظر یافت نشد"
+  "Color not found": "رنگ مورد نظر یافت نشد",
+  "Car model not found": "مدل ماشین مورد نظر یافت نشد",
+  "Car brand not found": "برند ماشین مورد نظر یافت نشد"
 }
