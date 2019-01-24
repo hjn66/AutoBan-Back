@@ -15,7 +15,16 @@ module.exports.getCarById = async function(id) {
   return car;
 };
 
-module.exports.addCar = async function(name, plate, image, odometer, builtyear, userId, modelId, colorId) {
+module.exports.addCar = async function(
+  name,
+  plate,
+  image,
+  odometer,
+  builtyear,
+  userId,
+  modelId,
+  colorId
+) {
   if (image == "") {
     carModel = await CarModel.findByPk(modelId);
     if (!carModel) {
@@ -55,16 +64,15 @@ module.exports.removeCar = async function(car) {
 };
 
 module.exports.listCars = async function(userId) {
-  let cars = await Car.findAll({ where: { userId: userId }, include: [CarModel, Color] });
+  let cars = await Car.findAll({
+    where: { userId: userId },
+    include: [CarModel, Color]
+  });
   for (const index in cars) {
     let brand = await CarBrand.findByPk(cars[index].car_model.carBrandId);
     cars[index].dataValues.car_brand = brand;
   }
   return cars;
-};
-
-module.exports.listCarBrands = async function() {
-  return await CarBrand.findAll();
 };
 
 module.exports.listCarModels = async function(brandId) {
