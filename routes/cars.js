@@ -187,4 +187,18 @@ router.get(
   }
 );
 
+router.get(
+  "/color",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    if (req.query.id) {
+      let color = await ColorDAO.getColorById(req.query.id);
+      return res.json({ success: true, color });
+    } else {
+      let color = await ColorDAO.getColorByName(req.query.persianName);
+      return res.json({ success: true, color });
+    }
+  }
+);
+
 module.exports = router;
