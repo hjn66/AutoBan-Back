@@ -2,7 +2,8 @@ module.exports = async PartCategory => {
   await PartCategory.create({
     persianName: "روغن موتور",
     englishName: "Engine Oil",
-    checkPeriodic: true
+    checkPeriodic: true,
+    unit: "لیتر"
   });
   await PartCategory.create({
     persianName: "فیلتر روغن",
@@ -27,12 +28,14 @@ module.exports = async PartCategory => {
   await PartCategory.create({
     persianName: "روغن هیدرولیک",
     englishName: "Hydraulic Oil",
-    checkPeriodic: true
+    checkPeriodic: true,
+    unit: "لیتر"
   });
   await PartCategory.create({
     persianName: "روغن گیربکس",
     englishName: "Gearbox Oil",
-    checkPeriodic: true
+    checkPeriodic: true,
+    unit: "لیتر"
   });
   await PartCategory.create({
     persianName: "ضد یخ",
