@@ -7,6 +7,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     englishName: { type: Sequelize.STRING, allowNull: true },
     persianName: { type: Sequelize.STRING, allowNull: false, unique: true },
-    checkPeriodic: { type: Sequelize.BOOLEAN, defaultValue: false }
+    checkPeriodic: { type: Sequelize.BOOLEAN, defaultValue: false },
+    unit: { type: Sequelize.STRING, defaultValue: "عدد" }
   });
 };
