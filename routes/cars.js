@@ -12,6 +12,8 @@ const randToken = require("rand-token");
 const i18n = require("../middlewares/i18n");
 const authorize = require("../middlewares/authorize");
 const CarDAO = require("../DAO/carDAO");
+const CarModelDAO = require("../DAO/carModelDAO");
+const CarBrandDAO = require("../DAO/carBrandDAO");
 const UserDAO = require("../DAO/userDAO");
 const ColorDAO = require("../DAO/colorDAO");
 const USER = config.get("user_type");
@@ -163,7 +165,7 @@ router.get(
   "/list-car-brands",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    carBrands = await CarDAO.listCarBrands();
+    carBrands = await CarBrandDAO.listCarBrands();
     return res.json({ success: true, carBrands });
   }
 );
@@ -173,7 +175,7 @@ router.post(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const brandId = req.body.brandId;
-    carModels = await CarDAO.listCarModels(brandId);
+    carModels = await CarModelDAO.listCarModels(brandId);
     return res.json({ success: true, carModels });
   }
 );
