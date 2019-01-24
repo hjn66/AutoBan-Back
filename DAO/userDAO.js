@@ -7,7 +7,7 @@ const Op = Sequelize.Op;
 module.exports.getUserById = function(id, callback) {
   User.findByPk(id).then(user => {
     if (!user) {
-      return callback("User not Found", null);
+      return callback("User not found", null);
     }
     return callback(null, user);
   });
@@ -21,7 +21,15 @@ module.exports.getUserByIdSync = async function(id) {
   return user;
 };
 
-module.exports.addUser = async function(mobileNumber, password, type, firstName, lastName, email, profilePic) {
+module.exports.addUser = async function(
+  mobileNumber,
+  password,
+  type,
+  firstName,
+  lastName,
+  email,
+  profilePic
+) {
   if (!firstName || !lastName) {
     throw new Error("firstName and lastName required");
   }
