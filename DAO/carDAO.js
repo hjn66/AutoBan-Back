@@ -74,7 +74,3 @@ module.exports.listCars = async function(userId) {
   }
   return cars;
 };
-
-module.exports.listCarModels = async function(brandId) {
-  return await CarModel.findAll({ where: { carBrandId: brandId } });
-};
