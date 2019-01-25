@@ -19,3 +19,7 @@ module.exports.getColorByName = async function(persianName) {
 module.exports.listColors = async function() {
   return await Color.findAll();
 };
+
+module.exports.addColor = async function(persianName, englishName, code) {
+  return await Color.create({ persianName, englishName, code });
+};
