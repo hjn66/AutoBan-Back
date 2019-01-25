@@ -18,20 +18,27 @@ const ReceiptModel = require("../models/receipt");
 const ReceiptPartModel = require("../models/receiptPart");
 const CarServiceModel = require("../models/carService");
 const ReceiptServiceModel = require("../models/receiptService");
+const periodicServiceModel = require("../models/periodicService");
+const periodicServiceItemModel = require("../models/periodicServiceItem");
 
 const config = require("config");
 
-const sequelize = new Sequelize(config.get("db_database"), config.get("db_user"), config.get("db_password"), {
-  dialect: "mysql",
-  host: config.get("db_host"),
-  pool: {
-    max: 10,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
-  operatorsAliases: false
-});
+const sequelize = new Sequelize(
+  config.get("db_database"),
+  config.get("db_user"),
+  config.get("db_password"),
+  {
+    dialect: "mysql",
+    host: config.get("db_host"),
+    pool: {
+      max: 20,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    operatorsAliases: false
+  }
+);
 
 const User = UserModel(sequelize, Sequelize);
 const SMSToken = SMSTokenModel(sequelize, Sequelize);
@@ -52,6 +59,8 @@ const Receipt = ReceiptModel(sequelize, Sequelize);
 const CarService = CarServiceModel(sequelize, Sequelize);
 const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
 const ReceiptService = ReceiptServiceModel(sequelize, Sequelize);
+const PeriodicService = periodicServiceModel(sequelize, Sequelize);
+const PeriodicServiceItem = periodicServiceItemModel(sequelize, Sequelize);
 
 CarBrand.hasMany(CarModel, { as: "models" });
 Car.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
@@ -61,7 +70,10 @@ Cost.belongsTo(Car, { foreignKey: { allowNull: false } });
 Fuel.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
 Fine.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
 Fine.belongsTo(FineCategory, { foreignKey: { allowNull: false } });
-PeriodicCost.belongsTo(Cost, { foreignKey: { allowNull: false }, onDelete: "cascade" });
+PeriodicCost.belongsTo(Cost, {
+  foreignKey: { allowNull: false },
+  onDelete: "cascade"
+});
 Part.belongsTo(PartCategory, {
   foreignKey: { name: "categoryId", allowNull: false },
   onDelete: "cascade"
@@ -92,18 +104,39 @@ ReceiptService.belongsTo(Receipt, {
 ReceiptService.belongsTo(CarService, {
   foreignKey: { name: "serviceId", allowNull: false }
 });
+PeriodicService.belongsTo(Garage, { foreignKey: { name: "garageId" } });
+PeriodicService.belongsTo(User, {
+  foreignKey: { name: "creatorId", allowNull: false }
+});
+PeriodicService.belongsTo(Car, {
+  foreignKey: { name: "carId", allowNull: false }
+});
+PeriodicService.belongsTo(Repair, {
+  foreignKey: { name: "repairId", allowNull: false }
+});
+PeriodicServiceItem.belongsTo(PeriodicService, {
+  foreignKey: { name: "serviceId", allowNull: false }
+});
+PeriodicServiceItem.belongsTo(PartCategory, {
+  foreignKey: { name: "categoryId", allowNull: false }
+});
+PeriodicServiceItem.belongsTo(Part, {
+  foreignKey: { name: "partId", allowNull: true }
+});
 
 let syncForce = config.get("db_sync_force");
 
 sequelize.sync({ force: syncForce }).then(() => {
   console.log(`Database & tables created!`);
+  require("./initTables/colorInit")();
   if (syncForce) {
     console.log("Databse Sync Forced");
-    require("./fineCategoryInit")(FineCategory);
+    require("./initTables/fineCategoryInit")(FineCategory);
     Color.create({ englishName: "green", persianName: "سبز", code: "00FF00" });
     Color.create({ englishName: "red", persianName: "قرمز", code: "FF0000" });
     Color.create({ englishName: "blue", persianName: "آبی", code: "0000FF" });
-    require("./carModelInit")(CarModel, CarBrand);
+    require("./initTables/carModelInit")(CarModel, CarBrand);
+    require("./initTables/partCategoryInit")(PartCategory);
   }
 });
 
@@ -126,5 +159,7 @@ module.exports = {
   Receipt,
   ReceiptPart,
   CarService,
-  ReceiptService
+  ReceiptService,
+  PeriodicService,
+  PeriodicServiceItem
 };
