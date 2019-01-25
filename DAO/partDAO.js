@@ -14,7 +14,10 @@ module.exports.getPartCategoryById = async function(id) {
 };
 
 module.exports.addPartCategory = async function(persianName, englishName) {
-  return await PartCategory.create({ persianName: persianName, englishName: englishName });
+  return await PartCategory.create({
+    persianName: persianName,
+    englishName: englishName
+  });
 };
 
 module.exports.listPartCategory = async function() {
@@ -42,4 +45,8 @@ module.exports.removePart = async function(part) {
 };
 module.exports.listPartByCategory = async function(categoryId) {
   return await Part.findAll({ where: { categoryId: categoryId } });
+};
+
+module.exports.getPeriodicServiceItems = async function() {
+  return await PartCategory.findAll({ where: { checkPeriodic: true } });
 };
