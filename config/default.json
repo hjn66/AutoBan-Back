@@ -13,7 +13,7 @@
   "db_port": 3306,
   "logs_dir": "logs",
   "uploads_dir": "uploads",
-  "car_logo_dir": "public/assets/images/carLogos/",
+  "car_logo_dir": "assets/images/carLogos/",
   "car_images_dir": "uploads/carImages",
   "user_images_dir": "uploads/userImages",
   "receipt_images_dir": "uploads/receiptImages",
