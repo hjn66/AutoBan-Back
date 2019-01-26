@@ -1,16 +1,16 @@
-const config = require("config");
-const Car = require("../startup/sequelize").Car;
-const CarModel = require("../startup/sequelize").CarModel;
-const Color = require("../startup/sequelize").Color;
-const CarBrand = require("../startup/sequelize").CarBrand;
+const config = require('config');
+const Car = require('../startup/sequelize').Car;
+const CarModel = require('../startup/sequelize').CarModel;
+const Color = require('../startup/sequelize').Color;
+const CarBrand = require('../startup/sequelize').CarBrand;
 
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 module.exports.getCarById = async function(id) {
   car = await Car.findByPk(id);
   if (!car) {
-    throw new Error("Car not found");
+    throw new Error('Car not found');
   }
   return car;
 };
@@ -25,13 +25,13 @@ module.exports.addCar = async function(
   modelId,
   colorId
 ) {
-  if (image == "") {
+  if (!image || image == '') {
     carModel = await CarModel.findByPk(modelId);
     if (!carModel) {
-      throw new Error("Car model not found");
+      throw new Error('Car model not found');
     }
     carBrand = await CarBrand.findByPk(carModel.carBrandId);
-    image = config.get("car_logo_dir") + carBrand.logo;
+    image = config.get('car_logo_dir') + carBrand.logo;
   }
   return await Car.create({
     name: name,
