@@ -2,8 +2,6 @@ const passport = require("passport");
 const express = require("express");
 const router = express.Router();
 const config = require("config");
-const multer = require("multer");
-const randToken = require("rand-token");
 const path = require("path");
 
 const i18n = require("../middlewares/i18n");
@@ -13,20 +11,6 @@ const CarDAO = require("../DAO/carDAO");
 const GarageDAO = require("../DAO/garageDAO");
 const RepairDAO = require("../DAO/repairDAO");
 const ReceiptDAO = require("../DAO/receiptDAO");
-
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./" + config.get("receipt_images_dir"));
-  },
-  filename: function(req, file, cb) {
-    raw = randToken.generate(16);
-    cb(
-      null,
-      raw.toString("hex") + Date.now() + path.extname(file.originalname)
-    );
-  }
-});
-var upload = multer({ storage: storage });
 
 router.post(
   "/add-part-category",
@@ -245,10 +229,10 @@ router.post(
       throw new Error("You can add receipt to repair that you added");
     }
     let receipImage = "";
-    if (req.file) {
-      receipImage = path.join(
+    if (req.body.image) {
+      receipImage = await uploadFile(
         config.get("receipt_images_dir"),
-        req.file.filename
+        req.body.image
       );
     }
     let receipt = await ReceiptDAO.addReceipt(
