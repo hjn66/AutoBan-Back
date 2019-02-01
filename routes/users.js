@@ -123,8 +123,10 @@ router.put(
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     user.email = req.body.email;
-    if (req.body.image) {
+    if (user.profileImage) {
       fs.removeSync(path.join(rootPath, user.profileImage));
+    }
+    if (req.body.image) {
       user.profileImage = await uploadFile(
         config.get("user_images_dir"),
         req.body.image

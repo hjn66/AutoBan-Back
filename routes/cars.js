@@ -65,8 +65,10 @@ router.put(
     car.builtyear = req.body.builtyear;
     car.modelId = req.body.modelId;
     car.colorId = req.body.colorId;
-    if (req.body.image) {
+    if (car.image) {
       fs.removeSync(rootDir + "/" + car.image);
+    }
+    if (req.body.image) {
       car.image = await uploadFile(
         config.get("car_images_dir"),
         req.body.image
