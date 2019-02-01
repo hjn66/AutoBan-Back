@@ -32,7 +32,7 @@ module.exports.removeCost = async function(cost) {
 
 module.exports.listCostByCar = async function(carId, from, to) {
   let query = {
-    [Op.gte]: from || "1900-01-01",
+    [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"
   };
 
@@ -44,7 +44,7 @@ module.exports.listCostByCar = async function(carId, from, to) {
 
 module.exports.listOtherCostByCar = async function(carId, from, to) {
   let query = {
-    [Op.gte]: from || "1900-01-01",
+    [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"
   };
 
@@ -56,7 +56,7 @@ module.exports.listOtherCostByCar = async function(carId, from, to) {
 
 module.exports.listCategorizedCostByCar = async function(carId) {
   let query = {
-    [Op.gte]: from || "1900-01-01",
+    [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"
   };
   return await Cost.findAll({

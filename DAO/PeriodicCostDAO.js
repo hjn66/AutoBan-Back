@@ -14,7 +14,10 @@ module.exports.getPeriodicCostById = async function(id) {
 };
 
 module.exports.getPeriodicCostByCostId = async function(costId) {
-  var periodicCost = await PeriodicCost.findOne({ where: { costId }, include: [Cost] });
+  var periodicCost = await PeriodicCost.findOne({
+    where: { costId },
+    include: [Cost]
+  });
   if (!periodicCost) {
     throw new Error("PeriodicCost not found");
   }
@@ -39,7 +42,7 @@ module.exports.removePeriodicCost = async function(periodicCost) {
 
 module.exports.listPeriodicCostByCar = async function(carId, from, to) {
   let query = {
-    [Op.gte]: from || "1900-01-01",
+    [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"
   };
 

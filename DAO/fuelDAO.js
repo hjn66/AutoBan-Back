@@ -21,7 +21,14 @@ module.exports.getFuelByCostId = async function(costId) {
   return fuel;
 };
 
-module.exports.addFuel = async function(volume, type, odometer, isFull, stationName, costId) {
+module.exports.addFuel = async function(
+  volume,
+  type,
+  odometer,
+  isFull,
+  stationName,
+  costId
+) {
   return await Fuel.create({
     costId: costId,
     volume: volume,
@@ -42,7 +49,7 @@ module.exports.removeFuel = async function(fuel) {
 
 module.exports.listFuelByCar = async function(carId, from, to) {
   let query = {
-    [Op.gte]: from || "1900-01-01",
+    [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"
   };
 
