@@ -212,11 +212,7 @@ router.delete(
 
 router.post(
   "/add-receipt",
-  [
-    passport.authenticate("jwt", { session: false }),
-    i18n,
-    upload.single("receiptImage")
-  ],
+  [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const title = req.body.title;
     const date = req.body.date;

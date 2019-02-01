@@ -50,12 +50,7 @@ router.post(
 
 router.put(
   "/update",
-  [
-    passport.authenticate("jwt", { session: false }),
-    i18n,
-    authorize([USER]),
-    upload.single("carImage")
-  ],
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     const carId = req.body.carId;
     user = await UserDAO.getUserByIdSync(req.user.id);
