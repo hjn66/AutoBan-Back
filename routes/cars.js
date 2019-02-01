@@ -6,10 +6,9 @@ const path = require("path");
 const fs = require("fs-extra");
 
 const rootDir = path.join(__dirname, "../");
-const multer = require("multer");
-const randToken = require("rand-token");
 
 const i18n = require("../middlewares/i18n");
+const uploadFile = require("../middlewares/uploadFile");
 const authorize = require("../middlewares/authorize");
 const CarDAO = require("../DAO/carDAO");
 const CarModelDAO = require("../DAO/carModelDAO");
@@ -19,28 +18,9 @@ const ColorDAO = require("../DAO/colorDAO");
 const USER = config.get("user_type");
 const ADMIN = config.get("admin_type");
 
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./" + config.get("car_images_dir"));
-  },
-  filename: function(req, file, cb) {
-    raw = randToken.generate(16);
-    cb(
-      null,
-      raw.toString("hex") + Date.now() + path.extname(file.originalname)
-    );
-  }
-});
-var upload = multer({ storage });
-
 router.post(
   "/register",
-  [
-    passport.authenticate("jwt", { session: false }),
-    i18n,
-    authorize([USER]),
-    upload.single("carImage")
-  ],
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     user = await UserDAO.getUserByIdSync(req.user.id);
     const userId = user.id;
@@ -51,9 +31,8 @@ router.post(
     const plate = req.body.plate;
     const odometer = req.body.odometer;
     const builtyear = req.body.builtyear;
-
-    if (req.file) {
-      image = config.get("car_images_dir") + "/" + req.file.filename;
+    if (req.body.image) {
+      image = await uploadFile(config.get("car_images_dir"), req.body.image);
     }
     car = await CarDAO.addCar(
       name,
@@ -91,9 +70,12 @@ router.put(
     car.builtyear = req.body.builtyear;
     car.modelId = req.body.modelId;
     car.colorId = req.body.colorId;
-    if (req.file) {
+    if (req.body.image) {
       fs.removeSync(rootDir + "/" + car.image);
-      car.image = config.get("car_images_dir") + "/" + req.file.filename;
+      car.image = await uploadFile(
+        config.get("car_images_dir"),
+        req.body.image
+      );
     }
     car = await CarDAO.updateCar(car);
     return res.json({
