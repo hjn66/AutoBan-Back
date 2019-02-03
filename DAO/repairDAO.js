@@ -12,8 +12,26 @@ module.exports.getRepairById = async function(id) {
   return repair;
 };
 
-module.exports.addRepair = async function(title, date, totalCost, garageName, garageId, creatorId, carId) {
-  return await Repair.create({ title, date, totalCost, garageName, garageId, creatorId, carId });
+module.exports.addRepair = async function(
+  title,
+  date,
+  totalCost,
+  garageName,
+  garageId,
+  creatorId,
+  carId,
+  isPeriodicService = false
+) {
+  return await Repair.create({
+    title,
+    date,
+    totalCost,
+    garageName,
+    garageId,
+    creatorId,
+    carId,
+    isPeriodicService
+  });
 };
 
 module.exports.removeRepair = async function(repair) {
