@@ -12,6 +12,10 @@ module.exports.getServiceById = async function(id) {
   return service;
 };
 
+module.exports.getServiceByName = async function(persianName) {
+  return await CarService.findOne({ where: { persianName } });
+};
+
 module.exports.addCarService = async function(persianName, englishName) {
   return await CarService.create({
     persianName: persianName,
