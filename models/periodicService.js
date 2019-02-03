@@ -5,15 +5,6 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
-    date: {
-      type: Sequelize.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.NOW
-    },
-    garageName: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    image: { type: Sequelize.STRING, allowNull: true }
+    status: { type: Sequelize.STRING }
   });
 };
