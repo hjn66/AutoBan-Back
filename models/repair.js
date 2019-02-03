@@ -15,6 +15,7 @@ module.exports = (sequelize, Sequelize) => {
     garageName: {
       type: Sequelize.STRING,
       allowNull: false
-    }
+    },
+    isPeriodicService: { type: Sequelize.BOOLEAN, defaultValue: false }
   });
 };
