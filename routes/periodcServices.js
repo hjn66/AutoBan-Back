@@ -1,15 +1,23 @@
-const passport = require('passport');
-const express = require('express');
+const passport = require("passport");
+const express = require("express");
 const router = express.Router();
-const PartDAO = require('../DAO/partDAO');
-const RepairDAO = require('../DAO/repairDAO');
-const ReceiptDAO = require('../DAO/receiptDAO');
+const config = require("config");
+const path = require("path");
+const fs = require("fs-extra");
 
-const i18n = require('../middlewares/i18n');
+const CarDAO = require("../DAO/carDAO");
+const PartDAO = require("../DAO/partDAO");
+const RepairDAO = require("../DAO/repairDAO");
+const ReceiptDAO = require("../DAO/receiptDAO");
+const CarServiceDAO = require("../DAO/carServiceDAO");
+const PeriodicServiceDAO = require("../DAO/periodicServiceDAO");
+
+const uploadFile = require("../middlewares/uploadFile");
+const i18n = require("../middlewares/i18n");
 
 router.get(
-  '/service-items',
-  [passport.authenticate('jwt', { session: false }), i18n],
+  "/service-items",
+  [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     serviceItems = await PartDAO.getPeriodicServiceItems();
     return res.json({
@@ -20,22 +28,30 @@ router.get(
 );
 
 router.post(
-  '/add',
-  [passport.authenticate('jwt', { session: false }), i18n],
+  "/add",
+  [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
+    //req.body.image = receiptImage
     const date = req.body.date;
     const totalCost = req.body.totalCost;
     let garageName = req.body.garageName;
+
+    // serviceItems: An array for serviceItems each node containts:
+    // -categoryId (partCategoryId return by /periodic-services/service-items) *required
+    // -status (fail,ok,...) *required
+    // -partId (id of part if changed) *optional
+    // -cost (cost of part if changed) *optional
+    // -count (count of part if changed) *optional
     const serviceItems = req.body.serviceItems;
     const garageId = req.body.garageId;
     const carId = req.body.carId;
     let car = await CarDAO.getCarById(carId);
     if (
       car.userId != req.user.id &&
-      req.user.type != config.get('repairman_type')
+      req.user.type != config.get("repairman_type")
     ) {
       throw new Error(
-        'You can add periodic service to car if car is yours or you are repairman'
+        "You can add periodic service to car if car is yours or you are repairman"
       );
     }
     if (garageId) {
@@ -44,14 +60,45 @@ router.post(
     }
     // title, date, totalCost, garageName, garageId, creatorId, carId
     let repair = await RepairDAO.addRepair(
-      __('Periodic Service'),
+      __("Periodic Service"),
       date,
       totalCost,
       garageName,
       garageId,
       req.user.id,
-      carId
+      carId,
+      true
     );
+    let receipImage = "";
+    if (req.body.image) {
+      receipImage = await uploadFile(
+        config.get("receipt_images_dir"),
+        req.body.image
+      );
+    }
+    let receipt = await ReceiptDAO.addReceipt(
+      __("Periodic Service Receipt"),
+      date,
+      totalCost,
+      garageName,
+      receipImage,
+      repair.id
+    );
+    let service = await CarServiceDAO.getServiceByName(__("Periodic Service"));
+    if (!service) {
+      service = await CarServiceDAO.addCarService(
+        __("Periodic Service"),
+        "Periodic Service"
+      );
+    }
+    let services = [{ serviceId: service.id }];
+    await ReceiptDAO.addReceiptItems(receipt.id, services, serviceItems);
+    await PeriodicServiceDAO.addPeriodicServiceItems(repair.id, serviceItems);
+    return res.json({
+      success: true,
+      periodicService: repair,
+      receipt
+    });
   }
 );
 
