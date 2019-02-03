@@ -2,8 +2,6 @@ const Receipt = require("../startup/sequelize").Receipt;
 const ReceiptPart = require("../startup/sequelize").ReceiptPart;
 const ReceiptService = require("../startup/sequelize").ReceiptService;
 
-const bcrypt = require("bcryptjs");
-const Utils = require("../middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
@@ -15,8 +13,22 @@ module.exports.getReceiptById = async function(id) {
   return receipt;
 };
 
-module.exports.addReceipt = async function(title, date, totalCost, shopName, image, repairId) {
-  return await Receipt.create({ title, date, totalCost, shopName, image, repairId });
+module.exports.addReceipt = async function(
+  title,
+  date,
+  totalCost,
+  shopName,
+  image,
+  repairId
+) {
+  return await Receipt.create({
+    title,
+    date,
+    totalCost,
+    shopName,
+    image,
+    repairId
+  });
 };
 
 module.exports.removeReceipt = async function(receipt) {
@@ -26,7 +38,9 @@ module.exports.removeReceipt = async function(receipt) {
 module.exports.updateRepairCost = async function(repair) {
   result = await Receipt.findAll({
     where: { repairId: repair.id },
-    attributes: [[Sequelize.fn("SUM", Sequelize.col("totalCost")), "totalCosts"]]
+    attributes: [
+      [Sequelize.fn("SUM", Sequelize.col("totalCost")), "totalCosts"]
+    ]
   });
   repair.totalCost = result[0].dataValues.totalCosts;
   return await repair.save();
@@ -39,14 +53,18 @@ module.exports.addReceiptItems = async function(receiptId, services, products) {
   }
   for (const index in products) {
     products[index].receiptId = receiptId;
-    await ReceiptPart.create(products[index]);
+    if (products[index].partId) {
+      await ReceiptPart.create(products[index]);
+    }
   }
 };
 
 module.exports.updateReceiptCost = async function(receipt) {
   result = await ReceiptPart.findAll({
     where: { receiptId: receipt.id },
-    attributes: [[Sequelize.fn("SUM", Sequelize.literal("cost * count")), "totalCosts"]]
+    attributes: [
+      [Sequelize.fn("SUM", Sequelize.literal("cost * count")), "totalCosts"]
+    ]
   });
 
   receipt.totalCost = result[0].dataValues.totalCosts;
