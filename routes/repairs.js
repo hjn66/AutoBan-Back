@@ -294,4 +294,18 @@ router.put(
   }
 );
 
+// serverAddress/repairs/list?carId=
+router.get(
+  "/list",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const carId = req.query.carId;
+    let repairs = await RepairDAO.list(carId);
+    return res.json({
+      success: true,
+      repairs
+    });
+  }
+);
+
 module.exports = router;
