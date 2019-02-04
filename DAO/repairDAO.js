@@ -37,3 +37,11 @@ module.exports.add = async function(
 module.exports.remove = async function(repair) {
   return await repair.destroy();
 };
+
+module.exports.list = async function(carId) {
+  return await Repair.findAll({ where: { carId } });
+};
+
+module.exports.listPeriodicService = async function(carId) {
+  return await Repair.findAll({ where: { carId, isPeriodicService: true } });
+};
