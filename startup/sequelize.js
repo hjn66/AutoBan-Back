@@ -80,7 +80,7 @@ Repair.belongsTo(User, {
   foreignKey: { name: "creatorId", allowNull: false }
 });
 Repair.belongsTo(Car, {
-  foreignKey: { name: "carId", allowNull: false }
+  foreignKey: { name: "carId", allowNull: false, onDelete: "cascade" }
 });
 Repair.belongsTo(Garage, { foreignKey: { name: "garageId" } });
 Garage.belongsTo(User, { foreignKey: { name: "ownerId" } });
