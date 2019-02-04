@@ -4,7 +4,7 @@ const Utils = require("../middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getRepairById = async function(id) {
+module.exports.getById = async function(id) {
   var repair = await Repair.findByPk(id);
   if (!repair) {
     throw new Error("Repair not found");
@@ -12,7 +12,7 @@ module.exports.getRepairById = async function(id) {
   return repair;
 };
 
-module.exports.addRepair = async function(
+module.exports.add = async function(
   title,
   date,
   totalCost,
@@ -34,6 +34,6 @@ module.exports.addRepair = async function(
   });
 };
 
-module.exports.removeRepair = async function(repair) {
+module.exports.remove = async function(repair) {
   return await repair.destroy();
 };

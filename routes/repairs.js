@@ -176,7 +176,7 @@ router.post(
       garageName = garage.name;
     }
     // title, date, totalCost, garageName, garageId, creatorId, carId
-    let repair = await RepairDAO.addRepair(
+    let repair = await RepairDAO.add(
       title,
       date,
       totalCost,
@@ -198,11 +198,11 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const repairId = req.body.repairId;
-    let repair = await RepairDAO.getRepairById(repairId);
+    let repair = await RepairDAO.getById(repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can remove only repair that you added");
     }
-    await RepairDAO.removeRepair(repair);
+    await RepairDAO.remove(repair);
     return res.json({
       success: true,
       message: __("Repair deleted successfuly")
@@ -220,7 +220,7 @@ router.post(
     const shopName = req.body.shopName;
     const repairId = req.body.repairId;
 
-    let repair = await RepairDAO.getRepairById(repairId);
+    let repair = await RepairDAO.getById(repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can add receipt to repair that you added");
     }
@@ -255,7 +255,7 @@ router.delete(
     const receiptId = req.body.receiptId;
     let receipt = await ReceiptDAO.getReceiptById(receiptId);
 
-    let repair = await RepairDAO.getRepairById(receipt.repairId);
+    let repair = await RepairDAO.getById(receipt.repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can remove receipt from repair that you added");
     }
@@ -277,7 +277,7 @@ router.put(
     const receiptId = req.body.receiptId;
 
     let receipt = await ReceiptDAO.getReceiptById(receiptId);
-    let repair = await RepairDAO.getRepairById(receipt.repairId);
+    let repair = await RepairDAO.getById(receipt.repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can update receipt Items of repair that you added");
     }
