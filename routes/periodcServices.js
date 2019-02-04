@@ -59,7 +59,7 @@ router.post(
       garageName = garage.name;
     }
     // title, date, totalCost, garageName, garageId, creatorId, carId
-    let repair = await RepairDAO.addRepair(
+    let repair = await RepairDAO.add(
       __("Periodic Service"),
       date,
       totalCost,
@@ -93,7 +93,7 @@ router.post(
     }
     let services = [{ serviceId: service.id }];
     await ReceiptDAO.addReceiptItems(receipt.id, services, serviceItems);
-    await PeriodicServiceDAO.addPeriodicServiceItems(repair.id, serviceItems);
+    await PeriodicServiceDAO.addItems(repair.id, serviceItems);
     return res.json({
       success: true,
       periodicService: repair,
@@ -102,4 +102,17 @@ router.post(
   }
 );
 
+// Address: serverAddress/periodic-services/list?carId=
+router.get(
+  "/list",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const carId = req.query.carId;
+    let periodicServices = await RepairDAO.listPeriodicService(carId);
+    return res.json({
+      success: true,
+      periodicServices
+    });
+  }
+);
 module.exports = router;
