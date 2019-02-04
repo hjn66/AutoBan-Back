@@ -104,7 +104,8 @@ ReceiptService.belongsTo(CarService, {
 });
 
 PeriodicService.belongsTo(Repair, {
-  foreignKey: { name: "repairId", allowNull: false }
+  foreignKey: { name: "repairId", allowNull: false },
+  onDelete: "cascade"
 });
 PeriodicService.belongsTo(PartCategory, {
   foreignKey: { name: "categoryId", allowNull: false }
