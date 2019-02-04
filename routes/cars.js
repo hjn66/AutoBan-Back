@@ -163,7 +163,7 @@ router.get(
   "/list-colors",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    colors = await ColorDAO.listColors();
+    colors = await ColorDAO.list();
     return res.json({ success: true, colors });
   }
 );
@@ -173,10 +173,10 @@ router.get(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     if (req.query.id) {
-      let color = await ColorDAO.getColorById(req.query.id);
+      let color = await ColorDAO.getById(req.query.id);
       return res.json({ success: true, color });
     } else {
-      let color = await ColorDAO.getColorByName(req.query.persianName);
+      let color = await ColorDAO.getByName(req.query.persianName);
       return res.json({ success: true, color });
     }
   }

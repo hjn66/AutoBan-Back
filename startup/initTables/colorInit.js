@@ -11,9 +11,12 @@ module.exports = async () => {
     let englishName = rows[i][1];
     let code = rows[i][2];
     try {
-      let color = await ColorDAO.getColorByName(persianName);
+      let color = await ColorDAO.getByName(persianName);
+      color.code = code;
+      color.englishName = englishName;
+      ColorDAO.update(color);
     } catch (ex) {
-      await ColorDAO.addColor(persianName, englishName, code);
+      await ColorDAO.add(persianName, englishName, code);
     }
   }
 };
