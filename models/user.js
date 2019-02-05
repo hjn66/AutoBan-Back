@@ -14,9 +14,17 @@ module.exports = (sequelize, Sequelize) => {
     password: { type: Sequelize.STRING },
     enabled: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
     type: { type: Sequelize.STRING, allowNull: false },
-    email: { type: Sequelize.STRING, allowNull: true, unique: true, validate: { isEmail: true } },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      unique: true,
+      validate: { isEmail: true }
+    },
     firstName: { type: Sequelize.STRING, allowNull: false },
     lastName: { type: Sequelize.STRING, allowNull: false },
-    profileImage: { type: Sequelize.STRING, allowNull: true }
+    profileImage: { type: Sequelize.STRING, allowNull: true },
+    code: { type: Sequelize.STRING, allowNull: false },
+    referal: { type: Sequelize.STRING, allowNull: true },
+    point: { type: Sequelize.INTEGER, defaultValue: 0 }
   });
 };
