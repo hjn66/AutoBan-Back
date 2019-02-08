@@ -19,6 +19,7 @@ const ReceiptPartModel = rootRequire("models/receiptPart");
 const CarServiceModel = rootRequire("models/carService");
 const ReceiptServiceModel = rootRequire("models/receiptService");
 const PeriodicServiceModel = rootRequire("models/periodicService");
+const PointModel = rootRequire("models/point");
 
 const config = require("config");
 
@@ -59,7 +60,9 @@ const CarService = CarServiceModel(sequelize, Sequelize);
 const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
 const ReceiptService = ReceiptServiceModel(sequelize, Sequelize);
 const PeriodicService = PeriodicServiceModel(sequelize, Sequelize);
+const Points = PointModel(sequelize, Sequelize);
 
+Points.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
 CarBrand.hasMany(CarModel, { as: "models" });
 Car.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
 Car.belongsTo(CarModel, { foreignKey: { name: "modelId", allowNull: false } });
@@ -150,5 +153,6 @@ module.exports = {
   ReceiptPart,
   CarService,
   ReceiptService,
-  PeriodicService
+  PeriodicService,
+  Points
 };
