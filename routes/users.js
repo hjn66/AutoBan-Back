@@ -174,4 +174,14 @@ router.get(
   }
 );
 
+// return users registred by user referral code (Invited by user)
+router.get(
+  "/referrals",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    referrals = await UserDAO.getReferrals(req.user.code);
+    return res.json({ success: true, referrals });
+  }
+);
+
 module.exports = router;
