@@ -52,5 +52,6 @@
   "Car model not found": "مدل ماشین مورد نظر یافت نشد",
   "Car brand not found": "برند ماشین مورد نظر یافت نشد",
   "Periodic Service": "سرویس دوره‌ای",
-  "Periodic Service Receipt": "فاکتور سرویس دوره‌ای"
+  "Periodic Service Receipt": "فاکتور سرویس دوره‌ای",
+  "Invalid referral code": "کد معرف اشتباه است"
 }

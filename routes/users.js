@@ -78,17 +78,24 @@ router.get(
 );
 
 // register with password and token returned by check-sms-token
-// input (req.body): *firstName, *lastName, email, profilePic(file)
+// input (req.body): *firstName, *lastName, email, profilePic(file), refferal
 router.post(
   "/register",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
+    console.log(req.body.firstName);
     const password = req.body.password;
     const email = req.body.email;
     const mobileNumber = req.user;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
-    const referral = req.body.referral;
+    const refferal = req.body.referral;
+    if (refferal) {
+      let referralUser = await UserDAO.getByCode(req.body.referral);
+      if (!referralUser) {
+        throw new Error("Invalid referral code");
+      }
+    }
     var profilePic = "";
     if (!firstName || !lastName) {
       throw new Error("firstName and lastName required");
@@ -106,7 +113,8 @@ router.post(
       firstName,
       lastName,
       email,
-      profilePic
+      profilePic,
+      refferal
     );
     user["password"] = "***";
     const token = jwt.sign({ type: "AUTH", user }, config.get("JWTsecret"));
