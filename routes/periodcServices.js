@@ -5,14 +5,15 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const CarDAO = require("../DAO/carDAO");
-const PartDAO = require("../DAO/partDAO");
-const RepairDAO = require("../DAO/repairDAO");
-const ReceiptDAO = require("../DAO/receiptDAO");
-const CarServiceDAO = require("../DAO/carServiceDAO");
-const PeriodicServiceDAO = require("../DAO/periodicServiceDAO");
+const CarDAO = rootRequire("DAO/carDAO");
+const PartDAO = rootRequire("DAO/partDAO");
+const RepairDAO = rootRequire("DAO/repairDAO");
+const ReceiptDAO = rootRequire("DAO/receiptDAO");
+const CarServiceDAO = rootRequire("DAO/carServiceDAO");
+const PeriodicServiceDAO = rootRequire("DAO/periodicServiceDAO");
 
 const uploadFile = require("../middlewares/uploadFile");
+const calculatePoint = require("../middlewares/calculatePoint");
 const i18n = require("../middlewares/i18n");
 
 router.get(
