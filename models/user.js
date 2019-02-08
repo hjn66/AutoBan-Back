@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
     lastName: { type: Sequelize.STRING, allowNull: false },
     profileImage: { type: Sequelize.STRING, allowNull: true },
     code: { type: Sequelize.STRING(6), allowNull: false },
-    referal: { type: Sequelize.STRING(6), allowNull: true },
+    referral: { type: Sequelize.STRING(6), allowNull: true },
     point: { type: Sequelize.INTEGER, defaultValue: 0 }
   });
 };
