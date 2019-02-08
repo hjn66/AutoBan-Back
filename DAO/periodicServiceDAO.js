@@ -1,14 +1,12 @@
 const config = require("config");
 const PeriodicService = require("../startup/sequelize").PeriodicService;
-const Cost = require("../startup/sequelize").Cost;
+const PartCategory = require("../startup/sequelize").PartCategory;
+const Part = require("../startup/sequelize").Part;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.addItems = async function(
-  repairId,
-  serviceItems
-) {
+module.exports.addItems = async function(repairId, serviceItems) {
   for (const index in serviceItems) {
     serviceItems[index].repairId = repairId;
     serviceItems[index].categoryId = id;
@@ -18,4 +16,11 @@ module.exports.addItems = async function(
 
 module.exports.removeItems = async function(repairId) {
   await PeriodicService.destroy({ where: { repairId } });
+};
+
+module.exports.getByRepairId = async function(repairId) {
+  return await PeriodicService.findAll({
+    where: { repairId },
+    include: [PartCategory, Part]
+  });
 };
