@@ -101,3 +101,7 @@ module.exports.getReferrals = async function(code) {
     attributes: ["firstName", "lastName", "profileImage"]
   });
 };
+
+module.exports.addPoint = async function(id, points) {
+  return await User.increment({ point: points }, { where: { id } });
+};
