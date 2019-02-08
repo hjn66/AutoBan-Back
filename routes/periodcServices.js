@@ -12,9 +12,9 @@ const ReceiptDAO = rootRequire("DAO/receiptDAO");
 const CarServiceDAO = rootRequire("DAO/carServiceDAO");
 const PeriodicServiceDAO = rootRequire("DAO/periodicServiceDAO");
 
-const uploadFile = require("../middlewares/uploadFile");
-const calculatePoint = require("../middlewares/calculatePoint");
-const i18n = require("../middlewares/i18n");
+const uploadFile = rootRequire("middlewares/uploadFile");
+const calculatePoint = rootRequire("middlewares/calculatePoint");
+const i18n = rootRequire("middlewares/i18n");
 
 router.get(
   "/service-items",
