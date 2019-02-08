@@ -1,7 +1,10 @@
-const User = require("../startup/sequelize").User;
 const bcrypt = require("bcryptjs");
-const Utils = require("../middlewares/utils");
 const Sequelize = require("sequelize");
+const randToken = require("rand-token");
+const config = require("config");
+
+const User = require("../startup/sequelize").User;
+const Utils = require("../middlewares/utils");
 const Op = Sequelize.Op;
 
 module.exports.getById = function(id, callback) {
@@ -28,7 +31,8 @@ module.exports.add = async function(
   firstName,
   lastName,
   email,
-  profilePic
+  profilePic,
+  referral
 ) {
   if (!firstName || !lastName) {
     throw new Error("firstName and lastName required");
@@ -42,6 +46,10 @@ module.exports.add = async function(
   }
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
+  let code = randToken.generate(config.get("user_code_length"));
+  while (await this.getByCode(code)) {
+    code = randToken.generate(config.get("user_code_length"));
+  }
   return await User.create({
     mobileNumber,
     password: hash,
@@ -49,7 +57,9 @@ module.exports.add = async function(
     firstName,
     lastName,
     email,
-    profileImage: profilePic
+    profileImage: profilePic,
+    code,
+    referral
   });
 };
 
@@ -79,4 +89,8 @@ module.exports.getByUsername = async function(username) {
     throw new Error("User not found");
   }
   return user;
+};
+
+module.exports.getByCode = async function(code) {
+  return await User.findOne({ where: { code } });
 };
