@@ -22,7 +22,7 @@ router.post(
   "/register",
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     const userId = user.id;
     const modelId = req.body.modelId;
     const colorId = req.body.colorId;
@@ -53,7 +53,7 @@ router.put(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     const carId = req.body.carId;
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     car = await CarDAO.getCarById(carId);
     const userId = user.id;
     if (car.userId != userId) {
@@ -87,7 +87,7 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     const carId = req.body.carId;
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     car = await CarDAO.getCarById(carId);
     const userId = user.id;
     if (car.userId != userId) {
@@ -104,7 +104,7 @@ router.put(
   async (req, res, next) => {
     const carId = req.body.carId;
     const odometer = req.body.odometer;
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     car = await CarDAO.getCarById(carId);
     if (car.userId != user.id) {
       throw new Error("You can change your car information only");
@@ -121,7 +121,7 @@ router.get(
   "/list",
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     cars = await CarDAO.listCars(user.id);
     return res.json({ success: true, cars });
   }
@@ -134,7 +134,7 @@ router.post(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([ADMIN])],
   async (req, res, next) => {
     const mobileNumber = req.body.mobileNumber;
-    let user = await UserDAO.getUser(mobileNumber);
+    let user = await UserDAO.getByUsername(mobileNumber);
     let cars = await CarDAO.listCars(user.id);
     return res.json({ success: true, cars });
   }

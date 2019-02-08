@@ -38,7 +38,7 @@ router.post("/check-sms-token", i18n, async (req, res, next) => {
 
 // Authenticate with username(mobileNumber or email) and password
 router.post("/authenticate-password", i18n, async (req, res, next) => {
-  let user = await UserDAO.getUser(req.body.username);
+  let user = await UserDAO.getByUsername(req.body.username);
   if (!user.enabled) {
     throw new Error("Your Account dissabled by admin, please contact to admin");
   }
@@ -61,7 +61,7 @@ router.get(
   "/authenticate-token",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    let user = await UserDAO.getUser(req.user);
+    let user = await UserDAO.getByUsername(req.user);
     if (!user.enabled) {
       throw new Error(
         "Your Account dissabled by admin, please contact to admin"
@@ -88,6 +88,7 @@ router.post(
     const mobileNumber = req.user;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
+    const referral = req.body.referral;
     var profilePic = "";
     if (!firstName || !lastName) {
       throw new Error("firstName and lastName required");
@@ -98,7 +99,7 @@ router.post(
         req.body.image
       );
     }
-    let user = await UserDAO.addUser(
+    let user = await UserDAO.add(
       mobileNumber,
       password,
       config.get("user_type"),
@@ -119,7 +120,7 @@ router.put(
   "/user",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    let user = await UserDAO.getUserByIdSync(req.user.id);
+    let user = await UserDAO.getByIdSync(req.user.id);
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     user.email = req.body.email;
@@ -132,7 +133,7 @@ router.put(
         req.body.image
       );
     }
-    user = await UserDAO.updateUser(user);
+    user = await UserDAO.update(user);
     return res.json({
       success: true,
       message: __("User information updated successfuly"),
@@ -148,9 +149,9 @@ router.put(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     smsToken = await SMSTokenDAO.checkToken(req.body);
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     user.mobileNumber = smsToken.mobileNumber;
-    user = await UserDAO.updateUser(user);
+    user = await UserDAO.update(user);
     return res.json({ success: true, user });
   }
 );
@@ -160,7 +161,7 @@ router.get(
   "/profile",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     return res.json({ success: true, user });
   }
 );
