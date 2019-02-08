@@ -6,11 +6,16 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 module.exports.getById = async function(id) {
-  var receipt = await Receipt.findByPk(id);
+  let receipt = await Receipt.findByPk(id);
   if (!receipt) {
     throw new Error("Receipt not found");
   }
   return receipt;
+};
+
+module.exports.getByRepairId = async function(repairId) {
+  let receipts = await Receipt.findAll({ where: { repairId } });
+  return receipts;
 };
 
 module.exports.add = async function(
