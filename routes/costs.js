@@ -7,7 +7,7 @@ const CarDAO = rootRequire("DAO/carDAO");
 const CostDAO = rootRequire("DAO/costDAO");
 const FuelDAO = rootRequire("DAO/fuelDAO");
 const FineDAO = rootRequire("DAO/fineDAO");
-const PeriodicCostDAO = rootRequire("DAO/PeriodicCostDAO");
+const PeriodicCostDAO = rootRequire("DAO/periodicCostDAO");
 
 //TODO list for all cost types, update for all cost types
 router.post(
