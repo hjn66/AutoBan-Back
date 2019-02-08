@@ -95,6 +95,7 @@ router.post(
       if (!referralUser) {
         throw new Error("Invalid referral code");
       }
+      req.inviter = referralUser.id;
     }
     var profilePic = "";
     if (!firstName || !lastName) {
@@ -118,7 +119,11 @@ router.post(
     );
     user["password"] = "***";
     const token = jwt.sign({ type: "AUTH", user }, config.get("JWTsecret"));
-    return res.json({ success: true, token: "JWT " + token, user });
+    res.json({ success: true, token: "JWT " + token, user });
+    if (refferal) {
+      req.invitee = user.id;
+    }
+    next();
   }
 );
 
@@ -180,7 +185,7 @@ router.get(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     referrals = await UserDAO.getReferrals(req.user.code);
-    return res.json({ success: true, referrals });
+    res.json({ success: true, referrals });
   }
 );
 
