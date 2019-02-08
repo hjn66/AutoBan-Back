@@ -23,8 +23,23 @@ module.exports = (sequelize, Sequelize) => {
     firstName: { type: Sequelize.STRING, allowNull: false },
     lastName: { type: Sequelize.STRING, allowNull: false },
     profileImage: { type: Sequelize.STRING, allowNull: true },
-    code: { type: Sequelize.STRING(6), allowNull: false },
-    referral: { type: Sequelize.STRING(6), allowNull: true },
+    code: {
+      type: Sequelize.STRING(6),
+      allowNull: false,
+      unique: true,
+      set(val) {
+        this.setDataValue("code", val.toUpperCase());
+      }
+    },
+    referral: {
+      type: Sequelize.STRING(6),
+      allowNull: true,
+      set(val) {
+        if (val) {
+          this.setDataValue("referral", val.toUpperCase());
+        }
+      }
+    },
     point: { type: Sequelize.INTEGER, defaultValue: 0 }
   });
 };
