@@ -94,3 +94,10 @@ module.exports.getByUsername = async function(username) {
 module.exports.getByCode = async function(code) {
   return await User.findOne({ where: { code } });
 };
+
+module.exports.getReferrals = async function(code) {
+  return await User.findAll({
+    where: { referral: code },
+    attributes: ["firstName", "lastName", "profileImage"]
+  });
+};
