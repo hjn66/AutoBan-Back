@@ -1,28 +1,27 @@
-const User = require('../startup/sequelize').User;
-const bcrypt = require('bcryptjs');
-const Utils = require('../middlewares/utils');
-const Sequelize = require('sequelize');
+const User = require("../startup/sequelize").User;
+const bcrypt = require("bcryptjs");
+const Utils = require("../middlewares/utils");
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getUserById = function(id, callback) {
-  console.log(id);
+module.exports.getById = function(id, callback) {
   User.findByPk(id).then(user => {
     if (!user) {
-      return callback('User not found', null);
+      return callback("User not found", null);
     }
     return callback(null, user);
   });
 };
 
-module.exports.getUserByIdSync = async function(id) {
+module.exports.getByIdSync = async function(id) {
   user = await User.findByPk(id);
   if (!user) {
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
   return user;
 };
 
-module.exports.addUser = async function(
+module.exports.add = async function(
   mobileNumber,
   password,
   type,
@@ -32,14 +31,14 @@ module.exports.addUser = async function(
   profilePic
 ) {
   if (!firstName || !lastName) {
-    throw new Error('firstName and lastName required');
+    throw new Error("firstName and lastName required");
   }
   if (!mobileNumber) {
-    throw new Error('MobileNumber required');
+    throw new Error("MobileNumber required");
   }
   let user = await User.findOne({ where: { mobileNumber } });
   if (user) {
-    throw new Error('MobileNumber registered before');
+    throw new Error("MobileNumber registered before");
   }
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
@@ -54,9 +53,9 @@ module.exports.addUser = async function(
   });
 };
 
-module.exports.updateUser = async function(user) {
+module.exports.update = async function(user) {
   if (!user.firstName || !user.lastName) {
-    throw new Error('firstName and lastName required');
+    throw new Error("firstName and lastName required");
   }
   return await user.save();
 };
@@ -65,19 +64,19 @@ module.exports.comparePassword = async function(candidatePassword, hash) {
   return await bcrypt.compare(candidatePassword, hash);
 };
 
-module.exports.getUser = async function(username) {
+module.exports.getByUsername = async function(username) {
   if (!username) {
-    throw new Error('UserName required');
+    throw new Error("UserName required");
   }
   let user = {};
-  if (username.includes('@')) {
+  if (username.includes("@")) {
     user = await User.findOne({ where: { email: username } });
   } else {
     let mobileNumber = await Utils.internationalMobile(username);
     user = await User.findOne({ where: { mobileNumber } });
   }
   if (!user) {
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
   return user;
 };
