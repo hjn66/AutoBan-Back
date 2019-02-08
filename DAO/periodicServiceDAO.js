@@ -1,7 +1,7 @@
 const config = require("config");
-const PeriodicService = require("../startup/sequelize").PeriodicService;
-const PartCategory = require("../startup/sequelize").PartCategory;
-const Part = require("../startup/sequelize").Part;
+const PeriodicService = rootRequire("startup/sequelize").PeriodicService;
+const PartCategory = rootRequire("startup/sequelize").PartCategory;
+const Part = rootRequire("startup/sequelize").Part;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;

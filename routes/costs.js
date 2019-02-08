@@ -2,12 +2,12 @@ const passport = require("passport");
 const express = require("express");
 const router = express.Router();
 const config = require("config");
-const i18n = require("../middlewares/i18n");
-const CarDAO = require("../DAO/carDAO");
-const CostDAO = require("../DAO/costDAO");
-const FuelDAO = require("../DAO/fuelDAO");
-const FineDAO = require("../DAO/fineDAO");
-const PeriodicCostDAO = require("../DAO/PeriodicCostDAO");
+const i18n = rootRequire("middlewares/i18n");
+const CarDAO = rootRequire("DAO/carDAO");
+const CostDAO = rootRequire("DAO/costDAO");
+const FuelDAO = rootRequire("DAO/fuelDAO");
+const FineDAO = rootRequire("DAO/fineDAO");
+const PeriodicCostDAO = rootRequire("DAO/PeriodicCostDAO");
 
 //TODO list for all cost types, update for all cost types
 router.post(

@@ -1,4 +1,4 @@
-const Color = require("../startup/sequelize").Color;
+const Color = rootRequire("startup/sequelize").Color;
 
 module.exports.getById = async function(id) {
   color = await Color.findByPk(id);

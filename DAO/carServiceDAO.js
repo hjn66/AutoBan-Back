@@ -1,6 +1,6 @@
-const CarService = require("../startup/sequelize").CarService;
+const CarService = rootRequire("startup/sequelize").CarService;
 const bcrypt = require("bcryptjs");
-const Utils = require("../middlewares/utils");
+const Utils = rootRequire("middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 

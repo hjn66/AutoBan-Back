@@ -1,5 +1,5 @@
-const Garage = require("../startup/sequelize").Garage;
-const Utils = require("../middlewares/utils");
+const Garage = rootRequire("startup/sequelize").Garage;
+const Utils = rootRequire("middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 

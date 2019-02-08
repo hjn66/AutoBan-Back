@@ -1,6 +1,6 @@
-const Receipt = require("../startup/sequelize").Receipt;
-const ReceiptPart = require("../startup/sequelize").ReceiptPart;
-const ReceiptService = require("../startup/sequelize").ReceiptService;
+const Receipt = rootRequire("startup/sequelize").Receipt;
+const ReceiptPart = rootRequire("startup/sequelize").ReceiptPart;
+const ReceiptService = rootRequire("startup/sequelize").ReceiptService;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;

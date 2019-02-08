@@ -1,8 +1,8 @@
-const SMSToken = require("../startup/sequelize").SMSToken;
+const SMSToken = rootRequire("startup/sequelize").SMSToken;
 const Sequelize = require("sequelize");
 const randToken = require("rand-token");
 const config = require("config");
-const Utils = require("../middlewares/utils");
+const Utils = rootRequire("middlewares/utils");
 const Op = Sequelize.Op;
 
 // create new Token when not exists or expired

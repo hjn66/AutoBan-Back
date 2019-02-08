@@ -3,8 +3,8 @@ const Sequelize = require("sequelize");
 const randToken = require("rand-token");
 const config = require("config");
 
-const User = require("../startup/sequelize").User;
-const Utils = require("../middlewares/utils");
+const User = rootRequire("startup/sequelize").User;
+const Utils = rootRequire("middlewares/utils");
 const Op = Sequelize.Op;
 
 module.exports.getById = function(id, callback) {

@@ -1,6 +1,6 @@
-const Repair = require("../startup/sequelize").Repair;
+const Repair = rootRequire("startup/sequelize").Repair;
 const bcrypt = require("bcryptjs");
-const Utils = require("../middlewares/utils");
+const Utils = rootRequire("middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 

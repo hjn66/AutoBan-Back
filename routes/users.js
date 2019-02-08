@@ -6,10 +6,10 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const i18n = require("../middlewares/i18n");
-const uploadFile = require("../middlewares/uploadFile");
-const UserDAO = require("../DAO/userDAO");
-const SMSTokenDAO = require("../DAO/smsTokenDAO");
+const i18n = rootRequire("middlewares/i18n");
+const uploadFile = rootRequire("middlewares/uploadFile");
+const UserDAO = rootRequire("DAO/userDAO");
+const SMSTokenDAO = rootRequire("DAO/smsTokenDAO");
 
 // get mobileNumber in body and return token
 router.post("/get-sms-token", i18n, async (req, res, next) => {

@@ -7,14 +7,14 @@ const fs = require("fs-extra");
 
 const rootDir = path.join(__dirname, "../");
 
-const i18n = require("../middlewares/i18n");
-const uploadFile = require("../middlewares/uploadFile");
-const authorize = require("../middlewares/authorize");
-const CarDAO = require("../DAO/carDAO");
-const CarModelDAO = require("../DAO/carModelDAO");
-const CarBrandDAO = require("../DAO/carBrandDAO");
-const UserDAO = require("../DAO/userDAO");
-const ColorDAO = require("../DAO/colorDAO");
+const i18n = rootRequire("middlewares/i18n");
+const uploadFile = rootRequire("middlewares/uploadFile");
+const authorize = rootRequire("middlewares/authorize");
+const CarDAO = rootRequire("DAO/carDAO");
+const CarModelDAO = rootRequire("DAO/carModelDAO");
+const CarBrandDAO = rootRequire("DAO/carBrandDAO");
+const UserDAO = rootRequire("DAO/userDAO");
+const ColorDAO = rootRequire("DAO/colorDAO");
 const USER = config.get("user_type");
 const ADMIN = config.get("admin_type");
 

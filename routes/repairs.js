@@ -4,13 +4,13 @@ const router = express.Router();
 const config = require("config");
 const path = require("path");
 
-const i18n = require("../middlewares/i18n");
-const PartDAO = require("../DAO/partDAO");
-const CarServiceDAO = require("../DAO/carServiceDAO");
-const CarDAO = require("../DAO/carDAO");
-const GarageDAO = require("../DAO/garageDAO");
-const RepairDAO = require("../DAO/repairDAO");
-const ReceiptDAO = require("../DAO/receiptDAO");
+const i18n = rootRequire("middlewares/i18n");
+const PartDAO = rootRequire("DAO/partDAO");
+const CarServiceDAO = rootRequire("DAO/carServiceDAO");
+const CarDAO = rootRequire("DAO/carDAO");
+const GarageDAO = rootRequire("DAO/garageDAO");
+const RepairDAO = rootRequire("DAO/repairDAO");
+const ReceiptDAO = rootRequire("DAO/receiptDAO");
 
 router.post(
   "/add-part-category",

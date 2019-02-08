@@ -1,6 +1,6 @@
 const config = require("config");
-const PeriodicCost = require("../startup/sequelize").PeriodicCost;
-const Cost = require("../startup/sequelize").Cost;
+const PeriodicCost = rootRequire("startup/sequelize").PeriodicCost;
+const Cost = rootRequire("startup/sequelize").Cost;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;

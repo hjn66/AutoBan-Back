@@ -1,5 +1,5 @@
 const config = require("config");
-const Cost = require("../startup/sequelize").Cost;
+const Cost = rootRequire("startup/sequelize").Cost;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
