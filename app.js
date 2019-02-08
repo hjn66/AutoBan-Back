@@ -5,6 +5,7 @@ const errors = require("./middlewares/errors");
 const sms = require("./middlewares/sms");
 
 global.rootPath = __dirname;
+global.rootRequire = name => require(path.join(__dirname, name));
 process.env.NODE_CONFIG_DIR = path.join(__dirname, "./config");
 
 var app = express();
