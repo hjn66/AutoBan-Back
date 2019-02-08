@@ -76,7 +76,7 @@ router.post(
         req.body.image
       );
     }
-    let receipt = await ReceiptDAO.addReceipt(
+    let receipt = await ReceiptDAO.add(
       __("Periodic Service Receipt"),
       date,
       totalCost,
@@ -92,7 +92,7 @@ router.post(
       );
     }
     let services = [{ serviceId: service.id }];
-    await ReceiptDAO.addReceiptItems(receipt.id, services, serviceItems);
+    await ReceiptDAO.addItems(receipt.id, services, serviceItems);
     await PeriodicServiceDAO.addItems(repair.id, serviceItems);
     return res.json({
       success: true,
@@ -112,6 +112,22 @@ router.get(
     return res.json({
       success: true,
       periodicServices
+    });
+  }
+);
+
+// Address: serverAddress/periodic-services/details?id=
+router.get(
+  "/details",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const id = req.query.id;
+    let serviceItems = await PeriodicServiceDAO.getByRepairId(id);
+    let receipts = await ReceiptDAO.getByRepairId(id);
+    return res.json({
+      success: true,
+      serviceItems,
+      receipts
     });
   }
 );
