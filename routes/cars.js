@@ -34,7 +34,7 @@ router.post(
     if (req.body.image) {
       image = await uploadFile(config.get("car_images_dir"), req.body.image);
     }
-    car = await CarDAO.addCar(
+    car = await CarDAO.add(
       name,
       plate,
       image,
@@ -54,7 +54,7 @@ router.put(
   async (req, res, next) => {
     const carId = req.body.carId;
     user = await UserDAO.getByIdSync(req.user.id);
-    car = await CarDAO.getCarById(carId);
+    car = await CarDAO.getById(carId);
     const userId = user.id;
     if (car.userId != userId) {
       throw new Error("You can change your car information only");
@@ -74,7 +74,7 @@ router.put(
         req.body.image
       );
     }
-    car = await CarDAO.updateCar(car);
+    car = await CarDAO.update(car);
     return res.json({
       success: true,
       message: __("Car information updated successfuly")
@@ -88,12 +88,12 @@ router.delete(
   async (req, res, next) => {
     const carId = req.body.carId;
     user = await UserDAO.getByIdSync(req.user.id);
-    car = await CarDAO.getCarById(carId);
+    car = await CarDAO.getById(carId);
     const userId = user.id;
     if (car.userId != userId) {
       throw new Error("You can remove your car only");
     }
-    car = await CarDAO.removeCar(car);
+    car = await CarDAO.remove(car);
     return res.json({ success: true, message: __("Car deleted successfuly") });
   }
 );
@@ -105,7 +105,7 @@ router.put(
     const carId = req.body.carId;
     const odometer = req.body.odometer;
     user = await UserDAO.getByIdSync(req.user.id);
-    car = await CarDAO.getCarById(carId);
+    car = await CarDAO.getById(carId);
     if (car.userId != user.id) {
       throw new Error("You can change your car information only");
     }
@@ -122,7 +122,7 @@ router.get(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     user = await UserDAO.getByIdSync(req.user.id);
-    cars = await CarDAO.listCars(user.id);
+    cars = await CarDAO.list(user.id);
     return res.json({ success: true, cars });
   }
 );
@@ -135,7 +135,7 @@ router.post(
   async (req, res, next) => {
     const mobileNumber = req.body.mobileNumber;
     let user = await UserDAO.getByUsername(mobileNumber);
-    let cars = await CarDAO.listCars(user.id);
+    let cars = await CarDAO.list(user.id);
     return res.json({ success: true, cars });
   }
 );

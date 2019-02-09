@@ -162,7 +162,7 @@ router.post(
     let garageName = req.body.garageName;
     const garageId = req.body.garageId;
     const carId = req.body.carId;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (
       car.userId != req.user.id &&
       req.user.type != config.get("repairman_type")
