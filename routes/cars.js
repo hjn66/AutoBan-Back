@@ -8,6 +8,7 @@ const fs = require("fs-extra");
 const i18n = rootRequire("middlewares/i18n");
 const uploadFile = rootRequire("middlewares/uploadFile");
 const authorize = rootRequire("middlewares/authorize");
+const checkPoint = rootRequire("middlewares/checkPoint");
 const CarDAO = rootRequire("DAO/carDAO");
 const CarModelDAO = rootRequire("DAO/carModelDAO");
 const CarBrandDAO = rootRequire("DAO/carBrandDAO");
@@ -18,7 +19,12 @@ const ADMIN = config.get("admin_type");
 
 router.post(
   "/register",
-  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    checkPoint
+  ],
   async (req, res, next) => {
     let user = await UserDAO.getByIdSync(req.user.id);
     const userId = user.id;
