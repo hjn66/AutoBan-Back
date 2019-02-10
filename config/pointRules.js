@@ -10,5 +10,17 @@ module.exports = {
       userField: "invitee",
       point: 20
     }
+  ],
+  "/cars/register": [
+    {
+      reason: "Register more than one car",
+      condition: {
+        function: DAOs.CarDAO.Count,
+        period: "D1",
+        op: ">=",
+        value: 1
+      },
+      point: -30
+    }
   ]
 };
