@@ -22,11 +22,11 @@ router.post(
   "/register",
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
-    user = await UserDAO.getByIdSync(req.user.id);
+    let user = await UserDAO.getByIdSync(req.user.id);
     const userId = user.id;
     const modelId = req.body.modelId;
     const colorId = req.body.colorId;
-    var image = "";
+    let image = "";
     const name = req.body.name;
     const plate = req.body.plate;
     const odometer = req.body.odometer;
@@ -34,7 +34,7 @@ router.post(
     if (req.body.image) {
       image = await uploadFile(config.get("car_images_dir"), req.body.image);
     }
-    car = await CarDAO.add(
+    let car = await CarDAO.add(
       name,
       plate,
       image,
@@ -44,7 +44,8 @@ router.post(
       modelId,
       colorId
     );
-    return res.json({ success: true, car });
+    res.json({ success: true, car });
+    next();
   }
 );
 
@@ -53,8 +54,8 @@ router.put(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     const carId = req.body.carId;
-    user = await UserDAO.getByIdSync(req.user.id);
-    car = await CarDAO.getById(carId);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let car = await CarDAO.getById(carId);
     const userId = user.id;
     if (car.userId != userId) {
       throw new Error("You can change your car information only");
@@ -87,8 +88,8 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     const carId = req.body.carId;
-    user = await UserDAO.getByIdSync(req.user.id);
-    car = await CarDAO.getById(carId);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let car = await CarDAO.getById(carId);
     const userId = user.id;
     if (car.userId != userId) {
       throw new Error("You can remove your car only");
@@ -104,8 +105,8 @@ router.put(
   async (req, res, next) => {
     const carId = req.body.carId;
     const odometer = req.body.odometer;
-    user = await UserDAO.getByIdSync(req.user.id);
-    car = await CarDAO.getById(carId);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let car = await CarDAO.getById(carId);
     if (car.userId != user.id) {
       throw new Error("You can change your car information only");
     }
@@ -121,8 +122,8 @@ router.get(
   "/list",
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
-    user = await UserDAO.getByIdSync(req.user.id);
-    cars = await CarDAO.list(user.id);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let cars = await CarDAO.list(user.id);
     return res.json({ success: true, cars });
   }
 );
@@ -144,7 +145,7 @@ router.get(
   "/list-car-brands",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    carBrands = await CarBrandDAO.listCarBrands();
+    let carBrands = await CarBrandDAO.listCarBrands();
     return res.json({ success: true, carBrands });
   }
 );
@@ -154,7 +155,7 @@ router.post(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const brandId = req.body.brandId;
-    carModels = await CarModelDAO.listCarModels(brandId);
+    let carModels = await CarModelDAO.listCarModels(brandId);
     return res.json({ success: true, carModels });
   }
 );
@@ -163,7 +164,7 @@ router.get(
   "/list-colors",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    colors = await ColorDAO.list();
+    let colors = await ColorDAO.list();
     return res.json({ success: true, colors });
   }
 );
