@@ -1,26 +1,28 @@
-module.exports.assessCondition = async function(userId, condition) {
+module.exports.assessCondition = async function(
+  userId,
+  assessFunction,
+  period,
+  op,
+  value
+) {
   let result = true;
-  switch (condition.op) {
+  let count = await assessFunction(userId, period);
+  switch (op) {
     case ">":
-      result =
-        (await condition.function(userId, condition.period)) > condition.value;
+      result = count > value;
       break;
     case ">=":
-      result =
-        (await condition.function(userId, condition.period)) >= condition.value;
+      result = count >= value;
       break;
     case "<":
-      result =
-        (await condition.function(userId, condition.period)) < condition.value;
+      result = count < value;
       break;
     case "<=":
-      result =
-        (await condition.function(userId, condition.period)) <= condition.value;
+      result = count <= value;
       break;
     case "=":
     case "==":
-      result =
-        (await condition.function(userId, condition.period)) == condition.value;
+      result = count == value;
       break;
     default:
       break;
