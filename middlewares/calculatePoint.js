@@ -14,7 +14,10 @@ module.exports = async function(req, res, next) {
       if (rule.condition) {
         ruleCondition = await pointUtils.assessCondition(
           userId,
-          rule.condition
+          rule.condition.function,
+          rule.condition.period,
+          rule.condition.op,
+          rule.condition.value
         );
         console.log(`ruleCondition: ${ruleCondition}`);
       }
@@ -23,7 +26,7 @@ module.exports = async function(req, res, next) {
         await DAOs.PointDAO.add(
           userId,
           req.originalUrl,
-          rule.reason,
+          __(rule.reason),
           rule.point
         );
       }
