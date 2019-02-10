@@ -13,14 +13,22 @@ module.exports = {
   ],
   "/cars/register": [
     {
-      reason: "Register more than one car",
+      reason: "Register second car",
       condition: {
         function: DAOs.CarDAO.Count,
-        period: "D1",
-        op: ">=",
-        value: 1
+        op: "=",
+        value: 2
       },
-      point: -30
+      point: -50
+    },
+    {
+      reason: "Register more than two car",
+      condition: {
+        function: DAOs.CarDAO.Count,
+        op: ">=",
+        value: 3
+      },
+      point: -100
     }
   ]
 };
