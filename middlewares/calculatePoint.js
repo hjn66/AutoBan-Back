@@ -1,4 +1,5 @@
 const rules = rootRequire("config/pointRules");
+const pointUtils = rootRequire("middlewares/pointUtils");
 
 module.exports = async function(req, res, next) {
   let affectedRules = rules[req.originalUrl] || [];
@@ -9,8 +10,23 @@ module.exports = async function(req, res, next) {
       userId = req[rule.userField];
     }
     if (userId) {
-      await DAOs.UserDAO.addPoint(userId, rule.point);
-      await DAOs.PointDAO.add(userId, req.originalUrl, rule.reason, rule.point);
+      let ruleCondition = true;
+      if (rule.condition) {
+        ruleCondition = await pointUtils.assessCondition(
+          userId,
+          rule.condition
+        );
+        console.log(`ruleCondition: ${ruleCondition}`);
+      }
+      if (ruleCondition) {
+        await DAOs.UserDAO.addPoint(userId, rule.point);
+        await DAOs.PointDAO.add(
+          userId,
+          req.originalUrl,
+          rule.reason,
+          rule.point
+        );
+      }
     }
   }
 };
