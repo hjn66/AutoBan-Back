@@ -39,7 +39,7 @@ module.exports.remove = async function(repair) {
 };
 
 module.exports.list = async function(carId) {
-  return await Repair.findAll({ where: { carId } });
+  return await Repair.findAll({ where: { carId, isPeriodicService: false } });
 };
 
 module.exports.listPeriodicService = async function(carId) {
