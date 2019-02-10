@@ -1,11 +1,12 @@
 const config = require("config");
-const Car = require("../startup/sequelize").Car;
-const CarModel = require("../startup/sequelize").CarModel;
-const Color = require("../startup/sequelize").Color;
-const CarBrand = require("../startup/sequelize").CarBrand;
-
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
+
+const Car = rootRequire("startup/sequelize").Car;
+const CarModel = rootRequire("startup/sequelize").CarModel;
+const Color = rootRequire("startup/sequelize").Color;
+const CarBrand = rootRequire("startup/sequelize").CarBrand;
+const Utils = rootRequire("middlewares/utils");
 
 module.exports.getById = async function(id) {
   car = await Car.findByPk(id);
@@ -68,4 +69,16 @@ module.exports.list = async function(userId) {
     cars[index].dataValues.car_brand = brand;
   }
   return cars;
+};
+
+module.exports.Count = async function(userId, period) {
+  let query = { userId };
+  if (period) {
+    query["createdAt"] = { [Op.gte]: Utils.subPeriod(new Date(), period) };
+  }
+  result = await Car.findOne({
+    where: query,
+    attributes: [[Sequelize.fn("COUNT", Sequelize.col("id")), "count"]]
+  });
+  return await result.dataValues.count;
 };
