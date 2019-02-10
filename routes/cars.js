@@ -5,8 +5,6 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const rootDir = path.join(__dirname, "../");
-
 const i18n = rootRequire("middlewares/i18n");
 const uploadFile = rootRequire("middlewares/uploadFile");
 const authorize = rootRequire("middlewares/authorize");
@@ -67,7 +65,7 @@ router.put(
     car.modelId = req.body.modelId;
     car.colorId = req.body.colorId;
     if (car.image) {
-      fs.removeSync(rootDir + "/" + car.image);
+      fs.removeSync(path.join(rootPath, car.image));
     }
     if (req.body.image) {
       car.image = await uploadFile(
