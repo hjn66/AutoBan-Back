@@ -1,19 +1,24 @@
-const Receipt = require("../startup/sequelize").Receipt;
-const ReceiptPart = require("../startup/sequelize").ReceiptPart;
-const ReceiptService = require("../startup/sequelize").ReceiptService;
+const Receipt = rootRequire("startup/sequelize").Receipt;
+const ReceiptPart = rootRequire("startup/sequelize").ReceiptPart;
+const ReceiptService = rootRequire("startup/sequelize").ReceiptService;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getReceiptById = async function(id) {
-  var receipt = await Receipt.findByPk(id);
+module.exports.getById = async function(id) {
+  let receipt = await Receipt.findByPk(id);
   if (!receipt) {
     throw new Error("Receipt not found");
   }
   return receipt;
 };
 
-module.exports.addReceipt = async function(
+module.exports.getByRepairId = async function(repairId) {
+  let receipts = await Receipt.findAll({ where: { repairId } });
+  return receipts;
+};
+
+module.exports.add = async function(
   title,
   date,
   totalCost,
@@ -46,7 +51,7 @@ module.exports.updateRepairCost = async function(repair) {
   return await repair.save();
 };
 
-module.exports.addReceiptItems = async function(receiptId, services, products) {
+module.exports.addItems = async function(receiptId, services, products) {
   for (const index in services) {
     services[index].receiptId = receiptId;
     await ReceiptService.create(services[index]);

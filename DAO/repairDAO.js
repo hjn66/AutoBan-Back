@@ -1,6 +1,6 @@
-const Repair = require("../startup/sequelize").Repair;
+const Repair = rootRequire("startup/sequelize").Repair;
 const bcrypt = require("bcryptjs");
-const Utils = require("../middlewares/utils");
+const Utils = rootRequire("middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
@@ -39,7 +39,7 @@ module.exports.remove = async function(repair) {
 };
 
 module.exports.list = async function(carId) {
-  return await Repair.findAll({ where: { carId } });
+  return await Repair.findAll({ where: { carId, isPeriodicService: false } });
 };
 
 module.exports.listPeriodicService = async function(carId) {

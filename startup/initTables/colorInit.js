@@ -1,7 +1,7 @@
 const readXlsxFile = require("read-excel-file/node");
 const path = require("path");
 
-const ColorDAO = require("../../DAO/colorDAO");
+const ColorDAO = rootRequire("DAO/colorDAO");
 let filePath = path.join(rootPath, "startup/initTables/colors.xlsx");
 
 module.exports = async () => {

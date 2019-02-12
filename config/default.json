@@ -3,6 +3,7 @@
   "db_sync_force": false,
   "sms_token_expiration_min": 25,
   "sms_token_length": 6,
+  "user_code_length": 6,
   "jwt_sms_token_exp_sec": 6000,
   "port": "3333",
   "db_connectionLimit": 10,

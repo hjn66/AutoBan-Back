@@ -1,7 +1,7 @@
 const config = require("config");
-const Fine = require("../startup/sequelize").Fine;
-const FineCategory = require("../startup/sequelize").FineCategory;
-const Cost = require("../startup/sequelize").Cost;
+const Fine = rootRequire("startup/sequelize").Fine;
+const FineCategory = rootRequire("startup/sequelize").FineCategory;
+const Cost = rootRequire("startup/sequelize").Cost;
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;

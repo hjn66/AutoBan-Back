@@ -1,7 +1,7 @@
-const Part = require("../startup/sequelize").Part;
-const PartCategory = require("../startup/sequelize").PartCategory;
+const Part = rootRequire("startup/sequelize").Part;
+const PartCategory = rootRequire("startup/sequelize").PartCategory;
 const bcrypt = require("bcryptjs");
-const Utils = require("../middlewares/utils");
+const Utils = rootRequire("middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 

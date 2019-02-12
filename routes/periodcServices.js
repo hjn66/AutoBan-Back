@@ -5,15 +5,16 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const CarDAO = require("../DAO/carDAO");
-const PartDAO = require("../DAO/partDAO");
-const RepairDAO = require("../DAO/repairDAO");
-const ReceiptDAO = require("../DAO/receiptDAO");
-const CarServiceDAO = require("../DAO/carServiceDAO");
-const PeriodicServiceDAO = require("../DAO/periodicServiceDAO");
+const CarDAO = rootRequire("DAO/carDAO");
+const PartDAO = rootRequire("DAO/partDAO");
+const RepairDAO = rootRequire("DAO/repairDAO");
+const ReceiptDAO = rootRequire("DAO/receiptDAO");
+const CarServiceDAO = rootRequire("DAO/carServiceDAO");
+const PeriodicServiceDAO = rootRequire("DAO/periodicServiceDAO");
 
-const uploadFile = require("../middlewares/uploadFile");
-const i18n = require("../middlewares/i18n");
+const uploadFile = rootRequire("middlewares/uploadFile");
+const calculatePoint = rootRequire("middlewares/calculatePoint");
+const i18n = rootRequire("middlewares/i18n");
 
 router.get(
   "/service-items",
@@ -45,7 +46,7 @@ router.post(
     const serviceItems = req.body.serviceItems;
     const garageId = req.body.garageId;
     const carId = req.body.carId;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (
       car.userId != req.user.id &&
       req.user.type != config.get("repairman_type")
@@ -76,7 +77,7 @@ router.post(
         req.body.image
       );
     }
-    let receipt = await ReceiptDAO.addReceipt(
+    let receipt = await ReceiptDAO.add(
       __("Periodic Service Receipt"),
       date,
       totalCost,
@@ -92,7 +93,7 @@ router.post(
       );
     }
     let services = [{ serviceId: service.id }];
-    await ReceiptDAO.addReceiptItems(receipt.id, services, serviceItems);
+    await ReceiptDAO.addItems(receipt.id, services, serviceItems);
     await PeriodicServiceDAO.addItems(repair.id, serviceItems);
     return res.json({
       success: true,
@@ -112,6 +113,22 @@ router.get(
     return res.json({
       success: true,
       periodicServices
+    });
+  }
+);
+
+// Address: serverAddress/periodic-services/details?id=
+router.get(
+  "/details",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const id = req.query.id;
+    let serviceItems = await PeriodicServiceDAO.getByRepairId(id);
+    let receipts = await ReceiptDAO.getByRepairId(id);
+    return res.json({
+      success: true,
+      serviceItems,
+      receipts
     });
   }
 );

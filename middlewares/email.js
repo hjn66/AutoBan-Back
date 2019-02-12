@@ -1,6 +1,6 @@
 var nodemailer = require("nodemailer");
-var emailConfig = require("../config/email");
-const Log = require("../middlewares/log");
+var emailConfig = rootRequire("config/email");
+const Log = rootRequire("middlewares/log");
 const Email = require("email-templates");
 
 module.exports.sendMail = async function(emailTo, template, locals) {

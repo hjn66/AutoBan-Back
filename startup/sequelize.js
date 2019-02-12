@@ -1,24 +1,25 @@
 const Sequelize = require("sequelize");
-const UserModel = require("../models/user");
-const SMSTokenModel = require("../models/smsToken");
-const CarModelModel = require("../models/carModel");
-const CarBrandModel = require("../models/carBrand");
-const UserCarModel = require("../models/car");
-const ColorModel = require("../models/color");
-const CostModel = require("../models/cost");
-const FuelModel = require("../models/fuel");
-const FineModel = require("../models/fine");
-const FineCategoryModel = require("../models/fineCategory");
-const PeriodicCostModel = require("../models/periodicCost");
-const PartModel = require("../models/part");
-const PartCategoryModel = require("../models/partCategory");
-const RepairModel = require("../models/repair");
-const GarageModel = require("../models/garage");
-const ReceiptModel = require("../models/receipt");
-const ReceiptPartModel = require("../models/receiptPart");
-const CarServiceModel = require("../models/carService");
-const ReceiptServiceModel = require("../models/receiptService");
-const PeriodicServiceModel = require("../models/periodicService");
+const UserModel = rootRequire("models/user");
+const SMSTokenModel = rootRequire("models/smsToken");
+const CarModelModel = rootRequire("models/carModel");
+const CarBrandModel = rootRequire("models/carBrand");
+const UserCarModel = rootRequire("models/car");
+const ColorModel = rootRequire("models/color");
+const CostModel = rootRequire("models/cost");
+const FuelModel = rootRequire("models/fuel");
+const FineModel = rootRequire("models/fine");
+const FineCategoryModel = rootRequire("models/fineCategory");
+const PeriodicCostModel = rootRequire("models/periodicCost");
+const PartModel = rootRequire("models/part");
+const PartCategoryModel = rootRequire("models/partCategory");
+const RepairModel = rootRequire("models/repair");
+const GarageModel = rootRequire("models/garage");
+const ReceiptModel = rootRequire("models/receipt");
+const ReceiptPartModel = rootRequire("models/receiptPart");
+const CarServiceModel = rootRequire("models/carService");
+const ReceiptServiceModel = rootRequire("models/receiptService");
+const PeriodicServiceModel = rootRequire("models/periodicService");
+const PointModel = rootRequire("models/point");
 
 const config = require("config");
 
@@ -59,7 +60,9 @@ const CarService = CarServiceModel(sequelize, Sequelize);
 const ReceiptPart = ReceiptPartModel(sequelize, Sequelize);
 const ReceiptService = ReceiptServiceModel(sequelize, Sequelize);
 const PeriodicService = PeriodicServiceModel(sequelize, Sequelize);
+const Points = PointModel(sequelize, Sequelize);
 
+Points.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
 CarBrand.hasMany(CarModel, { as: "models" });
 Car.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
 Car.belongsTo(CarModel, { foreignKey: { name: "modelId", allowNull: false } });
@@ -150,5 +153,6 @@ module.exports = {
   ReceiptPart,
   CarService,
   ReceiptService,
-  PeriodicService
+  PeriodicService,
+  Points
 };

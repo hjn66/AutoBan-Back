@@ -6,10 +6,10 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const i18n = require("../middlewares/i18n");
-const uploadFile = require("../middlewares/uploadFile");
-const UserDAO = require("../DAO/userDAO");
-const SMSTokenDAO = require("../DAO/smsTokenDAO");
+const i18n = rootRequire("middlewares/i18n");
+const uploadFile = rootRequire("middlewares/uploadFile");
+const UserDAO = rootRequire("DAO/userDAO");
+const SMSTokenDAO = rootRequire("DAO/smsTokenDAO");
 
 // get mobileNumber in body and return token
 router.post("/get-sms-token", i18n, async (req, res, next) => {
@@ -38,7 +38,7 @@ router.post("/check-sms-token", i18n, async (req, res, next) => {
 
 // Authenticate with username(mobileNumber or email) and password
 router.post("/authenticate-password", i18n, async (req, res, next) => {
-  let user = await UserDAO.getUser(req.body.username);
+  let user = await UserDAO.getByUsername(req.body.username);
   if (!user.enabled) {
     throw new Error("Your Account dissabled by admin, please contact to admin");
   }
@@ -61,7 +61,7 @@ router.get(
   "/authenticate-token",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    let user = await UserDAO.getUser(req.user);
+    let user = await UserDAO.getByUsername(req.user);
     if (!user.enabled) {
       throw new Error(
         "Your Account dissabled by admin, please contact to admin"
@@ -78,16 +78,25 @@ router.get(
 );
 
 // register with password and token returned by check-sms-token
-// input (req.body): *firstName, *lastName, email, profilePic(file)
+// input (req.body): *firstName, *lastName, email, profilePic(file), refferal
 router.post(
   "/register",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
+    console.log(req.body.firstName);
     const password = req.body.password;
     const email = req.body.email;
     const mobileNumber = req.user;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
+    const refferal = req.body.referral;
+    if (refferal) {
+      let referralUser = await UserDAO.getByCode(req.body.referral);
+      if (!referralUser) {
+        throw new Error("Invalid referral code");
+      }
+      req.inviter = referralUser.id;
+    }
     var profilePic = "";
     if (!firstName || !lastName) {
       throw new Error("firstName and lastName required");
@@ -98,18 +107,23 @@ router.post(
         req.body.image
       );
     }
-    let user = await UserDAO.addUser(
+    let user = await UserDAO.add(
       mobileNumber,
       password,
       config.get("user_type"),
       firstName,
       lastName,
       email,
-      profilePic
+      profilePic,
+      refferal
     );
     user["password"] = "***";
     const token = jwt.sign({ type: "AUTH", user }, config.get("JWTsecret"));
-    return res.json({ success: true, token: "JWT " + token, user });
+    res.json({ success: true, token: "JWT " + token, user });
+    if (refferal) {
+      req.invitee = user.id;
+    }
+    next();
   }
 );
 
@@ -119,7 +133,7 @@ router.put(
   "/user",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    let user = await UserDAO.getUserByIdSync(req.user.id);
+    let user = await UserDAO.getByIdSync(req.user.id);
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     user.email = req.body.email;
@@ -132,7 +146,7 @@ router.put(
         req.body.image
       );
     }
-    user = await UserDAO.updateUser(user);
+    user = await UserDAO.update(user);
     return res.json({
       success: true,
       message: __("User information updated successfuly"),
@@ -148,9 +162,9 @@ router.put(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     smsToken = await SMSTokenDAO.checkToken(req.body);
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     user.mobileNumber = smsToken.mobileNumber;
-    user = await UserDAO.updateUser(user);
+    user = await UserDAO.update(user);
     return res.json({ success: true, user });
   }
 );
@@ -160,8 +174,18 @@ router.get(
   "/profile",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    user = await UserDAO.getByIdSync(req.user.id);
     return res.json({ success: true, user });
+  }
+);
+
+// return users registred by user referral code (Invited by user)
+router.get(
+  "/referrals",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    referrals = await UserDAO.getReferrals(req.user.code);
+    res.json({ success: true, referrals });
   }
 );
 

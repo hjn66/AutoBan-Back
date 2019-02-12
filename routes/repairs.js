@@ -4,13 +4,13 @@ const router = express.Router();
 const config = require("config");
 const path = require("path");
 
-const i18n = require("../middlewares/i18n");
-const PartDAO = require("../DAO/partDAO");
-const CarServiceDAO = require("../DAO/carServiceDAO");
-const CarDAO = require("../DAO/carDAO");
-const GarageDAO = require("../DAO/garageDAO");
-const RepairDAO = require("../DAO/repairDAO");
-const ReceiptDAO = require("../DAO/receiptDAO");
+const i18n = rootRequire("middlewares/i18n");
+const PartDAO = rootRequire("DAO/partDAO");
+const CarServiceDAO = rootRequire("DAO/carServiceDAO");
+const CarDAO = rootRequire("DAO/carDAO");
+const GarageDAO = rootRequire("DAO/garageDAO");
+const RepairDAO = rootRequire("DAO/repairDAO");
+const ReceiptDAO = rootRequire("DAO/receiptDAO");
 
 router.post(
   "/add-part-category",
@@ -162,7 +162,7 @@ router.post(
     let garageName = req.body.garageName;
     const garageId = req.body.garageId;
     const carId = req.body.carId;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (
       car.userId != req.user.id &&
       req.user.type != config.get("repairman_type")
@@ -231,7 +231,7 @@ router.post(
         req.body.image
       );
     }
-    let receipt = await ReceiptDAO.addReceipt(
+    let receipt = await ReceiptDAO.add(
       title,
       date,
       totalCost,
@@ -253,13 +253,13 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const receiptId = req.body.receiptId;
-    let receipt = await ReceiptDAO.getReceiptById(receiptId);
+    let receipt = await ReceiptDAO.getById(receiptId);
 
     let repair = await RepairDAO.getById(receipt.repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can remove receipt from repair that you added");
     }
-    await ReceiptDAO.removeReceipt(receipt);
+    await ReceiptDAO.remove(receipt);
     await ReceiptDAO.updateRepairCost(repair);
     return res.json({
       success: true,
@@ -276,14 +276,14 @@ router.put(
     const products = req.body.products;
     const receiptId = req.body.receiptId;
 
-    let receipt = await ReceiptDAO.getReceiptById(receiptId);
+    let receipt = await ReceiptDAO.getById(receiptId);
     let repair = await RepairDAO.getById(receipt.repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can update receipt Items of repair that you added");
     }
 
-    await ReceiptDAO.removeReceiptItems(receipt.id);
-    await ReceiptDAO.addReceiptItems(receipt.id, services, products);
+    await ReceiptDAO.removeItems(receipt.id);
+    await ReceiptDAO.addItems(receipt.id, services, products);
     await ReceiptDAO.updateReceiptCost(receipt);
     await ReceiptDAO.updateRepairCost(repair);
     return res.json({

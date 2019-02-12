@@ -2,12 +2,12 @@ const passport = require("passport");
 const express = require("express");
 const router = express.Router();
 const config = require("config");
-const i18n = require("../middlewares/i18n");
-const CarDAO = require("../DAO/carDAO");
-const CostDAO = require("../DAO/costDAO");
-const FuelDAO = require("../DAO/fuelDAO");
-const FineDAO = require("../DAO/fineDAO");
-const PeriodicCostDAO = require("../DAO/PeriodicCostDAO");
+const i18n = rootRequire("middlewares/i18n");
+const CarDAO = rootRequire("DAO/carDAO");
+const CostDAO = rootRequire("DAO/costDAO");
+const FuelDAO = rootRequire("DAO/fuelDAO");
+const FineDAO = rootRequire("DAO/fineDAO");
+const PeriodicCostDAO = rootRequire("DAO/periodicCostDAO");
 
 //TODO list for all cost types, update for all cost types
 router.post(
@@ -24,7 +24,7 @@ router.post(
     const isFull = req.body.isFull;
     const stationName = req.body.stationName;
 
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can add cost to your car only");
     }
@@ -65,7 +65,7 @@ router.put(
 
     let fuel = await FuelDAO.getFuelById(fuelId);
     let cost = fuel.cost;
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can update your car's cost only");
     }
@@ -98,7 +98,7 @@ router.delete(
     const fuelId = req.body.fuelId;
     let fuel = await FuelDAO.getFuelById(fuelId);
     let cost = fuel.cost;
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can remove your car's cost only");
     }
@@ -126,7 +126,7 @@ router.post(
     const comment = req.body.comment;
     const fineCode = req.body.fineCode;
 
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can add cost to your car only");
     }
@@ -153,7 +153,7 @@ router.put(
 
     let fine = await FineDAO.getFineById(fineId);
     let cost = fine.cost;
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can update your car's cost only");
     }
@@ -180,7 +180,7 @@ router.delete(
     const fineId = req.body.fineId;
     let fine = await FineDAO.getFineById(fineId);
     let cost = fine.cost;
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can remove your car's cost only");
     }
@@ -200,7 +200,7 @@ router.post(
     const type = req.body.type;
     const period = req.body.period;
 
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can add cost to your car only");
     }
@@ -234,7 +234,7 @@ router.put(
       periodicCostId
     );
     let cost = periodicCost.cost;
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can update your car's cost only");
     }
@@ -264,7 +264,7 @@ router.delete(
       periodicCostId
     );
     let cost = periodicCost.cost;
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can remove your car's cost only");
     }
@@ -285,7 +285,7 @@ router.post(
     const value = req.body.value;
     const comment = req.body.comment;
 
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can add cost to your car only");
     }
@@ -314,7 +314,7 @@ router.put(
     const comment = req.body.comment;
 
     let cost = await CostDAO.getCostById(costId);
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can update your car's cost only");
     }
@@ -336,7 +336,7 @@ router.delete(
   async (req, res, next) => {
     const costId = req.body.costId;
     let cost = await CostDAO.getCostById(costId);
-    let car = await CarDAO.getCarById(cost.carId);
+    let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
       throw new Error("You can remove your car's cost only");
     }
@@ -355,7 +355,7 @@ router.post(
     const carId = req.body.carId;
     const from = req.body.from;
     const to = req.body.to;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
@@ -379,7 +379,7 @@ router.post(
     const carId = req.body.carId;
     const from = req.body.from;
     const to = req.body.to;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
@@ -395,7 +395,7 @@ router.post(
     const carId = req.body.carId;
     const from = req.body.from;
     const to = req.body.to;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
@@ -411,7 +411,7 @@ router.post(
     const carId = req.body.carId;
     const from = req.body.from;
     const to = req.body.to;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
@@ -431,7 +431,7 @@ router.post(
     const carId = req.body.carId;
     const from = req.body.from;
     const to = req.body.to;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
@@ -447,7 +447,7 @@ router.post(
     const carId = req.body.carId;
     from = req.body.from;
     to = req.body.to;
-    let car = await CarDAO.getCarById(carId);
+    let car = await CarDAO.getById(carId);
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }

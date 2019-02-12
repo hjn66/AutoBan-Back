@@ -5,11 +5,12 @@ const path = require("path");
 const passport = require("passport");
 require("express-async-errors");
 
-const users = require("../routes/users");
-const cars = require("../routes/cars");
-const costs = require("../routes/costs");
-const repairs = require("../routes/repairs");
-const periodcServices = require("../routes/periodcServices");
+const users = rootRequire("routes/users");
+const cars = rootRequire("routes/cars");
+const costs = rootRequire("routes/costs");
+const repairs = rootRequire("routes/repairs");
+const periodcServices = rootRequire("routes/periodcServices");
+const calculatePoint = rootRequire("middlewares/calculatePoint");
 
 module.exports = async function(app) {
   // CORS Middleware
@@ -28,11 +29,12 @@ module.exports = async function(app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  require("../middlewares/passport")(passport);
+  rootRequire("middlewares/passport")(passport);
 
   app.use("/users", users);
   app.use("/cars", cars);
   app.use("/costs", costs);
   app.use("/repairs", repairs);
   app.use("/periodic-services", periodcServices);
+  app.use(calculatePoint);
 };

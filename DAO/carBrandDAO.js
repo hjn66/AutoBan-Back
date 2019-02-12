@@ -1,4 +1,4 @@
-const CarBrand = require("../startup/sequelize").CarBrand;
+const CarBrand = rootRequire("startup/sequelize").CarBrand;
 
 module.exports.getCarBrandById = async function(id) {
   carBrand = await CarBrand.findByPk(id);

@@ -5,28 +5,32 @@ const config = require("config");
 const path = require("path");
 const fs = require("fs-extra");
 
-const rootDir = path.join(__dirname, "../");
-
-const i18n = require("../middlewares/i18n");
-const uploadFile = require("../middlewares/uploadFile");
-const authorize = require("../middlewares/authorize");
-const CarDAO = require("../DAO/carDAO");
-const CarModelDAO = require("../DAO/carModelDAO");
-const CarBrandDAO = require("../DAO/carBrandDAO");
-const UserDAO = require("../DAO/userDAO");
-const ColorDAO = require("../DAO/colorDAO");
+const i18n = rootRequire("middlewares/i18n");
+const uploadFile = rootRequire("middlewares/uploadFile");
+const authorize = rootRequire("middlewares/authorize");
+const checkPoint = rootRequire("middlewares/checkPoint");
+const CarDAO = rootRequire("DAO/carDAO");
+const CarModelDAO = rootRequire("DAO/carModelDAO");
+const CarBrandDAO = rootRequire("DAO/carBrandDAO");
+const UserDAO = rootRequire("DAO/userDAO");
+const ColorDAO = rootRequire("DAO/colorDAO");
 const USER = config.get("user_type");
 const ADMIN = config.get("admin_type");
 
 router.post(
   "/register",
-  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    checkPoint
+  ],
   async (req, res, next) => {
-    user = await UserDAO.getUserByIdSync(req.user.id);
+    let user = await UserDAO.getByIdSync(req.user.id);
     const userId = user.id;
     const modelId = req.body.modelId;
     const colorId = req.body.colorId;
-    var image = "";
+    let image = "";
     const name = req.body.name;
     const plate = req.body.plate;
     const odometer = req.body.odometer;
@@ -34,7 +38,7 @@ router.post(
     if (req.body.image) {
       image = await uploadFile(config.get("car_images_dir"), req.body.image);
     }
-    car = await CarDAO.addCar(
+    let car = await CarDAO.add(
       name,
       plate,
       image,
@@ -44,7 +48,8 @@ router.post(
       modelId,
       colorId
     );
-    return res.json({ success: true, car });
+    res.json({ success: true, car });
+    next();
   }
 );
 
@@ -53,8 +58,8 @@ router.put(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     const carId = req.body.carId;
-    user = await UserDAO.getUserByIdSync(req.user.id);
-    car = await CarDAO.getCarById(carId);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let car = await CarDAO.getById(carId);
     const userId = user.id;
     if (car.userId != userId) {
       throw new Error("You can change your car information only");
@@ -66,7 +71,7 @@ router.put(
     car.modelId = req.body.modelId;
     car.colorId = req.body.colorId;
     if (car.image) {
-      fs.removeSync(rootDir + "/" + car.image);
+      fs.removeSync(path.join(rootPath, car.image));
     }
     if (req.body.image) {
       car.image = await uploadFile(
@@ -74,7 +79,7 @@ router.put(
         req.body.image
       );
     }
-    car = await CarDAO.updateCar(car);
+    car = await CarDAO.update(car);
     return res.json({
       success: true,
       message: __("Car information updated successfuly")
@@ -87,13 +92,13 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
     const carId = req.body.carId;
-    user = await UserDAO.getUserByIdSync(req.user.id);
-    car = await CarDAO.getCarById(carId);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let car = await CarDAO.getById(carId);
     const userId = user.id;
     if (car.userId != userId) {
       throw new Error("You can remove your car only");
     }
-    car = await CarDAO.removeCar(car);
+    car = await CarDAO.remove(car);
     return res.json({ success: true, message: __("Car deleted successfuly") });
   }
 );
@@ -104,8 +109,8 @@ router.put(
   async (req, res, next) => {
     const carId = req.body.carId;
     const odometer = req.body.odometer;
-    user = await UserDAO.getUserByIdSync(req.user.id);
-    car = await CarDAO.getCarById(carId);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let car = await CarDAO.getById(carId);
     if (car.userId != user.id) {
       throw new Error("You can change your car information only");
     }
@@ -121,8 +126,8 @@ router.get(
   "/list",
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
-    user = await UserDAO.getUserByIdSync(req.user.id);
-    cars = await CarDAO.listCars(user.id);
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let cars = await CarDAO.list(user.id);
     return res.json({ success: true, cars });
   }
 );
@@ -134,8 +139,8 @@ router.post(
   [passport.authenticate("jwt", { session: false }), i18n, authorize([ADMIN])],
   async (req, res, next) => {
     const mobileNumber = req.body.mobileNumber;
-    let user = await UserDAO.getUser(mobileNumber);
-    let cars = await CarDAO.listCars(user.id);
+    let user = await UserDAO.getByUsername(mobileNumber);
+    let cars = await CarDAO.list(user.id);
     return res.json({ success: true, cars });
   }
 );
@@ -144,7 +149,7 @@ router.get(
   "/list-car-brands",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    carBrands = await CarBrandDAO.listCarBrands();
+    let carBrands = await CarBrandDAO.listCarBrands();
     return res.json({ success: true, carBrands });
   }
 );
@@ -154,7 +159,7 @@ router.post(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const brandId = req.body.brandId;
-    carModels = await CarModelDAO.listCarModels(brandId);
+    let carModels = await CarModelDAO.listCarModels(brandId);
     return res.json({ success: true, carModels });
   }
 );
@@ -163,7 +168,7 @@ router.get(
   "/list-colors",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    colors = await ColorDAO.list();
+    let colors = await ColorDAO.list();
     return res.json({ success: true, colors });
   }
 );
