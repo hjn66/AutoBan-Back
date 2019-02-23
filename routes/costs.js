@@ -95,7 +95,7 @@ router.delete(
   "/fuel",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const fuelId = req.body.fuelId;
+    const fuelId = req.query.fuelId;
     let fuel = await FuelDAO.getFuelById(fuelId);
     let cost = fuel.cost;
     let car = await CarDAO.getById(cost.carId);
@@ -177,7 +177,7 @@ router.delete(
   "/fine",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const fineId = req.body.fineId;
+    const fineId = req.query.fineId;
     let fine = await FineDAO.getFineById(fineId);
     let cost = fine.cost;
     let car = await CarDAO.getById(cost.carId);
@@ -259,7 +259,7 @@ router.delete(
   "/periodic",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const periodicCostId = req.body.periodicCostId;
+    const periodicCostId = req.query.periodicCostId;
     let periodicCost = await PeriodicCostDAO.getPeriodicCostById(
       periodicCostId
     );
@@ -334,7 +334,7 @@ router.delete(
   "/other",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const costId = req.body.costId;
+    const costId = req.query.costId;
     let cost = await CostDAO.getCostById(costId);
     let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
