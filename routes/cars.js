@@ -91,7 +91,7 @@ router.delete(
   "/delete",
   [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
   async (req, res, next) => {
-    const carId = req.body.carId;
+    const carId = req.query.carId;
     let user = await UserDAO.getByIdSync(req.user.id);
     let car = await CarDAO.getById(carId);
     const userId = user.id;

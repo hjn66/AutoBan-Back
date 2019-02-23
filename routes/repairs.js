@@ -31,7 +31,7 @@ router.delete(
   "/part-category",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const categoryId = req.body.categoryId;
+    const categoryId = req.query.categoryId;
     let partCategory = await PartDAO.getPartCategoryById(categoryId);
     await PartDAO.removePartCategory(partCategory);
     return res.json({
@@ -133,7 +133,7 @@ router.delete(
   "/service",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const serviceId = req.body.serviceId;
+    const serviceId = req.query.serviceId;
     let carService = await CarServiceDAO.getServiceById(serviceId);
     await CarServiceDAO.removeCarService(carService);
     return res.json({
@@ -197,7 +197,7 @@ router.delete(
   "/repair",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const repairId = req.body.repairId;
+    const repairId = req.query.repairId;
     let repair = await RepairDAO.getById(repairId);
     if (req.user.id != repair.creatorId) {
       throw new Error("You can remove only repair that you added");
@@ -252,7 +252,7 @@ router.delete(
   "/receipt",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const receiptId = req.body.receiptId;
+    const receiptId = req.query.receiptId;
     let receipt = await ReceiptDAO.getById(receiptId);
 
     let repair = await RepairDAO.getById(receipt.repairId);
