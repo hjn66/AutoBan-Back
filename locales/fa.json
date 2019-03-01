@@ -55,5 +55,6 @@
   "Periodic Service Receipt": "فاکتور سرویس دوره‌ای",
   "Invalid referral code": "کد معرف اشتباه است",
   "You have'nt sufficient point for this action": "شما امتیاز لازم برای اجرای این عملیات را ندارید",
-  "Register more than two car": "ثبت نام بیش از دو ماشین"
+  "Register more than two car": "ثبت نام بیش از دو ماشین",
+  "Receipt": "فاکتور"
 }

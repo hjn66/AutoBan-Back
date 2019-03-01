@@ -5,6 +5,7 @@ const config = require("config");
 const path = require("path");
 
 const i18n = rootRequire("middlewares/i18n");
+const uploadFile = rootRequire("middlewares/uploadFile");
 const PartDAO = rootRequire("DAO/partDAO");
 const CarServiceDAO = rootRequire("DAO/carServiceDAO");
 const CarDAO = rootRequire("DAO/carDAO");
@@ -214,7 +215,7 @@ router.post(
   "/add-receipt",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const title = req.body.title;
+    const title = req.body.title || __("Receipt");
     const date = req.body.date;
     const totalCost = req.body.totalCost;
     const shopName = req.body.shopName;
@@ -224,22 +225,25 @@ router.post(
     if (req.user.id != repair.creatorId) {
       throw new Error("You can add receipt to repair that you added");
     }
-    let receipImage = "";
-    if (req.body.image) {
-      receipImage = await uploadFile(
-        config.get("receipt_images_dir"),
-        req.body.image
-      );
+    let receipImages = [];
+    if (req.body.images) {
+      for (let index = 0; index < req.body.images.length; index++) {
+        let image = await uploadFile(
+          config.get("receipt_images_dir"),
+          req.body.images[index]
+        );
+        receipImages.push(image);
+      }
     }
     let receipt = await ReceiptDAO.add(
       title,
       date,
       totalCost,
       shopName,
-      receipImage,
+      receipImages.toString(),
       repairId
     );
-    await ReceiptDAO.updateRepairCost(repair);
+    // await ReceiptDAO.updateRepairCost(repair);
     return res.json({
       success: true,
       message: __("Receipt added successfuly"),
@@ -260,10 +264,35 @@ router.delete(
       throw new Error("You can remove receipt from repair that you added");
     }
     await ReceiptDAO.remove(receipt);
-    await ReceiptDAO.updateRepairCost(repair);
+    // await ReceiptDAO.updateRepairCost(repair);
     return res.json({
       success: true,
       message: __("Receipt deleted successfuly")
+    });
+  }
+);
+
+router.get(
+  "/list-receipts",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const repairId = req.query.repairId;
+    let repair = await RepairDAO.getById(repairId);
+    let car = await CarDAO.getById(repair.carId);
+    if (req.user.id != repair.creatorId && req.user.id != car.userId) {
+      throw new Error(
+        "You can list receipts of repair that you added or your car"
+      );
+    }
+    receipts = await ReceiptDAO.getByRepairId(repairId);
+    for (let index = 0; index < receipts.length; index++) {
+      if (receipts[index].image) {
+        receipts[index].image = receipts[index].image.split(",");
+      }
+    }
+    return res.json({
+      success: true,
+      receipts
     });
   }
 );
