@@ -26,5 +26,8 @@
   "user_type": "USER",
   "admin_type": "ADMIN",
   "repairman_type": "REPAIRMAN",
-  "other_cost_type": "OTHER"
+  "other_cost_type": "OTHER",
+  "periodic_cost_type": "PERIODIC",
+  "fuel_cost_type": "FUEL",
+  "fine_cost_type": "FINE"
 }

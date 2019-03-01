@@ -28,7 +28,13 @@ router.post(
     if (car.userId != req.user.id) {
       throw new Error("You can add cost to your car only");
     }
-    let cost = await CostDAO.addCost("FUEL", date, value, comment, carId);
+    let cost = await CostDAO.addCost(
+      config.get("fuel_cost_type"),
+      date,
+      value,
+      comment,
+      carId
+    );
     let fuel = await FuelDAO.addFuel(
       volume,
       type,
@@ -130,7 +136,13 @@ router.post(
     if (car.userId != req.user.id) {
       throw new Error("You can add cost to your car only");
     }
-    let cost = await CostDAO.addCost("FINE", date, value, comment, carId);
+    let cost = await CostDAO.addCost(
+      config.get("fine_cost_type"),
+      date,
+      value,
+      comment,
+      carId
+    );
     let fine = await FineDAO.addFine(fineCode, cost.id);
     fine.dataValues.cost = cost;
     return res.json({
@@ -204,7 +216,13 @@ router.post(
     if (car.userId != req.user.id) {
       throw new Error("You can add cost to your car only");
     }
-    let cost = await CostDAO.addCost(type, date, value, comment, carId);
+    let cost = await CostDAO.addCost(
+      config.get("periodic_cost_type"),
+      date,
+      value,
+      comment,
+      carId
+    );
     let periodicCost = await PeriodicCostDAO.addPeriodicCost(
       type,
       period,
