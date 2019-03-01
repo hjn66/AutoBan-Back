@@ -22,7 +22,7 @@ function submitLogin() {
     data: JSON.stringify(param),
     success: function(response) {
       if (response.success == false) {
-        alert(response.msg);
+        alert(response.message);
       } else {
         localStorage["jwt-token"] = response.token;
         openHomePage();
@@ -406,17 +406,23 @@ function addPart(contanerId, part) {
 
   propery = $("<li />");
   $("<div />", { class: "key", text: "کشور سازنده" }).appendTo(propery);
-  $("<div />", { class: "value", text: replaceNull(part.country) }).appendTo(propery);
+  $("<div />", { class: "value", text: replaceNull(part.country) }).appendTo(
+    propery
+  );
   propery.appendTo(properties);
 
   propery = $("<li />");
   $("<div />", { class: "key", text: "نوع" }).appendTo(propery);
-  $("<div />", { class: "value", text: replaceNull(part.type) }).appendTo(propery);
+  $("<div />", { class: "value", text: replaceNull(part.type) }).appendTo(
+    propery
+  );
   propery.appendTo(properties);
 
   propery = $("<li />");
   $("<div />", { class: "key", text: "طول عمر (کیلومتر)" }).appendTo(propery);
-  $("<div />", { class: "value", text: replaceNull(part.lifetimeKM) }).appendTo(propery);
+  $("<div />", { class: "value", text: replaceNull(part.lifetimeKM) }).appendTo(
+    propery
+  );
   propery.appendTo(properties);
 
   propery = $("<li />");
