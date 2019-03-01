@@ -53,7 +53,7 @@ router.put(
   "/fuel",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const fuelId = req.body.fuelId;
+    const fuelId = req.body.id;
     const date = req.body.date;
     const value = req.body.value;
     const comment = req.body.comment;
@@ -145,7 +145,7 @@ router.put(
   "/fine",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const fineId = req.body.fineId;
+    const fineId = req.body.id;
     const date = req.body.date;
     const value = req.body.value;
     const comment = req.body.comment;
@@ -223,7 +223,7 @@ router.put(
   "/periodic",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const periodicCostId = req.body.periodicCostId;
+    const periodicCostId = req.body.id;
     const date = req.body.date;
     const value = req.body.value;
     const comment = req.body.comment;
@@ -308,7 +308,7 @@ router.put(
   "/other",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    const costId = req.body.costId;
+    const costId = req.body.id;
     const date = req.body.date;
     const value = req.body.value;
     const comment = req.body.comment;
