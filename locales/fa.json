@@ -59,5 +59,7 @@
   "Receipt": "فاکتور",
   "Fine information updated successfuly": "اطلاعات جریمه با موفقیت به‌روزرسانی شد",
   "Cost information updated successfuly": "اطلاعات هزینه با موفقیت به‌روزرسانی شد",
-  "PeriodicCost information updated successfuly": "اطلاعات پرداخت دوره‌ای با موفقیت به‌روزرسانی شد"
+  "PeriodicCost information updated successfuly": "اطلاعات پرداخت دوره‌ای با موفقیت به‌روزرسانی شد",
+  "You can update only repair that you added": "شما می‌توانید اطلاعات تعمیراتی را به‌روزرسانی کنید که توسط شما ایجاد شده باشد",
+  "Repair updated successfuly": "اطلاعات تعمیرات با موفقیت به‌روزرسانی شد"
 }

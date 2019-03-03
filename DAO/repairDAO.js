@@ -34,6 +34,10 @@ module.exports.add = async function(
   });
 };
 
+module.exports.update = async function(repair) {
+  return await repair.save();
+};
+
 module.exports.remove = async function(repair) {
   return await repair.destroy();
 };

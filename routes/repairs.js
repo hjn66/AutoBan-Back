@@ -194,6 +194,39 @@ router.post(
   }
 );
 
+router.put(
+  "/repair",
+  [passport.authenticate("jwt", { session: false }), i18n],
+  async (req, res, next) => {
+    const repairId = req.body.id;
+    const title = req.body.title;
+    const date = req.body.date;
+    const totalCost = req.body.totalCost;
+    let garageName = req.body.garageName;
+    const garageId = req.body.garageId;
+    let repair = await RepairDAO.getById(repairId);
+    if (req.user.id != repair.creatorId) {
+      throw new Error("You can update only repair that you added");
+    }
+    if (garageId) {
+      let garage = await GarageDAO.getGarageById(garageId);
+      garageName = garage.name;
+    }
+    // title, date, totalCost, garageName, garageId, creatorId, carId
+    repair.title = title;
+    repair.date = date;
+    repair.totalCost = totalCost;
+    repair.garageName = garageName;
+    repair.garageId = garageId;
+    repair = await RepairDAO.update(repair);
+    return res.json({
+      success: true,
+      message: __("Repair updated successfuly"),
+      repair
+    });
+  }
+);
+
 router.delete(
   "/repair",
   [passport.authenticate("jwt", { session: false }), i18n],
