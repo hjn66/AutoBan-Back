@@ -4,7 +4,7 @@ const Cost = rootRequire("startup/sequelize").Cost;
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getCostById = async function(id) {
+module.exports.getById = async function(id) {
   var cost = await Cost.findByPk(id);
   if (!cost) {
     throw new Error("Cost not found");
@@ -12,7 +12,7 @@ module.exports.getCostById = async function(id) {
   return cost;
 };
 
-module.exports.addCost = async function(type, date, value, comment, carId) {
+module.exports.add = async function(type, date, value, comment, carId) {
   return await Cost.create({
     carId: carId,
     type: type,
@@ -22,15 +22,15 @@ module.exports.addCost = async function(type, date, value, comment, carId) {
   });
 };
 
-module.exports.updateCost = async function(cost) {
+module.exports.update = async function(cost) {
   return await cost.save();
 };
 
-module.exports.removeCost = async function(cost) {
+module.exports.remove = async function(cost) {
   return await cost.destroy();
 };
 
-module.exports.listCostByCar = async function(carId, from, to) {
+module.exports.listByCar = async function(carId, from, to) {
   let query = {
     [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"
@@ -54,7 +54,7 @@ module.exports.listOtherCostByCar = async function(carId, from, to) {
   });
 };
 
-module.exports.listCategorizedCostByCar = async function(carId) {
+module.exports.listCategorizedByCar = async function(carId) {
   let query = {
     [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"
