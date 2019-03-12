@@ -5,7 +5,7 @@ const Cost = rootRequire("startup/sequelize").Cost;
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getPeriodicCostById = async function(id) {
+module.exports.getById = async function(id) {
   var periodicCost = await PeriodicCost.findByPk(id, { include: [Cost] });
   if (!periodicCost) {
     throw new Error("PeriodicCost not found");
@@ -13,7 +13,7 @@ module.exports.getPeriodicCostById = async function(id) {
   return periodicCost;
 };
 
-module.exports.getPeriodicCostByCostId = async function(costId) {
+module.exports.getByCostId = async function(costId) {
   var periodicCost = await PeriodicCost.findOne({
     where: { costId },
     include: [Cost]
@@ -24,7 +24,7 @@ module.exports.getPeriodicCostByCostId = async function(costId) {
   return periodicCost;
 };
 
-module.exports.addPeriodicCost = async function(type, period, costId) {
+module.exports.add = async function(type, period, costId) {
   return await PeriodicCost.create({
     costId: costId,
     type: type,
@@ -32,15 +32,15 @@ module.exports.addPeriodicCost = async function(type, period, costId) {
   });
 };
 
-module.exports.updatePeriodicCost = async function(periodicCost) {
+module.exports.update = async function(periodicCost) {
   return await periodicCost.save();
 };
 
-module.exports.removePeriodicCost = async function(periodicCost) {
+module.exports.remove = async function(periodicCost) {
   return await periodicCost.destroy();
 };
 
-module.exports.listPeriodicCostByCar = async function(carId, from, to) {
+module.exports.listByCar = async function(carId, from, to) {
   let query = {
     [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"

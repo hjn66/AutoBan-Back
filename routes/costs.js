@@ -223,7 +223,7 @@ router.post(
       comment,
       carId
     );
-    let periodicCost = await PeriodicCostDAO.addPeriodicCost(
+    let periodicCost = await PeriodicCostDAO.add(
       type,
       period,
       cost.id
@@ -248,7 +248,7 @@ router.put(
     const type = req.body.type;
     const period = req.body.period;
 
-    let periodicCost = await PeriodicCostDAO.getPeriodicCostById(
+    let periodicCost = await PeriodicCostDAO.getById(
       periodicCostId
     );
     let cost = periodicCost.cost;
@@ -262,7 +262,7 @@ router.put(
     cost = await CostDAO.update(cost);
     periodicCost.type = type;
     periodicCost.period = period;
-    periodicCost = await PeriodicCostDAO.updatePeriodicCost(periodicCost);
+    periodicCost = await PeriodicCostDAO.update(periodicCost);
     periodicCost.cost = cost;
 
     return res.json({
@@ -278,7 +278,7 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const periodicCostId = req.query.periodicCostId;
-    let periodicCost = await PeriodicCostDAO.getPeriodicCostById(
+    let periodicCost = await PeriodicCostDAO.getById(
       periodicCostId
     );
     let cost = periodicCost.cost;
@@ -380,7 +380,7 @@ router.post(
     // let costs = await CostDAO.listByCar(carId, from, to);
     let fines = await FineDAO.listByCar(carId, from, to);
     let fuels = await FuelDAO.listByCar(carId, from, to);
-    let periodicCosts = await PeriodicCostDAO.listPeriodicCostByCar(
+    let periodicCosts = await PeriodicCostDAO.listByCar(
       carId,
       from,
       to
@@ -433,7 +433,7 @@ router.post(
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
-    let periodicCosts = await PeriodicCostDAO.listPeriodicCostByCar(
+    let periodicCosts = await PeriodicCostDAO.listByCar(
       carId,
       from,
       to
