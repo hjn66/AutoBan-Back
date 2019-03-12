@@ -173,7 +173,7 @@ router.post(
       );
     }
     if (garageId) {
-      let garage = await GarageDAO.getGarageById(garageId);
+      let garage = await GarageDAO.getById(garageId);
       garageName = garage.name;
     }
     // title, date, totalCost, garageName, garageId, creatorId, carId
@@ -209,7 +209,7 @@ router.put(
       throw new Error("You can update only repair that you added");
     }
     if (garageId) {
-      let garage = await GarageDAO.getGarageById(garageId);
+      let garage = await GarageDAO.getById(garageId);
       garageName = garage.name;
     }
     // title, date, totalCost, garageName, garageId, creatorId, carId
