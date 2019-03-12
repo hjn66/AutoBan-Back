@@ -5,7 +5,7 @@ const Cost = rootRequire("startup/sequelize").Cost;
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getFuelById = async function(id) {
+module.exports.getById = async function(id) {
   var fuel = await Fuel.findByPk(id, { include: [Cost] });
   if (!fuel) {
     throw new Error("Fuel not found");
@@ -13,7 +13,7 @@ module.exports.getFuelById = async function(id) {
   return fuel;
 };
 
-module.exports.getFuelByCostId = async function(costId) {
+module.exports.getByCostId = async function(costId) {
   var fuel = await Fuel.findOne({ where: { costId }, include: [Cost] });
   if (!fuel) {
     throw new Error("Fuel not found");
@@ -21,7 +21,7 @@ module.exports.getFuelByCostId = async function(costId) {
   return fuel;
 };
 
-module.exports.addFuel = async function(
+module.exports.add = async function(
   volume,
   type,
   odometer,
@@ -39,15 +39,15 @@ module.exports.addFuel = async function(
   });
 };
 
-module.exports.updateFuel = async function(fuel) {
+module.exports.update = async function(fuel) {
   return await fuel.save();
 };
 
-module.exports.removeFuel = async function(fuel) {
+module.exports.remove = async function(fuel) {
   return await fuel.destroy();
 };
 
-module.exports.listFuelByCar = async function(carId, from, to) {
+module.exports.listByCar = async function(carId, from, to) {
   let query = {
     [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"

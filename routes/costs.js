@@ -35,7 +35,7 @@ router.post(
       comment,
       carId
     );
-    let fuel = await FuelDAO.addFuel(
+    let fuel = await FuelDAO.add(
       volume,
       type,
       odometer,
@@ -69,7 +69,7 @@ router.put(
     const isFull = req.body.isFull || false;
     const stationName = req.body.stationName;
 
-    let fuel = await FuelDAO.getFuelById(fuelId);
+    let fuel = await FuelDAO.getById(fuelId);
     let cost = fuel.cost;
     let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
@@ -84,7 +84,7 @@ router.put(
     fuel.odometer = odometer;
     fuel.isFull = isFull;
     fuel.stationName = stationName;
-    fuel = await FuelDAO.updateFuel(fuel);
+    fuel = await FuelDAO.update(fuel);
     fuel.cost = cost;
     if (odometer && odometer > car.odometer) {
       await CarDAO.updateOdometer(car, odometer);
@@ -102,7 +102,7 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const fuelId = req.query.fuelId;
-    let fuel = await FuelDAO.getFuelById(fuelId);
+    let fuel = await FuelDAO.getById(fuelId);
     let cost = fuel.cost;
     let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
@@ -379,7 +379,7 @@ router.post(
     }
     // let costs = await CostDAO.listByCar(carId, from, to);
     let fines = await FineDAO.listByCar(carId, from, to);
-    let fuels = await FuelDAO.listFuelByCar(carId, from, to);
+    let fuels = await FuelDAO.listByCar(carId, from, to);
     let periodicCosts = await PeriodicCostDAO.listPeriodicCostByCar(
       carId,
       from,
@@ -401,7 +401,7 @@ router.post(
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
-    let fuels = await FuelDAO.listFuelByCar(carId, from, to);
+    let fuels = await FuelDAO.listByCar(carId, from, to);
     return res.json({ success: true, fuels });
   }
 );
