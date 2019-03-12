@@ -6,7 +6,7 @@ const Cost = rootRequire("startup/sequelize").Cost;
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getFineById = async function(id) {
+module.exports.getById = async function(id) {
   var fine = await Fine.findByPk(id, { include: [FineCategory, Cost] });
   if (!fine) {
     throw new Error("Fine not found");
@@ -14,7 +14,7 @@ module.exports.getFineById = async function(id) {
   return fine;
 };
 
-module.exports.getFineByCostId = async function(costId) {
+module.exports.getByCostId = async function(costId) {
   var fine = await Fine.findOne({
     where: { costId },
     include: [FineCategory, Cost]
@@ -25,22 +25,22 @@ module.exports.getFineByCostId = async function(costId) {
   return fine;
 };
 
-module.exports.addFine = async function(fineCode, costId) {
+module.exports.add = async function(fineCode, costId) {
   return await Fine.create({
     costId: costId,
     fineCategoryCode: fineCode
   });
 };
 
-module.exports.updateFine = async function(fine) {
+module.exports.update = async function(fine) {
   return await fine.save();
 };
 
-module.exports.removeFine = async function(fine) {
+module.exports.remove = async function(fine) {
   return await fine.destroy();
 };
 
-module.exports.listFineByCar = async function(carId, from, to) {
+module.exports.listByCar = async function(carId, from, to) {
   let query = {
     [Op.gte]: from || "1200-01-01",
     [Op.lte]: to || "2200-01-01"

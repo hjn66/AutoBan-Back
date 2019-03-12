@@ -143,7 +143,7 @@ router.post(
       comment,
       carId
     );
-    let fine = await FineDAO.addFine(fineCode, cost.id);
+    let fine = await FineDAO.add(fineCode, cost.id);
     fine.dataValues.cost = cost;
     return res.json({
       success: true,
@@ -163,7 +163,7 @@ router.put(
     const comment = req.body.comment;
     const fineCode = req.body.fineCode;
 
-    let fine = await FineDAO.getFineById(fineId);
+    let fine = await FineDAO.getById(fineId);
     let cost = fine.cost;
     let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
@@ -174,7 +174,7 @@ router.put(
     cost.comment = comment;
     cost = await CostDAO.update(cost);
     fine.fineCode = fineCode;
-    fine = await FineDAO.updateFine(fine);
+    fine = await FineDAO.update(fine);
     fine.cost = cost;
 
     return res.json({
@@ -190,7 +190,7 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const fineId = req.query.fineId;
-    let fine = await FineDAO.getFineById(fineId);
+    let fine = await FineDAO.getById(fineId);
     let cost = fine.cost;
     let car = await CarDAO.getById(cost.carId);
     if (car.userId != req.user.id) {
@@ -378,7 +378,7 @@ router.post(
       throw new Error("You can list your car's cost only");
     }
     // let costs = await CostDAO.listByCar(carId, from, to);
-    let fines = await FineDAO.listFineByCar(carId, from, to);
+    let fines = await FineDAO.listByCar(carId, from, to);
     let fuels = await FuelDAO.listFuelByCar(carId, from, to);
     let periodicCosts = await PeriodicCostDAO.listPeriodicCostByCar(
       carId,
@@ -417,7 +417,7 @@ router.post(
     if (car.userId != req.user.id) {
       throw new Error("You can list your car's cost only");
     }
-    let fines = await FineDAO.listFineByCar(carId, from, to);
+    let fines = await FineDAO.listByCar(carId, from, to);
     return res.json({ success: true, fines });
   }
 );
