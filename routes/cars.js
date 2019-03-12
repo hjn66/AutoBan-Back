@@ -192,10 +192,10 @@ router.get(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     if (req.query.id) {
-      let carModel = await CarModelDAO.getCarModelById(req.query.id);
+      let carModel = await CarModelDAO.getById(req.query.id);
       return res.json({ success: true, carModel });
     } else {
-      let carModel = await CarModelDAO.getCarModelByName(req.query.persianName);
+      let carModel = await CarModelDAO.getByName(req.query.persianName);
       return res.json({ success: true, carModel });
     }
   }
