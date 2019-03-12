@@ -1,6 +1,6 @@
 const CarBrand = rootRequire("startup/sequelize").CarBrand;
 
-module.exports.getCarBrandById = async function(id) {
+module.exports.getById = async function(id) {
   carBrand = await CarBrand.findByPk(id);
   if (!carBrand) {
     throw new Error("Car brand not found");
@@ -8,7 +8,7 @@ module.exports.getCarBrandById = async function(id) {
   return carBrand;
 };
 
-module.exports.getCarBrandByName = async function(persianName) {
+module.exports.getByName = async function(persianName) {
   carBrand = await CarBrand.findOne({ where: { persianName } });
   if (!carBrand) {
     throw new Error("Car brand not found");

@@ -206,10 +206,10 @@ router.get(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     if (req.query.id) {
-      let carBrand = await CarBrandDAO.getCarBrandById(req.query.id);
+      let carBrand = await CarBrandDAO.getById(req.query.id);
       return res.json({ success: true, carBrand });
     } else {
-      let carBrand = await CarBrandDAO.getCarBrandByName(req.query.persianName);
+      let carBrand = await CarBrandDAO.getByName(req.query.persianName);
       return res.json({ success: true, carBrand });
     }
   }
