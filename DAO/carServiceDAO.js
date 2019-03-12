@@ -4,7 +4,7 @@ const Utils = rootRequire("middlewares/utils");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-module.exports.getServiceById = async function(id) {
+module.exports.getById = async function(id) {
   service = await CarService.findByPk(id);
   if (!service) {
     throw new Error("Car Service not found");
@@ -12,25 +12,25 @@ module.exports.getServiceById = async function(id) {
   return service;
 };
 
-module.exports.getServiceByName = async function(persianName) {
+module.exports.getByName = async function(persianName) {
   return await CarService.findOne({ where: { persianName } });
 };
 
-module.exports.addCarService = async function(persianName, englishName) {
+module.exports.add = async function(persianName, englishName) {
   return await CarService.create({
     persianName: persianName,
     englishName: englishName
   });
 };
 
-module.exports.updateCarService = async function(carService) {
+module.exports.update = async function(carService) {
   return await carService.save();
 };
 
-module.exports.removeCarService = async function(carService) {
+module.exports.remove = async function(carService) {
   return await carService.destroy();
 };
 
-module.exports.listCarService = async function() {
+module.exports.list = async function() {
   return await CarService.findAll();
 };

@@ -99,7 +99,7 @@ router.post(
   async (req, res, next) => {
     const persianName = req.body.persianName;
     const englishName = req.body.englishName;
-    let carService = await CarServiceDAO.addCarService(
+    let carService = await CarServiceDAO.add(
       persianName,
       englishName
     );
@@ -118,10 +118,10 @@ router.put(
     const persianName = req.body.persianName;
     const englishName = req.body.englishName;
     const serviceId = req.body.serviceId;
-    let carService = await CarServiceDAO.getServiceById(serviceId);
+    let carService = await CarServiceDAO.getById(serviceId);
     carService.persianName = persianName;
     carService.englishName = englishName;
-    carService = await CarServiceDAO.updateCarService(carService);
+    carService = await CarServiceDAO.update(carService);
     return res.json({
       success: true,
       message: __("car service updated successfuly"),
@@ -135,8 +135,8 @@ router.delete(
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
     const serviceId = req.query.serviceId;
-    let carService = await CarServiceDAO.getServiceById(serviceId);
-    await CarServiceDAO.removeCarService(carService);
+    let carService = await CarServiceDAO.getById(serviceId);
+    await CarServiceDAO.remove(carService);
     return res.json({
       success: true,
       message: __("car service deleted successfuly")
@@ -148,7 +148,7 @@ router.get(
   "/list-services",
   [passport.authenticate("jwt", { session: false }), i18n],
   async (req, res, next) => {
-    let carServices = await CarServiceDAO.listCarService();
+    let carServices = await CarServiceDAO.list();
     return res.json({ success: true, carServices });
   }
 );

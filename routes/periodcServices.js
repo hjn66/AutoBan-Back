@@ -85,9 +85,9 @@ router.post(
       receipImage,
       repair.id
     );
-    let service = await CarServiceDAO.getServiceByName(__("Periodic Service"));
+    let service = await CarServiceDAO.getByName(__("Periodic Service"));
     if (!service) {
-      service = await CarServiceDAO.addCarService(
+      service = await CarServiceDAO.add(
         __("Periodic Service"),
         "Periodic Service"
       );
