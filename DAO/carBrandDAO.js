@@ -16,6 +16,14 @@ module.exports.getByName = async function(persianName) {
   return carBrand;
 };
 
+module.exports.add = async function(id, persianName, englishName, logo) {
+  return await CarBrand.create({ id, persianName, englishName, logo });
+};
+
+module.exports.update = async function(brand) {
+  return await brand.save();
+};
+
 module.exports.listCarBrands = async function() {
   return await CarBrand.findAll();
 };
