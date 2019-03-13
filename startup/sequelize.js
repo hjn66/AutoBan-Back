@@ -122,6 +122,7 @@ let syncForce = config.get("db_sync_force");
 sequelize.sync({ force: syncForce }).then(() => {
   console.log(`Database & tables created!`);
   require("./initTables/colorInit")();
+  require("./initTables/carBrandInit")();
   if (syncForce) {
     console.log("Databse Sync Forced");
     require("./initTables/fineCategoryInit")(FineCategory);
