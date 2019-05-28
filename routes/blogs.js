@@ -68,4 +68,28 @@ router.put(
   }
 );
 
+router.delete(
+  "/post",
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  async (req, res, next) => {
+    const blogPostId = req.query.id;
+    console.log(blogPostId);
+
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let blogPost = await BlogPostDAO.getById(blogPostId);
+    const userId = user.id;
+    if (blogPost.creatorId != userId) {
+      throw new Error("You can remove your blog post only");
+    }
+    if (blogPost.image != config.get("default_blog_image")) {
+      fs.removeSync(path.join(rootPath, blogPost.image));
+    }
+    blogPost = await BlogPostDAO.remove(blogPost);
+    return res.json({
+      success: true,
+      message: __("Blog post deleted successfuly")
+    });
+  }
+);
+
 module.exports = router;
