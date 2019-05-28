@@ -150,4 +150,20 @@ router.post(
   }
 );
 
+router.get(
+  "/list-likes",
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    checkPoint
+  ],
+  async (req, res, next) => {
+    const blogPostId = req.query.id;
+    likes = await BlogLikeDAO.list(blogPostId);
+    res.json({ success: true, likes });
+    next();
+  }
+);
+
 module.exports = router;
