@@ -25,3 +25,7 @@ module.exports.add = async function(creatorId, subject, content, image) {
     image
   });
 };
+
+module.exports.update = async function(post) {
+  return await post.save();
+};
