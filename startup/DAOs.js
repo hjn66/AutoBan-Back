@@ -16,6 +16,7 @@ const RepairDAO = rootRequire("DAO/repairDAO");
 const SmsTokenDAO = rootRequire("DAO/smsTokenDAO");
 const UserDAO = rootRequire("DAO/userDAO");
 const BlogPostDAO = rootRequire("DAO/blogPostDAO");
+const BlogLikeDAO = rootRequire("DAO/blogLikeDAO");
 
 module.exports = {
   CarBrandDAO,
@@ -35,5 +36,6 @@ module.exports = {
   RepairDAO,
   SmsTokenDAO,
   UserDAO,
-  BlogPostDAO
+  BlogPostDAO,
+  BlogLikeDAO
 };
