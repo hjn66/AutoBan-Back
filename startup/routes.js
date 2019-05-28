@@ -11,6 +11,7 @@ const costs = rootRequire("routes/costs");
 const repairs = rootRequire("routes/repairs");
 const periodcServices = rootRequire("routes/periodcServices");
 const server = rootRequire("routes/server");
+const blogs = rootRequire("routes/blogs");
 const calculatePoint = rootRequire("middlewares/calculatePoint");
 
 module.exports = async function(app) {
@@ -38,5 +39,6 @@ module.exports = async function(app) {
   app.use("/repairs", repairs);
   app.use("/periodic-services", periodcServices);
   app.use("/server", server);
+  app.use("/blogs", blogs);
   app.use(calculatePoint);
 };
