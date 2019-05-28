@@ -92,4 +92,14 @@ router.delete(
   }
 );
 
+router.get(
+  "/list",
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  async (req, res, next) => {
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let blogPosts = await BlogPostDAO.list(user.id);
+    return res.json({ success: true, blogPosts });
+  }
+);
+
 module.exports = router;
