@@ -160,5 +160,6 @@ module.exports = {
   CarService,
   ReceiptService,
   PeriodicService,
-  Points
+  Points,
+  BlogPost
 };
