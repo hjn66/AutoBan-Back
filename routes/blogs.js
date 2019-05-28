@@ -134,4 +134,20 @@ router.post(
   }
 );
 
+router.post(
+  "/unlike",
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    checkPoint
+  ],
+  async (req, res, next) => {
+    const blogPostId = req.body.blogId;
+    await BlogLikeDAO.unlike(req.user.id, blogPostId);
+    res.json({ success: true });
+    next();
+  }
+);
+
 module.exports = router;
