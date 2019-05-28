@@ -67,5 +67,6 @@
   "Blog post information updated successfuly": "اطلاعات پست وبلاگ به‌روزرسانی شد",
   "You can remove your blog post only": "شما تنها می‌توانید پستهای وبلاگ خودتان را حذف کنید",
   "Blog post deleted successfuly": "پست وبلاگ با موفقیت حذف شد",
-  "You like this blog post before": "شما قبلا پست این وبلاگ را لایک کرده‌اید"
+  "You like this blog post before": "شما قبلا پست این وبلاگ را لایک کرده‌اید",
+  "You must like a post before unlike": "شما این پست را قبلا لایک نکرده‌اید"
 }
