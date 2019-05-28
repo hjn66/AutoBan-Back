@@ -38,4 +38,34 @@ router.post(
   }
 );
 
+router.put(
+  "/post",
+  [passport.authenticate("jwt", { session: false }), i18n, authorize([USER])],
+  async (req, res, next) => {
+    const blogPostId = req.body.id;
+    let user = await UserDAO.getByIdSync(req.user.id);
+    let blogPost = await BlogPostDAO.getById(blogPostId);
+    const userId = user.id;
+    if (blogPost.creatorId != userId) {
+      throw new Error("You can change your blog post information only");
+    }
+    blogPost.subject = req.body.subject;
+    blogPost.content = req.body.content;
+    if (blogPost.image != config.get("default_blog_image")) {
+      fs.removeSync(path.join(rootPath, blogPost.image));
+    }
+    if (req.body.image) {
+      blogPost.image = await uploadFile(
+        config.get("blog_images_dir"),
+        req.body.image
+      );
+    }
+    blogPost = await BlogPostDAO.update(blogPost);
+    return res.json({
+      success: true,
+      message: __("Blog post information updated successfuly")
+    });
+  }
+);
+
 module.exports = router;
