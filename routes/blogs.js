@@ -10,9 +10,9 @@ const uploadFile = rootRequire("middlewares/uploadFile");
 const authorize = rootRequire("middlewares/authorize");
 const checkPoint = rootRequire("middlewares/checkPoint");
 const BlogPostDAO = DAOs.BlogPostDAO;
+const BlogLikeDAO = DAOs.BlogLikeDAO;
 const UserDAO = DAOs.UserDAO;
 const USER = config.get("user_type");
-const ADMIN = config.get("admin_type");
 
 router.get(
   "/post",
@@ -115,6 +115,22 @@ router.get(
     let user = await UserDAO.getByIdSync(req.user.id);
     let blogPosts = await BlogPostDAO.list(user.id);
     return res.json({ success: true, blogPosts });
+  }
+);
+
+router.post(
+  "/like",
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    checkPoint
+  ],
+  async (req, res, next) => {
+    const blogPostId = req.body.blogId;
+    blogLike = await BlogLikeDAO.like(req.user.id, blogPostId);
+    res.json({ success: true, blogLike });
+    next();
   }
 );
 
