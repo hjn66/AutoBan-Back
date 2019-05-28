@@ -33,3 +33,10 @@ module.exports.update = async function(post) {
 module.exports.remove = async function(post) {
   return await post.destroy();
 };
+
+module.exports.list = async function(userId) {
+  let posts = await BlogPost.findAll({
+    where: { creatorId: userId }
+  });
+  return posts;
+};
