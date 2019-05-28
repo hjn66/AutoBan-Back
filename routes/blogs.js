@@ -14,6 +14,22 @@ const UserDAO = DAOs.UserDAO;
 const USER = config.get("user_type");
 const ADMIN = config.get("admin_type");
 
+router.get(
+  "/post",
+  [
+    passport.authenticate("jwt", { session: false }),
+    i18n,
+    authorize([USER]),
+    checkPoint
+  ],
+  async (req, res, next) => {
+    const blogPostId = req.query.id;
+    let blogPost = await BlogPostDAO.getById(blogPostId);
+    res.json({ success: true, blogPost });
+    next();
+  }
+);
+
 router.post(
   "/post",
   [
