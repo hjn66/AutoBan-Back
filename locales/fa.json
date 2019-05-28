@@ -64,5 +64,7 @@
   "Repair updated successfuly": "اطلاعات تعمیرات با موفقیت به‌روزرسانی شد",
   "Blog post not found": "پست وبلاگ مورد نظر یافت نشد",
   "You can change your blog post information only": "شما می توانید اطلاعات پست وبلاگ خودتان را به‌روزرسانی کنید",
-  "Blog post information updated successfuly": "اطلاعات پست وبلاگ به‌روزرسانی شد"
+  "Blog post information updated successfuly": "اطلاعات پست وبلاگ به‌روزرسانی شد",
+  "You can remove your blog post only": "شما تنها می‌توانید پستهای وبلاگ خودتان را حذف کنید",
+  "Blog post deleted successfuly": "پست وبلاگ با موفقیت حذف شد"
 }
