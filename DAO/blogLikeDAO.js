@@ -22,3 +22,10 @@ module.exports.unlike = async function(userId, blogPostId) {
   }
   return await like.destroy();
 };
+
+module.exports.list = async function(blogId) {
+  let likes = await BlogLike.findAll({
+    where: { blogId }
+  });
+  return likes;
+};
