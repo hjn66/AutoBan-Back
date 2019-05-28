@@ -17,6 +17,8 @@
   "uploads_dir": "uploads",
   "car_logo_dir": "assets/images/carLogos/",
   "car_images_dir": "uploads/carImages",
+  "blog_images_dir": "uploads/blogImages",
+  "default_blog_image": "assets/images/defaultBlog.jpg",
   "user_images_dir": "uploads/userImages",
   "receipt_images_dir": "uploads/receiptImages",
   "sms_user": "300550",
