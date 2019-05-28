@@ -25,6 +25,9 @@ router.get(
   async (req, res, next) => {
     const blogPostId = req.query.id;
     let blogPost = await BlogPostDAO.getById(blogPostId);
+    let likesCount = await BlogLikeDAO.count(blogPostId);
+    blogPost.dataValues.likesCount = likesCount;
+
     res.json({ success: true, blogPost });
     next();
   }
