@@ -12,3 +12,16 @@ module.exports.getById = async function(id) {
   }
   return post;
 };
+
+module.exports.add = async function(creatorId, subject, content, image) {
+  if (!image || image == "") {
+    image = config.get("default_blog_image");
+  }
+  console.log(image);
+  return await BlogPost.create({
+    creatorId,
+    subject,
+    content,
+    image
+  });
+};
