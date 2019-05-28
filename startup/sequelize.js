@@ -21,6 +21,7 @@ const ReceiptServiceModel = rootRequire("models/receiptService");
 const PeriodicServiceModel = rootRequire("models/periodicService");
 const PointModel = rootRequire("models/point");
 const BlogPostModel = rootRequire("models/blogPost");
+const BlogLikeModel = rootRequire("models/blogLike");
 
 const config = require("config");
 
@@ -63,6 +64,7 @@ const ReceiptService = ReceiptServiceModel(sequelize, Sequelize);
 const PeriodicService = PeriodicServiceModel(sequelize, Sequelize);
 const Points = PointModel(sequelize, Sequelize);
 const BlogPost = BlogPostModel(sequelize, Sequelize);
+const BlogLike = BlogLikeModel(sequelize, Sequelize);
 
 Points.belongsTo(User, { foreignKey: { name: "userId", allowNull: false } });
 CarBrand.hasMany(CarModel, { as: "models" });
@@ -121,6 +123,12 @@ PeriodicService.belongsTo(Part, {
 BlogPost.belongsTo(User, {
   foreignKey: { name: "creatorId", allowNull: false }
 });
+BlogLike.belongsTo(BlogPost, {
+  foreignKey: { name: "blogId", allowNull: false }
+});
+BlogLike.belongsTo(User, {
+  foreignKey: { name: "userId", allowNull: false }
+});
 
 let syncForce = config.get("db_sync_force");
 
@@ -161,5 +169,6 @@ module.exports = {
   ReceiptService,
   PeriodicService,
   Points,
-  BlogPost
+  BlogPost,
+  BlogLike
 };
