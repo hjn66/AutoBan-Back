@@ -29,3 +29,7 @@ module.exports.add = async function(creatorId, subject, content, image) {
 module.exports.update = async function(post) {
   return await post.save();
 };
+
+module.exports.remove = async function(post) {
+  return await post.destroy();
+};
